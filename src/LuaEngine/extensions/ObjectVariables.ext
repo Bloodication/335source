@@ -1,0 +1,80 @@
+--
+-- Copyright (C) 2010 - 2015 Eluna Lua Engine <http://emudevs.com/>
+-- This program is free software licensed under GPL version 3
+-- Please see the included DOCS/LICENSE.md for more information
+--
+
+-- filename.ext files are loaded before normal .lua files
+
+local variableStores = {
+    Player = {},
+    Creature = {},
+    GameObject = {},
+}
+
+local function DestroyData(event, obj)
+    if event == 18 or event == 17 then
+        local map = obj:GetMapId()
+        local inst = obj:GetInstanceId()
+        for k,v in pairs(variableStores) do
+            if inst == 0 then
+                v[map] = nil
+            else
+                local mapdata = v[map]
+                if mapdata then
+                    mapdata[inst] = nil
+                end
+            end
+        end
+        return
+    end
+    local mapdata = variableStores[obj:GetObjectType()][obj:GetMapId()]
+    if mapdata then
+        local instancedata = mapdata[obj:GetInstanceId()]
+        if instancedata then
+            instancedata[obj:GetGUIDLow()] = nil
+        end
+    end
+end
+
+local function GetData(self, field)
+    local varStore = variableStores[self:GetObjectType()]
+    local guid = self:GetGUIDLow()
+    local map = self:GetMapId()
+    local inst = self:GetInstanceId()
+
+    varStore[map] = varStore[map] or {}
+    varStore[map][inst] = varStore[map][inst] or {}
+    varStore[map][inst][guid] = varStore[map][inst][guid] or {}
+
+    if field then
+        return varStore[map][inst][guid][field]
+    else
+        return varStore[map][inst][guid]
+    end
+end
+
+local function SetData(self, field, val)
+    local varStore = variableStores[self:GetObjectType()]
+    local guid = self:GetGUIDLow()
+    local map = self:GetMapId()
+    local inst = self:GetInstanceId()
+
+    varStore[map] = varStore[map] or {}
+    varStore[map][inst] = varStore[map][inst] or {}
+    varStore[map][inst][guid] = varStore[map][inst][guid] or {}
+    
+    varStore[map][inst][guid][field] = val
+end
+
+for k,v in pairs(variableStores) do
+    _G[k].GetData = GetData
+    _G[k].SetData = SetData
+end
+
+RegisterPlayerEvent(3, DestroyData) -- login
+RegisterPlayerEvent(4, DestroyData) -- logout
+RegisterServerEvent(31, DestroyData) -- creature delete
+RegisterServerEvent(32, DestroyData) -- gameobject delete
+RegisterServerEvent(17, DestroyData) -- map create
+RegisterServerEvent(18, DestroyData) -- map destroy
