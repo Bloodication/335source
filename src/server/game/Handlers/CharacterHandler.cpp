@@ -998,8 +998,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 
     delete holder;
 	
-	if (pCurrChar->GetTeam() != pCurrChar->GetCFSTeam());
-		
+	if (pCurrChar->GetTeam() != pCurrChar->GetCFSTeam());		
 }
 
 void WorldSession::HandleSetFactionAtWar(WorldPacket& recvData)
