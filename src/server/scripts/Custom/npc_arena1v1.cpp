@@ -185,7 +185,7 @@ public:
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Show statistics", GOSSIP_SENDER_MAIN, 4);
 		}
 
-		player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Script Info", GOSSIP_SENDER_MAIN, 8);
+		//player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Script Info", GOSSIP_SENDER_MAIN, 8);
 		player->SEND_GOSSIP_MENU(68, me->GetGUID());
 		return true;
 	}
