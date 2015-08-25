@@ -1421,6 +1421,7 @@ void AddSC_CS_Transmogrification();
 void AddSC_npc_1v1arena();
 void AddSC_fast_arena_start();
 void AddSC_arena_spectator_script();
+void AddSC_Teleporter_NPC();
 #endif
 
 void AddCustomScripts()
@@ -1433,5 +1434,6 @@ void AddCustomScripts()
 	AddSC_npc_1v1arena();
 	AddSC_fast_arena_start();
 	AddSC_arena_spectator_script();
+	AddSC_Teleporter_NPC();
 #endif
 }

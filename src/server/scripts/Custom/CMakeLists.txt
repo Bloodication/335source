@@ -21,6 +21,7 @@ Custom/npc_arena1v1.cpp
 Custom/npc_arena1v1.h
 Custom/arena_crystal.cpp
 Custom/ArenaSpectator/arena_spectator.cpp
+Custom/teleporter_npc.cpp
 )
 
 message("  -> Prepared: Custom")
