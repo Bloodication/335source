@@ -22,6 +22,13 @@ Custom/npc_arena1v1.h
 Custom/arena_crystal.cpp
 Custom/ArenaSpectator/arena_spectator.cpp
 Custom/teleporter_npc.cpp
+Custom/custom_rates.cpp
+Custom/TransmogDisplayVendor/TransmogDisplayVendorConf.h
+Custom/TransmogDisplayVendor/TransmogDisplayVendor.cpp
+Custom/arenaladder.cpp
+Custom/worldchat.cpp
+Custom/phasing.cpp
+Custom/guildinviteonlogin.cpp
 )
 
 message("  -> Prepared: Custom")

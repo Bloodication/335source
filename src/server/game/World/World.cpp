@@ -1305,6 +1305,48 @@ void World::LoadConfigSettings(bool reload)
     m_bool_configs[CONFIG_CALCULATE_CREATURE_ZONE_AREA_DATA] = sConfigMgr->GetBoolDefault("Calculate.Creature.Zone.Area.Data", false);
     m_bool_configs[CONFIG_CALCULATE_GAMEOBJECT_ZONE_AREA_DATA] = sConfigMgr->GetBoolDefault("Calculate.Gameoject.Zone.Area.Data", false);
 
+	// Individual XP/loot rates
+	int sec = sConfigMgr->GetIntDefault("Player.XpRateSecurity", 0);
+	if (sec < SEC_PLAYER || sec > SEC_ADMINISTRATOR)
+	{
+		TC_LOG_ERROR("server.loading", "Player.XpRateSecurity has invalid security `%i`, must be between `%i and `%i`, defaulting to 0 ...",
+			sec, SEC_PLAYER, SEC_ADMINISTRATOR);
+		m_int_configs[CONFIG_PLAYER_INDIVIDUAL_XP_RATE_SECURITY] = 0;
+	}
+	else
+		m_int_configs[CONFIG_PLAYER_INDIVIDUAL_XP_RATE_SECURITY] = sec;
+
+	sec = sConfigMgr->GetIntDefault("Player.LootRateSecurity", 0);
+	if (sec < SEC_PLAYER || sec > SEC_ADMINISTRATOR)
+	{
+		TC_LOG_ERROR("server.loading", "Player.LootRateSecurity has invalid security `%i`, must be between `%i and `%i`, defaulting to 0 ...",
+			sec, SEC_PLAYER, SEC_ADMINISTRATOR);
+		m_int_configs[CONFIG_PLAYER_INDIVIDUAL_LOOT_RATE_SECURITY] = 0;
+	}
+	else
+		m_int_configs[CONFIG_PLAYER_INDIVIDUAL_LOOT_RATE_SECURITY] = sec;
+
+	int maxXpRate = sConfigMgr->GetIntDefault("Player.MaximumXpRate", 1);
+	if (maxXpRate < 1)
+	{
+		TC_LOG_ERROR("server.loading", "Player.MaximumXpRate has too low value `%i`, defaulting to 1 ...", maxXpRate);
+		m_int_configs[CONFIG_PLAYER_MAXIMUM_INDIVIDUAL_XP_RATE] = 1;
+	}
+	else
+		m_int_configs[CONFIG_PLAYER_MAXIMUM_INDIVIDUAL_XP_RATE] = maxXpRate;
+
+	maxXpRate = sConfigMgr->GetIntDefault("Player.MaximumLootRate", 1);
+	if (maxXpRate < 1)
+	{
+		TC_LOG_ERROR("server.loading", "Player.MaximumLootRate has too low value `%i`, defaulting to 1 ...", maxXpRate);
+		m_int_configs[CONFIG_PLAYER_MAXIMUM_INDIVIDUAL_LOOT_RATE] = 1;
+	}
+	else
+		m_int_configs[CONFIG_PLAYER_MAXIMUM_INDIVIDUAL_LOOT_RATE] = maxXpRate;
+
+	m_bool_configs[CONFIG_PLAYER_INDIVIDUAL_XP_RATE_SHOW_ON_LOGIN] = sConfigMgr->GetBoolDefault("Player.ShowXpRateOnLogin", true);
+	m_bool_configs[CONFIG_PLAYER_INDIVIDUAL_LOOT_RATE_SHOW_ON_LOGIN] = sConfigMgr->GetBoolDefault("Player.ShowLootRateOnLogin", true);
+
     // call ScriptMgr if we're reloading the configuration
     if (reload)
         sScriptMgr->OnConfigLoad(reload);

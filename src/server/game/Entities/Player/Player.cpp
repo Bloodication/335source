@@ -5,7 +5,7 @@
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
+ * option) any later version.SendExplorationExperience(area, XP);
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "../../../scripts/Custom/TransmogDisplayVendor/TransmogDisplayVendorConf.h"
 #include "../../../scripts/Custom/Transmog/Transmogrification.h"
 #include "Player.h"
 #include "AccountMgr.h"
@@ -917,6 +917,9 @@ Player::Player(WorldSession* session): Unit(true)
     _activeCheats = CHEAT_NONE;
     m_achievementMgr = new AchievementMgr(this);
     m_reputationMgr = new ReputationMgr(this);
+
+	m_CustomXpRate = 1;
+	m_CustomLootRate = 1;
 }
 
 Player::~Player()
@@ -6802,6 +6805,7 @@ void Player::CheckAreaExploreAndOutdoor()
                     XP = uint32(sObjectMgr->GetBaseXP(areaEntry->area_level)*sWorld->getRate(RATE_XP_EXPLORE));
                 }
 
+				XP *= GetCustomXpRate();
                 GiveXP(XP, NULL);
                 SendExplorationExperience(area, XP);
             }
@@ -12447,6 +12451,9 @@ void Player::SetVisibleItemSlot(uint8 slot, Item* pItem)
         if (uint32 entry = sTransmogrification->GetFakeEntry(pItem))
             SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), entry);
         else
+          if (uint32 entry = TransmogDisplayVendorMgr::GetFakeEntry(pItem))
+           SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), entry);
+       else
             SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), pItem->GetEntry());
         SetUInt16Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (slot * 2), 0, pItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT));
         SetUInt16Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (slot * 2), 1, pItem->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT));
@@ -12574,6 +12581,7 @@ void Player::MoveItemFromInventory(uint8 bag, uint8 slot, bool update)
     if (Item* it = GetItemByPos(bag, slot))
     {
         sTransmogrification->DeleteFakeEntry(this, it);
+		TransmogDisplayVendorMgr::DeleteFakeEntry(this, it);
         ItemRemovedQuestCheck(it->GetEntry(), it->GetCount());
         RemoveItem(bag, slot, update);
         it->SetNotRefundable(this, false);
@@ -15308,7 +15316,7 @@ void Player::RewardQuest(Quest const* quest, uint32 reward, Object* questGiver, 
     bool rewarded = (m_RewardedQuests.find(quest_id) != m_RewardedQuests.end());
 
     // Not give XP in case already completed once repeatable quest
-    uint32 XP = rewarded && !quest->IsDFQuest() ? 0 : uint32(quest->XPValue(this)*sWorld->getRate(RATE_XP_QUEST));
+	uint32 XP = rewarded ? 0 : uint32(quest->XPValue(this)*sWorld->getRate(RATE_XP_QUEST) * GetCustomXpRate());
 
     // handle SPELL_AURA_MOD_XP_QUEST_PCT auras
     Unit::AuraEffectList const& ModXPPctAuras = GetAuraEffectsByType(SPELL_AURA_MOD_XP_QUEST_PCT);
@@ -21576,23 +21584,28 @@ bool Player::BuyItemFromVendorSlot(ObjectGuid vendorguid, uint32 vendorslot, uin
         return false;
     }
 
-    if (!(pProto->AllowableClass & getClassMask()) && pProto->Bonding == BIND_WHEN_PICKED_UP && !IsGameMaster())
+	Creature* creature = GetNPCIfCanInteractWith(vendorguid, UNIT_NPC_FLAG_VENDOR);
+	if (!creature)
     {
-        SendBuyError(BUY_ERR_CANT_FIND_ITEM, NULL, item, 0);
+		TC_LOG_DEBUG("network", "WORLD: BuyItemFromVendor - %s not found or you can't interact with him.", vendorguid.ToString().c_str());
+		SendBuyError(BUY_ERR_DISTANCE_TOO_FAR, NULL, item, 0);
         return false;
     }
 
-    if (!IsGameMaster() && ((pProto->Flags2 & ITEM_FLAGS_EXTRA_HORDE_ONLY && GetTeam() == ALLIANCE) || (pProto->Flags2 == ITEM_FLAGS_EXTRA_ALLIANCE_ONLY && GetTeam() == HORDE)))
-        return false;
+	if (creature->GetScriptName() == "NPC_TransmogDisplayVendor")
+	{
+		TransmogDisplayVendorMgr::HandleTransmogrify(this, creature, vendorslot, item);
+		return false;
+	}
 
-    Creature* creature = GetNPCIfCanInteractWith(vendorguid, UNIT_NPC_FLAG_VENDOR);
-    if (!creature)
+	if (!(pProto->AllowableClass & getClassMask()) && pProto->Bonding == BIND_WHEN_PICKED_UP && !IsGameMaster())
     {
-        TC_LOG_DEBUG("network", "WORLD: BuyItemFromVendor - %s not found or you can't interact with him.", vendorguid.ToString().c_str());
-        SendBuyError(BUY_ERR_DISTANCE_TOO_FAR, NULL, item, 0);
+		SendBuyError(BUY_ERR_CANT_FIND_ITEM, NULL, item, 0);
         return false;
     }
-
+	if (!IsGameMaster() && ((pProto->Flags2 & ITEM_FLAGS_EXTRA_HORDE_ONLY && GetTeam() == ALLIANCE) || (pProto->Flags2 == ITEM_FLAGS_EXTRA_ALLIANCE_ONLY && GetTeam() == HORDE)))
+		 return false;
+	
     ConditionList conditions = sConditionMgr->GetConditionsForNpcVendorEvent(creature->GetEntry(), item);
     if (!sConditionMgr->IsObjectMeetToConditions(this, creature, conditions))
     {

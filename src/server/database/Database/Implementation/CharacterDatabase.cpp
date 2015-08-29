@@ -598,6 +598,14 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PrepareStatement(CHAR_UPD_CHAR_PET_SLOT_BY_SLOT, "UPDATE character_pet SET slot = ? WHERE owner = ? AND slot = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_UPD_CHAR_PET_SLOT_BY_ID, "UPDATE character_pet SET slot = ? WHERE owner = ? AND id = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CHAR_PET_BY_ID, "DELETE FROM character_pet WHERE id = ?", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_INS_INDIVIDUAL_XP_RATE, "INSERT INTO character_xp_rate (guid, xp_rate) VALUES (?, ?)", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_DEL_INDIVIDUAL_XP_RATE, "DELETE FROM character_xp_rate WHERE guid = ?", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_SEL_INDIVIDUAL_XP_RATE, "SELECT xp_rate FROM character_xp_rate WHERE guid = ?", CONNECTION_SYNCH);
+	PrepareStatement(CHAR_UPD_INDIVIDUAL_XP_RATE, "UPDATE character_xp_rate SET xp_rate = ? WHERE guid = ?", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_INS_INDIVIDUAL_LOOT_RATE, "INSERT INTO character_loot_rate (guid, loot_rate) VALUES (?, ?)", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_DEL_INDIVIDUAL_LOOT_RATE, "DELETE FROM character_loot_rate WHERE guid = ?", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_SEL_INDIVIDUAL_LOOT_RATE, "SELECT loot_rate FROM character_loot_rate WHERE guid = ?", CONNECTION_SYNCH);
+	PrepareStatement(CHAR_UPD_INDIVIDUAL_LOOT_RATE, "UPDATE character_loot_rate SET loot_rate = ? WHERE guid = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CHAR_PET_BY_SLOT, "DELETE FROM character_pet WHERE owner = ? AND (slot = ? OR slot > ?)", CONNECTION_ASYNC);
 
     // PvPstats

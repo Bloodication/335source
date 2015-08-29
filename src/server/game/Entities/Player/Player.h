@@ -124,7 +124,6 @@ struct SpellModifier
     uint32 spellId;
     Aura* const ownerAura;
 };
-
 typedef std::unordered_map<ObjectGuid, uint32> TransmogMapType;
 
 #ifdef PRESETS
@@ -137,6 +136,7 @@ struct PresetData
 typedef std::map<uint8, PresetData> PresetMapType;
 #endif
 
+typedef std::unordered_map<ObjectGuid, uint32> TransmogMapType;
 typedef std::unordered_map<uint32, PlayerTalent*> PlayerTalentMap;
 typedef std::unordered_map<uint32, PlayerSpell*> PlayerSpellMap;
 typedef std::list<SpellModifier*> SpellModList;
@@ -2356,6 +2356,12 @@ class Player : public Unit, public GridObject<Player>
         //! Return collision height sent to client
         float GetCollisionHeight(bool mounted) const;
 
+		void SetCustomXpRate(uint32 rate) { m_CustomXpRate = rate; }
+		uint32 GetCustomXpRate() const { return m_CustomXpRate; }
+		
+		void SetCustomLootRate(uint32 rate) { m_CustomLootRate = rate; }
+		uint32 GetCustomLootRate() const { return m_CustomLootRate; }
+
         std::string GetMapAreaAndZoneString();
         std::string GetCoordsMapAreaAndZoneString();
 
@@ -2691,6 +2697,9 @@ class Player : public Unit, public GridObject<Player>
 		bool spectateCanceled;
 		Unit *spectateFrom;
         uint32 _activeCheats;
+
+		uint32 m_CustomXpRate;
+		uint32 m_CustomLootRate;
 };
 
 void AddItemsSetItem(Player* player, Item* item);

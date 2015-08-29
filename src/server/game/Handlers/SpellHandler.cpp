@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "../../scripts/Custom/TransmogDisplayVendor/TransmogDisplayVendorConf.h"
 #include "Common.h"
 #include "DBCStores.h"
 #include "WorldPacket.h"
@@ -637,7 +637,12 @@ void WorldSession::HandleMirrorImageDataRequest(WorldPacket& recvData)
                 if (uint32 entry = sTransmogrification->GetFakeEntry(item))
                     data << uint32(sObjectMgr->GetItemTemplate(entry)->DisplayInfoID);
                 else
+                    {
+                if (uint32 entry = TransmogDisplayVendorMgr::GetFakeEntry(item))
+                    data << uint32(sObjectMgr->GetItemTemplate(entry)->DisplayInfoID);
+                else
                     data << uint32(item->GetTemplate()->DisplayInfoID);
+            }
             }
             else
                 data << uint32(0);
