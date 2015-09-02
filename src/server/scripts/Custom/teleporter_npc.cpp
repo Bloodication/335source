@@ -2,9 +2,9 @@
 //																	  //
 //																	  //
 //																	  //
-//              Kargath-WoW Instant 80 PVP REALM					  //
-//              By Ladrek, Markus									  //
-//				Edited by Quadral, Mark								  //
+//              					  //
+//            									  //
+//				 Quadral, markus								  //
 //																	  //
 //                                                                    //
 ////////////////////////////////////////////////////////////////////////
