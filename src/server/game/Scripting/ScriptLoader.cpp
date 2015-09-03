@@ -1424,10 +1424,12 @@ void AddSC_arena_spectator_script();
 void AddSC_Teleporter_NPC();
 void Add_SC_Custom_Rates();
 void AddSC_NPC_TransmogDisplayVendor();
-void AddSC_Security_Scripts();
 void AddSC_arenateamranks();
 void AddSC_cs_world_chat();
-void AddSC_Guild_invite();
+void AddSC_TitleNpc();
+void AddSC_Beastmaster_NPC();
+void AddSC_npc_enchantment();
+void AddSC_Reset();
 #endif
 
 void AddCustomScripts()
@@ -1443,9 +1445,11 @@ void AddCustomScripts()
 	AddSC_Teleporter_NPC();
 	Add_SC_Custom_Rates();
 	AddSC_NPC_TransmogDisplayVendor();
-	AddSC_Security_Scripts();
 	AddSC_arenateamranks();
 	AddSC_cs_world_chat();
-	AddSC_Guild_invite();
+	AddSC_TitleNpc();
+	AddSC_Beastmaster_NPC();
+	AddSC_npc_enchantment();
+	AddSC_Reset();
 #endif
 }

@@ -3616,3 +3616,47 @@ Transmogrification.SetCopperCost = 0
 
 #
 ###################################################################################################
+#
+###################################################################################################
+#
+###################################################################################################
+# INDIVIDUAL PLAYER XP RATES
+#
+#    Player.XpRateSecurity
+#    Player.LootRateSecurity
+#        Description: Minimum security an account must have in order to
+#                     use .rate xp / .rate loot command
+#        Values     : 0 (player account)
+#                     1 (moderator account)
+#                     2 (gamemaster account)
+#                     3 (administrator account)
+#        Default    : 0 (every player can use the commands)
+#        Remarks    : Higher security accounts may set xp/loot rate to
+#                     lower security level accounts.
+#
+
+Player.XpRateSecurity = 0
+Player.LootRateSecurity = 0
+
+#    Player.MaximumXpRate
+#    Player.MaximumLootRate
+#        Description: Maximum individual XP / loot rate
+#        Values     : n (integer, may set xp / loot rate in range [1,n]
+#        Default    : 10
+#
+
+Player.MaximumXpRate = 20
+Player.MaximumLootRate = 10
+
+#    Player.ShowXpRateOnLogin
+#    Player.ShowLootRateOnLogin
+#        Description: Shows current XP / loot rate to player on login
+#        Values     : 0 - don't show
+#                   : 1 - show
+#        Default    : 1
+#
+
+Player.ShowXpRateOnLogin = 1
+Player.ShowLootRateOnLogin = 1
+
+#

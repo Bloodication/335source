@@ -27,8 +27,9 @@ Custom/TransmogDisplayVendor/TransmogDisplayVendorConf.h
 Custom/TransmogDisplayVendor/TransmogDisplayVendor.cpp
 Custom/arenaladder.cpp
 Custom/worldchat.cpp
-Custom/phasing.cpp
-Custom/guildinviteonlogin.cpp
+Custom/titles.cpp
+Custom/beastmaster.cpp
+Custom/enchanter.cpp
 )
 
 message("  -> Prepared: Custom")
