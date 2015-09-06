@@ -27,6 +27,7 @@
 #include "AuctionHouseMgr.h"
 #include "BattlefieldMgr.h"
 #include "BattlegroundMgr.h"
+#include "../../../src/server/game/Anticheat/AnticheatMgr.h"
 #include "CalendarMgr.h"
 #include "Channel.h"
 #include "CharacterDatabaseCleaner.h"
@@ -64,6 +65,7 @@
 #include "WaypointMovementGenerator.h"
 #include "WeatherMgr.h"
 #include "WorldSession.h"
+#include "../../../src/server/scripts/Custom/TemplateNPC/TemplateNPC.h"
 #ifdef ELUNA
 #include "LuaEngine.h"
 #endif
@@ -989,6 +991,9 @@ void World::LoadConfigSettings(bool reload)
     m_bool_configs[CONFIG_QUEST_IGNORE_RAID] = sConfigMgr->GetBoolDefault("Quests.IgnoreRaid", false);
     m_bool_configs[CONFIG_QUEST_IGNORE_AUTO_ACCEPT] = sConfigMgr->GetBoolDefault("Quests.IgnoreAutoAccept", false);
     m_bool_configs[CONFIG_QUEST_IGNORE_AUTO_COMPLETE] = sConfigMgr->GetBoolDefault("Quests.IgnoreAutoComplete", false);
+	// WorldChat
+	m_int_configs[CONFIG_WORLD_CHAT_ENABLED] = sConfigMgr->GetIntDefault("WorldChat.enabled", 1);
+	m_int_configs[CONFIG_WORLD_CHAT_MAP_ENABLED] = sConfigMgr->GetIntDefault("WorldChannel.ShowMapNames", 0);
 
     m_int_configs[CONFIG_RANDOM_BG_RESET_HOUR] = sConfigMgr->GetIntDefault("Battleground.Random.ResetHour", 6);
     if (m_int_configs[CONFIG_RANDOM_BG_RESET_HOUR] > 23)
@@ -1270,7 +1275,11 @@ void World::LoadConfigSettings(bool reload)
     m_bool_configs[CONFIG_PDUMP_NO_PATHS] = sConfigMgr->GetBoolDefault("PlayerDump.DisallowPaths", true);
     m_bool_configs[CONFIG_PDUMP_NO_OVERWRITE] = sConfigMgr->GetBoolDefault("PlayerDump.DisallowOverwrite", true);
     m_bool_configs[CONFIG_UI_QUESTLEVELS_IN_DIALOGS] = sConfigMgr->GetBoolDefault("UI.ShowQuestLevelsInDialogs", false);
-
+	m_bool_configs[CONFIG_ANTICHEAT_ENABLE] = sConfigMgr->GetBoolDefault("Anticheat.Enable", true);
+	m_int_configs[CONFIG_ANTICHEAT_REPORTS_INGAME_NOTIFICATION] = sConfigMgr->GetIntDefault("Anticheat.ReportsForIngameWarnings", 70);
+	m_int_configs[CONFIG_ANTICHEAT_DETECTIONS_ENABLED] = sConfigMgr->GetIntDefault("Anticheat.DetectionsEnabled", 31);
+	m_int_configs[CONFIG_ANTICHEAT_MAX_REPORTS_FOR_DAILY_REPORT] = sConfigMgr->GetIntDefault("Anticheat.MaxReportsForDailyReport", 70);
+	
     // Wintergrasp battlefield
     m_bool_configs[CONFIG_WINTERGRASP_ENABLE] = sConfigMgr->GetBoolDefault("Wintergrasp.Enable", false);
     m_int_configs[CONFIG_WINTERGRASP_PLR_MAX] = sConfigMgr->GetIntDefault("Wintergrasp.PlayerMax", 100);
@@ -1944,6 +1953,26 @@ void World::SetInitialWorldSettings()
     InitGuildResetTime();
 
     LoadCharacterNameData();
+
+	// Load templates for Template NPC #1
+	TC_LOG_INFO("server.loading", "Loading Template Talents...");
+	sTemplateNpcMgr->LoadTalentsContainer();
+
+	// Load templates for Template NPC #2
+	TC_LOG_INFO("server.loading", "Loading Template Glyphs...");
+	sTemplateNpcMgr->LoadGlyphsContainer();
+
+	// Load templates for Template NPC #3
+	TC_LOG_INFO("server.loading", "Loading Template Gear for Humans...");
+	sTemplateNpcMgr->LoadHumanGearContainer();
+
+	// Load templates for Template NPC #4
+	TC_LOG_INFO("server.loading", "Loading Template Gear for Alliances...");
+	sTemplateNpcMgr->LoadAllianceGearContainer();
+
+	// Load templates for Template NPC #5
+	TC_LOG_INFO("server.loading", "Loading Template Gear for Hordes...");
+	sTemplateNpcMgr->LoadHordeGearContainer();
 
 #ifdef ELUNA
     ///- Run eluna scripts.
@@ -3009,6 +3038,7 @@ void World::ResetDailyQuests()
 
     // change available dailies
     sPoolMgr->ChangeDailyQuests();
+	sAnticheatMgr->ResetDailyReportStates();
 }
 
 void World::LoadDBAllowedSecurityLevel()

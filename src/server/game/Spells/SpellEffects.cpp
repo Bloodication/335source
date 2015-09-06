@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "../../../src/server/game/Anticheat/AnticheatMgr.h"
 #include "Common.h"
 #include "DatabaseEnv.h"
 #include "WorldPacket.h"

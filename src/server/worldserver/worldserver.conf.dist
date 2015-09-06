@@ -2740,7 +2740,41 @@ LevelReq.Auction = 1
 #        Default:     1
 
 LevelReq.Mail = 1
+#
+#     Anticheat.Enable
+#        Description: Enables or disables the Anticheat System functionality
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
 
+Anticheat.Enable = 1
+
+#     Anticheat.ReportsForIngameWarnings
+#        Description: How many reports the player must have to notify to GameMasters ingame when he generates a new report.
+#        Default:     70
+
+Anticheat.ReportsForIngameWarnings = 70
+
+#     Anticheat.DetectionsEnabled
+#        Description: It represents which detections are enabled.
+#
+#        SPEED_HACK_DETECTION            = 1
+#        FLY_HACK_DETECTION              = 2
+#        WALK_WATER_HACK_DETECTION       = 4
+#        JUMP_HACK_DETECTION             = 8
+#        TELEPORT_PLANE_HACK_DETECTION   = 16
+#        CLIMB_HACK_DETECTION            = 32
+#
+#        Default:     31
+
+Anticheat.DetectionsEnabled = 31
+
+#     Anticheat.MaxReportsForDailyReport
+#        Description: How many reports must the player have to make a report that it is in DB for a day (not only during the player's session).
+#        Default:     70
+
+Anticheat.MaxReportsForDailyReport = 70
+
+#
 #
 #     PlayerDump.DisallowPaths
 #        Description: Disallow using paths in PlayerDump output files
@@ -3660,3 +3694,58 @@ Player.ShowXpRateOnLogin = 1
 Player.ShowLootRateOnLogin = 1
 
 #
+###################################################################################################
+#  WorldChat Settings
+#        WorldChat.enabled
+#	     Description: Defines is the world chat enabled or disabled, default : Enabled
+#		 Usage: 0 = Disabled, 1 = Enabled
+WorldChat.enabled = 1
+#
+#		 WorldChat.Player.color
+#		 WorldChat.Staff.color
+#		 Description: Defines the player name color
+#		 Usage: Color code must be in Blizzards color system ex. RED = |cffFF0000
+#
+#		 WorldChat.text.color
+#		 Description: Defines the color of the message text.
+#		 Usage: Color code must be in Blizzards color sytem ex. RED = |cffFF0000
+WorldChat.text.color = "|cffFF0000"
+#		 WorldChat.command
+#		 Descript: Defines the command for the chat system
+#		 Usage: Use as string example. "world" NOTICE: WHEN YOU CHANGE COMMAND NAME INSERT IT INTO commands table which is located in World database
+#		 Default: "world"
+WorldChat.command = "chat"
+#
+#		 WorldChat.Player.color
+#		 WorldChat.Staff.color
+#		 Description: Defines player name tag colors, Staff color is applied when GM tag is on.
+#		 Usage: Color code must be in Blizzard color system ex. RED = |cffFF0000
+#
+WorldChat.Player.color = "|c1f40af20"
+WorldChat.Staff.color = "|cff0404B4"
+#
+#		 WorldChannel.name
+#        Description: Defines the "channels" name ex. "[World]"
+#
+WorldChannel.name = "Global"
+#
+#        WorldChannel.name.color
+#        Description: Defines the color of Channels name
+#        Usage: Color code must be in Blizzards color system ex. RED = |cffFF0000
+#
+WorldChannel.name.color = "|cffFF0000"
+#
+#        WorldChannel.ShowMapNames
+#        Description: Defines if the world chat add extra field for player area location ex. [Tyr's Hand]
+#        Usage: 1 = Enabled, 0 = Disabled, 3 = Show Area name instead of Map name, Default = 0(Disabled)
+#
+WorldChannel.ShowMapNames = 3
+#
+#        Description: If ShowMapNames is enabled use these settings to define the color
+#        Usage: Color code must be in Blizzards color system ex. RED = |cffFF0000
+#
+#
+WorldChannel.Map.Color = ""
+#
+#
+###################################################################################################

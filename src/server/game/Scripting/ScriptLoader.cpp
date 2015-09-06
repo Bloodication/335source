@@ -17,6 +17,7 @@
 
 #include "ScriptLoader.h"
 #include "World.h"
+#include "../../../src/server/game/Anticheat/AnticheatMgr.h"
 
 // spells
 void AddSC_deathknight_spell_scripts();
@@ -40,6 +41,7 @@ void AddSC_SmartScripts();
 void AddSC_account_commandscript();
 void AddSC_achievement_commandscript();
 void AddSC_ahbot_commandscript();
+void AddSC_anticheat_commandscript();
 void AddSC_arena_commandscript();
 void AddSC_ban_commandscript();
 void AddSC_bf_commandscript();
@@ -695,6 +697,7 @@ void AddScripts()
     AddSpellScripts();
     AddSC_SmartScripts();
     AddCommandScripts();
+	sAnticheatMgr->StartScripts();
 #ifdef SCRIPTS
     AddWorldScripts();
     AddEasternKingdomsScripts();
@@ -729,6 +732,7 @@ void AddSpellScripts()
 
 void AddCommandScripts()
 {
+	AddSC_anticheat_commandscript();
     AddSC_account_commandscript();
     AddSC_achievement_commandscript();
     AddSC_ahbot_commandscript();
@@ -1430,6 +1434,9 @@ void AddSC_TitleNpc();
 void AddSC_Beastmaster_NPC();
 void AddSC_npc_enchantment();
 void AddSC_Reset();
+void AddSC_script_killstreak_handling();
+void AddSC_script_killstreak_example();
+void AddSC_CooldownsCrystal();
 #endif
 
 void AddCustomScripts()
@@ -1451,5 +1458,8 @@ void AddCustomScripts()
 	AddSC_Beastmaster_NPC();
 	AddSC_npc_enchantment();
 	AddSC_Reset();
+	AddSC_script_killstreak_handling();
+	AddSC_script_killstreak_example();
+	AddSC_CooldownsCrystal();
 #endif
 }

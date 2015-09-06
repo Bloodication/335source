@@ -30,6 +30,11 @@ Custom/worldchat.cpp
 Custom/titles.cpp
 Custom/beastmaster.cpp
 Custom/enchanter.cpp
+Custom/Killstreak/KillstreakManager.cpp
+Custom/Killstreak/KillstreakManager.h
+Custom/Killstreak/script_killstreak_example.cpp
+Custom/Killstreak/script_killstreak_handling.cpp
+Custom/CustomFunStuff/cooldowns_crystal.cpp
 )
 
 message("  -> Prepared: Custom")

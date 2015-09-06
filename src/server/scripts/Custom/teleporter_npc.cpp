@@ -25,7 +25,10 @@ enum H
 	H8 = 145,
 	H9 = 200,
 };
-
+enum OnKillItemRewards
+{
+	BADGE_OF_JUSTICE = 29434 // Badge of Justice
+};
 const uint32 ONE_CHARACTER_VIP = 4992700;
 
 class Teleporter_NPC : public CreatureScript
@@ -78,7 +81,7 @@ public:
 			return false;
 		}
 		// Check if VIP, One-Character-VIP or GM rights present on this account/character
-		if (pPlayer->GetSession()->GetSecurity() >= 1 || pPlayer->HasItemCount(ONE_CHARACTER_VIP, 1))
+		if (pPlayer->HasItemCount(ONE_CHARACTER_VIP, 1))
 			pPlayer->ADD_GOSSIP_ITEM(4, "|TInterface/ICONS/Achievement_Zone_Ironforge:35:35|t|cffffff00Menu only for VIP players", GOSSIP_SENDER_MAIN, 0);
 		uint32 kills = pPlayer->GetUInt32Value(PLAYER_FIELD_LIFETIME_HONORABLE_KILLS);
 		if (kills >= H9) //more or equal kills (10)
