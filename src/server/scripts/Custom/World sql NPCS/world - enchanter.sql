@@ -1,5 +1,5 @@
 SET
-@Entry = 190002,
+@Entry = 190007,
 @Name = "Enchanter",
 @Subname = "Easy Enchanting",
 @IconName = "Speak";

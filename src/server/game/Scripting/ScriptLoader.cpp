@@ -1440,6 +1440,8 @@ void AddSC_CooldownsCrystal();
 void AddSC_TemplateNPC();
 void AddSC_guildmaster();
 void AddSC_Reset();
+void AddSC_Security_Scripts();
+void AddSC_Beastmaster_NPC();
 #endif
 
 void AddCustomScripts()
@@ -1467,5 +1469,7 @@ void AddCustomScripts()
 	AddSC_TemplateNPC();
 	AddSC_guildmaster();
 	AddSC_Reset();
+	AddSC_Security_Scripts();
+	AddSC_Beastmaster_NPC();
 #endif
 }

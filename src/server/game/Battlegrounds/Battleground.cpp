@@ -23,7 +23,7 @@
 #include "Creature.h"
 #include "CreatureTextMgr.h"
 #include "Chat.h"
-#include "Formulas.h"
+#include "Formulas.h" 
 #include "GridNotifiersImpl.h"
 #include "Group.h"
 #include "Object.h"

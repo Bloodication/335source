@@ -1,6 +1,4 @@
-// quadral
 
-#include "ScriptPCH.h"
 #include "Pet.h"
      
 class Beastmaster_NPC : public CreatureScript
