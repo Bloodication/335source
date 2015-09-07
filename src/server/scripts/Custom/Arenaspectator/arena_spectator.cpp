@@ -34,7 +34,7 @@ EndScriptData */
 #include "BattlegroundMgr.h"
 #include "CreatureTextMgr.h"
 #include "Config.h"
-
+#define sArenaTeamMgr ArenaTeamMgr::instance()
 int8 UsingGossip;
 
 class arena_spectator_commands : public CommandScript

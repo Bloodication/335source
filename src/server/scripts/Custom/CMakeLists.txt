@@ -35,6 +35,8 @@ Custom/Killstreak/KillstreakManager.h
 Custom/Killstreak/script_killstreak_example.cpp
 Custom/Killstreak/script_killstreak_handling.cpp
 Custom/CustomFunStuff/cooldowns_crystal.cpp
+Custom/TemplateNPC/TemplateNPC.cpp
+Custom/TemplateNPC/TemplateNPC.h
 )
 
 message("  -> Prepared: Custom")

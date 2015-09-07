@@ -1437,6 +1437,7 @@ void AddSC_Reset();
 void AddSC_script_killstreak_handling();
 void AddSC_script_killstreak_example();
 void AddSC_CooldownsCrystal();
+void AddSC_TemplateNPC();
 #endif
 
 void AddCustomScripts()
@@ -1461,5 +1462,6 @@ void AddCustomScripts()
 	AddSC_script_killstreak_handling();
 	AddSC_script_killstreak_example();
 	AddSC_CooldownsCrystal();
+	AddSC_TemplateNPC();
 #endif
 }

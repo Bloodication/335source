@@ -96,7 +96,7 @@ class BattlegroundMgr
         void DeleteAllBattlegrounds();
 
         void SendToBattleground(Player* player, uint32 InstanceID, BattlegroundTypeId bgTypeId);
-
+		bool HasBattleground(Battleground *_bg);
         /* Battleground queues */
         BattlegroundQueue& GetBattlegroundQueue(BattlegroundQueueTypeId bgQueueTypeId) { return m_BattlegroundQueues[bgQueueTypeId]; }
         void ScheduleQueueUpdate(uint32 arenaMatchmakerRating, uint8 arenaType, BattlegroundQueueTypeId bgQueueTypeId, BattlegroundTypeId bgTypeId, BattlegroundBracketId bracket_id);

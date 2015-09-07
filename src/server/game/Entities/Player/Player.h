@@ -111,7 +111,14 @@ struct PlayerTalent
     PlayerSpellState state : 8;
     uint8 spec             : 8;
 };
-
+/*
+struct ChallengeData 
+{
+	GroupQueueInfo *ginfo;
+	Battleground   *bg;
+	BGQueueRemoveEvent *removeEvent;
+};
+*/
 // Spell modifier (used for modify other spells)
 struct SpellModifier
 {
@@ -2369,7 +2376,7 @@ class Player : public Unit, public GridObject<Player>
 #ifdef PRESETS
         PresetMapType presetMap; // presetMap[presetId] = presetData
 #endif
-
+		//ChallengeData *challengeData;
     protected:
         // Gamemaster whisper whitelist
         GuidList WhisperList;
