@@ -65,7 +65,6 @@
 #include "WaypointMovementGenerator.h"
 #include "WeatherMgr.h"
 #include "WorldSession.h"
-#include "../../../src/server/scripts/Custom/TemplateNPC/TemplateNPC.h"
 #ifdef ELUNA
 #include "LuaEngine.h"
 #endif
@@ -1954,25 +1953,6 @@ void World::SetInitialWorldSettings()
 
     LoadCharacterNameData();
 
-	// Load templates for Template NPC #1
-	TC_LOG_INFO("server.loading", "Loading Template Talents...");
-	sTemplateNpcMgr->LoadTalentsContainer();
-
-	// Load templates for Template NPC #2
-	TC_LOG_INFO("server.loading", "Loading Template Glyphs...");
-	sTemplateNpcMgr->LoadGlyphsContainer();
-
-	// Load templates for Template NPC #3
-	TC_LOG_INFO("server.loading", "Loading Template Gear for Humans...");
-	sTemplateNpcMgr->LoadHumanGearContainer();
-
-	// Load templates for Template NPC #4
-	TC_LOG_INFO("server.loading", "Loading Template Gear for Alliances...");
-	sTemplateNpcMgr->LoadAllianceGearContainer();
-
-	// Load templates for Template NPC #5
-	TC_LOG_INFO("server.loading", "Loading Template Gear for Hordes...");
-	sTemplateNpcMgr->LoadHordeGearContainer();
 
 #ifdef ELUNA
     ///- Run eluna scripts.
