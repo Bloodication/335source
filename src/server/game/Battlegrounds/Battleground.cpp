@@ -1874,10 +1874,7 @@ uint8 Battleground::GetUniqueBracketId() const
 uint8 Battleground::ClickFastStart(Player *player, GameObject *go)
 {
 	if (!isArena())
-	{
-		player->GetSession()->SendAreaTriggerMessage("You can't do this while not in arena.");
 		return 0;
-	}
 
 	std::set<uint64>::iterator pIt = m_playersWantsFastStart.find(player->GetGUID());
 	if (pIt != m_playersWantsFastStart.end() || GetStartDelayTime() < BG_START_DELAY_15S)
@@ -1890,7 +1887,6 @@ uint8 Battleground::ClickFastStart(Player *player, GameObject *go)
 		m_crystals.insert(go);
 
 	uint8 playersNeeded = 0;
-
 	switch (GetArenaType())
 	{
 	case ARENA_TYPE_2v2:
@@ -1904,8 +1900,6 @@ uint8 Battleground::ClickFastStart(Player *player, GameObject *go)
 		break;
 	}
 
-	if (IsChallenge())
-		playersNeeded = 2;
 
 	if (m_playersWantsFastStart.size() == playersNeeded)
 	{
@@ -1920,11 +1914,9 @@ void Battleground::DespawnCrystals()
 {
 	if (m_crystals.empty())
 		return;
-
-	/*for (std::set<GameObject*>::iterator itr = m_crystals.begin(); itr != m_crystals.end(); ++itr)
+	/*
+	for (std::set<GameObject*>::iterator itr = m_crystals.begin(); itr != m_crystals.end(); itr)
 	{
-	GameObject *go = *itr;
-	go->Delete();
-	m_crystals.erase(itr);
+
 	}*/
 }

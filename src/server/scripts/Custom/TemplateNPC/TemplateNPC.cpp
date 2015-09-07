@@ -1,5 +1,4 @@
 #include "TemplateNPC.h"
-#define sTemplateNpcMgr sTemplateNPC::instance()
 
 void sTemplateNPC::LearnPlateMailSpells(Player* player)
 {
@@ -85,7 +84,6 @@ void sTemplateNPC::EquipTemplateGear(Player* player)
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), SOCK_ENCHANTMENT_SLOT_3, (*itr)->socket3);
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), BONUS_ENCHANTMENT_SLOT, (*itr)->bonusEnchant);
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), PRISMATIC_ENCHANTMENT_SLOT, (*itr)->prismaticEnchant);
-
 			}
 		}
 	}
@@ -102,7 +100,6 @@ void sTemplateNPC::EquipTemplateGear(Player* player)
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), SOCK_ENCHANTMENT_SLOT_3, (*itr)->socket3);
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), BONUS_ENCHANTMENT_SLOT, (*itr)->bonusEnchant);
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), PRISMATIC_ENCHANTMENT_SLOT, (*itr)->prismaticEnchant);
-
 			}
 		}
 	}
@@ -119,7 +116,6 @@ void sTemplateNPC::EquipTemplateGear(Player* player)
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), SOCK_ENCHANTMENT_SLOT_3, (*itr)->socket3);
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), BONUS_ENCHANTMENT_SLOT, (*itr)->bonusEnchant);
 				ApplyBonus(player, player->GetItemByPos(INVENTORY_SLOT_BAG_0, (*itr)->pos), PRISMATIC_ENCHANTMENT_SLOT, (*itr)->prismaticEnchant);
-
 			}
 		}
 	}
@@ -145,18 +141,17 @@ void sTemplateNPC::LoadTalentsContainer()
 
 	do
 	{
-		Field* fields = result->Fetch(); 
+		Field* fields = result->Fetch();
 
 		TalentTemplate* pTalent = new TalentTemplate;
 
 		pTalent->playerClass = fields[0].GetString();
 		pTalent->playerSpec = fields[1].GetString();
-		pTalent->talentId = fields[2].GetUInt32(); 
+		pTalent->talentId = fields[2].GetUInt32();
 
 		m_TalentContainer.push_back(pTalent);
 		++count;
-	}
-	while (result->NextRow());
+	} while (result->NextRow());
 	TC_LOG_INFO("server.worldserver", ">> Loaded %u talent templates in %u ms.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
@@ -164,6 +159,8 @@ void sTemplateNPC::LoadGlyphsContainer()
 {
 	for (GlyphContainer::const_iterator itr = m_GlyphContainer.begin(); itr != m_GlyphContainer.end(); ++itr)
 		delete *itr;
+
+	m_GlyphContainer.clear();
 
 	QueryResult result = CharacterDatabase.PQuery("SELECT playerClass, playerSpec, slot, glyph FROM template_npc_glyphs;");
 
@@ -173,7 +170,6 @@ void sTemplateNPC::LoadGlyphsContainer()
 	if (!result)
 	{
 		TC_LOG_INFO("server.worldserver", ">> Loaded 0 glyph templates. DB table `template_npc_glyphs` is empty!");
-		
 		return;
 	}
 
@@ -190,16 +186,16 @@ void sTemplateNPC::LoadGlyphsContainer()
 
 		m_GlyphContainer.push_back(pGlyph);
 		++count;
-	}
-	while (result->NextRow());
+	} while (result->NextRow());
 	TC_LOG_INFO("server.worldserver", ">> Loaded %u glyph templates in %u ms.", count, GetMSTimeDiffToNow(oldMSTime));
-	
 }
 
 void sTemplateNPC::LoadHumanGearContainer()
 {
 	for (HumanGearContainer::const_iterator itr = m_HumanGearContainer.begin(); itr != m_HumanGearContainer.end(); ++itr)
 		delete *itr;
+
+	m_HumanGearContainer.clear();
 
 	QueryResult result = CharacterDatabase.PQuery("SELECT playerClass, playerSpec, pos, itemEntry, enchant, socket1, socket2, socket3, bonusEnchant, prismaticEnchant FROM template_npc_human;");
 
@@ -231,8 +227,7 @@ void sTemplateNPC::LoadHumanGearContainer()
 
 		m_HumanGearContainer.push_back(pItem);
 		++count;
-	}
-	while (result->NextRow());
+	} while (result->NextRow());
 	TC_LOG_INFO("server.worldserver", ">> Loaded %u gear templates for Humans in %u ms.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
@@ -240,6 +235,8 @@ void sTemplateNPC::LoadAllianceGearContainer()
 {
 	for (AllianceGearContainer::const_iterator itr = m_AllianceGearContainer.begin(); itr != m_AllianceGearContainer.end(); ++itr)
 		delete *itr;
+
+	m_AllianceGearContainer.clear();
 
 	QueryResult result = CharacterDatabase.PQuery("SELECT playerClass, playerSpec, pos, itemEntry, enchant, socket1, socket2, socket3, bonusEnchant, prismaticEnchant FROM template_npc_alliance;");
 
@@ -271,8 +268,7 @@ void sTemplateNPC::LoadAllianceGearContainer()
 
 		m_AllianceGearContainer.push_back(pItem);
 		++count;
-	}
-	while (result->NextRow());
+	} while (result->NextRow());
 	TC_LOG_INFO("server.worldserver", ">> Loaded %u gear templates for Alliances in %u ms.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
@@ -280,6 +276,8 @@ void sTemplateNPC::LoadHordeGearContainer()
 {
 	for (HordeGearContainer::const_iterator itr = m_HordeGearContainer.begin(); itr != m_HordeGearContainer.end(); ++itr)
 		delete *itr;
+
+	m_HordeGearContainer.clear();
 
 	QueryResult result = CharacterDatabase.PQuery("SELECT playerClass, playerSpec, pos, itemEntry, enchant, socket1, socket2, socket3, bonusEnchant, prismaticEnchant FROM template_npc_horde;");
 
@@ -311,8 +309,7 @@ void sTemplateNPC::LoadHordeGearContainer()
 
 		m_HordeGearContainer.push_back(pItem);
 		++count;
-	}
-	while (result->NextRow());
+	} while (result->NextRow());
 	TC_LOG_INFO("server.worldserver", ">> Loaded %u gear templates for Hordes in %u ms.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
@@ -320,40 +317,20 @@ std::string sTemplateNPC::GetClassString(Player* player)
 {
 	switch (player->getClass())
 	{
-	case CLASS_PRIEST:
-		return "Priest";
-		break;
-	case CLASS_PALADIN:
-		return "Paladin";
-		break;
-	case CLASS_WARRIOR:
-		return "Warrior";
-		break;
-	case CLASS_MAGE:
-		return "Mage";
-		break;
-	case CLASS_WARLOCK:
-		return "Warlock";
-		break;
-	case CLASS_SHAMAN:
-		return "Shaman";
-		break;
-	case CLASS_DRUID:
-		return "Druid";
-		break;
-	case CLASS_HUNTER:
-		return "Hunter";
-		break;
-	case CLASS_ROGUE:
-		return "Rogue";
-		break;
-	case CLASS_DEATH_KNIGHT:
-		return "DeathKnight";
-		break;
+	case CLASS_PRIEST:       return "Priest";      break;
+	case CLASS_PALADIN:      return "Paladin";     break;
+	case CLASS_WARRIOR:      return "Warrior";     break;
+	case CLASS_MAGE:         return "Mage";        break;
+	case CLASS_WARLOCK:      return "Warlock";     break;
+	case CLASS_SHAMAN:       return "Shaman";      break;
+	case CLASS_DRUID:        return "Druid";       break;
+	case CLASS_HUNTER:       return "Hunter";      break;
+	case CLASS_ROGUE:        return "Rogue";       break;
+	case CLASS_DEATH_KNIGHT: return "DeathKnight"; break;
 	default:
 		break;
 	}
-	return ""; // Fix warning, this should never happen
+	return "Unknown"; // Fix warning, this should never happen
 }
 
 bool sTemplateNPC::OverwriteTemplate(Player* player, std::string& playerSpecStr)
@@ -395,21 +372,21 @@ void sTemplateNPC::ExtractGearTemplateToDB(Player* player, std::string& playerSp
 			if (player->getRace() == RACE_HUMAN)
 			{
 				CharacterDatabase.PExecute("INSERT INTO template_npc_human (`playerClass`, `playerSpec`, `pos`, `itemEntry`, `enchant`, `socket1`, `socket2`, `socket3`, `bonusEnchant`, `prismaticEnchant`) VALUES ('%s', '%s', '%u', '%u', '%u', '%u', '%u', '%u', '%u', '%u');"
-					, GetClassString(player).c_str(), playerSpecStr.c_str(), equippedItem->GetSlot(), equippedItem->GetEntry(), equippedItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT), 
+					, GetClassString(player).c_str(), playerSpecStr.c_str(), equippedItem->GetSlot(), equippedItem->GetEntry(), equippedItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT),
 					equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT), equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT_2), equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT_3),
 					equippedItem->GetEnchantmentId(BONUS_ENCHANTMENT_SLOT), equippedItem->GetEnchantmentId(PRISMATIC_ENCHANTMENT_SLOT));
 			}
 			else if (player->GetTeam() == ALLIANCE && player->getRace() != RACE_HUMAN)
 			{
 				CharacterDatabase.PExecute("INSERT INTO template_npc_alliance (`playerClass`, `playerSpec`, `pos`, `itemEntry`, `enchant`, `socket1`, `socket2`, `socket3`, `bonusEnchant`, `prismaticEnchant`) VALUES ('%s', '%s', '%u', '%u', '%u', '%u', '%u', '%u', '%u', '%u');"
-					, GetClassString(player).c_str(), playerSpecStr.c_str(), equippedItem->GetSlot(), equippedItem->GetEntry(), equippedItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT), 
+					, GetClassString(player).c_str(), playerSpecStr.c_str(), equippedItem->GetSlot(), equippedItem->GetEntry(), equippedItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT),
 					equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT), equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT_2), equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT_3),
 					equippedItem->GetEnchantmentId(BONUS_ENCHANTMENT_SLOT), equippedItem->GetEnchantmentId(PRISMATIC_ENCHANTMENT_SLOT));
 			}
 			else if (player->GetTeam() == HORDE)
 			{
 				CharacterDatabase.PExecute("INSERT INTO template_npc_horde (`playerClass`, `playerSpec`, `pos`, `itemEntry`, `enchant`, `socket1`, `socket2`, `socket3`, `bonusEnchant`, `prismaticEnchant`) VALUES ('%s', '%s', '%u', '%u', '%u', '%u', '%u', '%u', '%u', '%u');"
-					, GetClassString(player).c_str(), playerSpecStr.c_str(), equippedItem->GetSlot(), equippedItem->GetEntry(), equippedItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT), 
+					, GetClassString(player).c_str(), playerSpecStr.c_str(), equippedItem->GetSlot(), equippedItem->GetEntry(), equippedItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT),
 					equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT), equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT_2), equippedItem->GetEnchantmentId(SOCK_ENCHANTMENT_SLOT_3),
 					equippedItem->GetEnchantmentId(BONUS_ENCHANTMENT_SLOT), equippedItem->GetEnchantmentId(PRISMATIC_ENCHANTMENT_SLOT));
 			}
@@ -435,13 +412,12 @@ void sTemplateNPC::ExtractTalentTemplateToDB(Player* player, std::string& player
 	{
 		do
 		{
-			Field* fields = result->Fetch(); 
+			Field* fields = result->Fetch();
 			uint32 spell = fields[0].GetUInt32();
 
 			CharacterDatabase.PExecute("INSERT INTO template_npc_talents (playerClass, playerSpec, talentId) "
 				"VALUES ('%s', '%s', '%u');", GetClassString(player).c_str(), playerSpecStr.c_str(), spell);
-		}
-		while (result->NextRow());
+		} while (result->NextRow());
 	}
 }
 
@@ -453,7 +429,7 @@ void sTemplateNPC::ExtractGlyphsTemplateToDB(Player* player, std::string& player
 	for (uint8 slot = 0; slot < MAX_GLYPH_SLOT_INDEX; ++slot)
 	{
 		if (!result)
-		{ 
+		{
 			player->GetSession()->SendAreaTriggerMessage("Get glyphs and re-extract the template!");
 			continue;
 		}
@@ -535,93 +511,93 @@ public:
 	{
 		static ChatCommand createDeathKnightItemSetTable[] =
 		{
-			{ "blood",             SEC_ADMINISTRATOR,         false,          &HandleCreateDeathKnightBloodItemSetCommand,       "", NULL },
-			{ "frost",             SEC_ADMINISTRATOR,         false,          &HandleCreateDeathKnightFrostItemSetCommand,       "", NULL },
-			{ "unholy",            SEC_ADMINISTRATOR,         false,          &HandleCreateDeathKnightUnholyItemSetCommand,      "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "blood", SEC_ADMINISTRATOR, false, &HandleCreateDeathKnightBloodItemSetCommand, "", NULL },
+			{ "frost", SEC_ADMINISTRATOR, false, &HandleCreateDeathKnightFrostItemSetCommand, "", NULL },
+			{ "unholy", SEC_ADMINISTRATOR, false, &HandleCreateDeathKnightUnholyItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createRogueItemSetTable[] =
 		{
-			{ "assassination",     SEC_ADMINISTRATOR,         false,          &HandleCreateRogueAssassinationItemSetCommand,     "", NULL },
-			{ "combat",            SEC_ADMINISTRATOR,         false,          &HandleCreateRogueCombatItemSetCommand,            "", NULL },
-			{ "subtlety",          SEC_ADMINISTRATOR,         false,          &HandleCreateRogueSubtletyItemSetCommand,          "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "assassination", SEC_ADMINISTRATOR, false, &HandleCreateRogueAssassinationItemSetCommand, "", NULL },
+			{ "combat", SEC_ADMINISTRATOR, false, &HandleCreateRogueCombatItemSetCommand, "", NULL },
+			{ "subtlety", SEC_ADMINISTRATOR, false, &HandleCreateRogueSubtletyItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createHunterItemSetTable[] =
 		{
-			{ "marksmanship",      SEC_ADMINISTRATOR,         false,          &HandleCreateHunterMarksmanshipItemSetCommand,     "", NULL },
-			{ "beastmastery",      SEC_ADMINISTRATOR,         false,          &HandleCreateHunterBeastmasteryItemSetCommand,     "", NULL },
-			{ "survival",          SEC_ADMINISTRATOR,         false,          &HandleCreateHunterSurvivalItemSetCommand,         "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "marksmanship", SEC_ADMINISTRATOR, false, &HandleCreateHunterMarksmanshipItemSetCommand, "", NULL },
+			{ "beastmastery", SEC_ADMINISTRATOR, false, &HandleCreateHunterBeastmasteryItemSetCommand, "", NULL },
+			{ "survival", SEC_ADMINISTRATOR, false, &HandleCreateHunterSurvivalItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createDruidItemSetTable[] =
 		{
-			{ "ballance",          SEC_ADMINISTRATOR,         false,          &HandleCreateDruidBallanceItemSetCommand,          "", NULL },
-			{ "feral",             SEC_ADMINISTRATOR,         false,          &HandleCreateDruidFeralItemSetCommand,             "", NULL },
-			{ "restoration",       SEC_ADMINISTRATOR,         false,          &HandleCreateDruidRestorationItemSetCommand,       "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "ballance", SEC_ADMINISTRATOR, false, &HandleCreateDruidBallanceItemSetCommand, "", NULL },
+			{ "feral", SEC_ADMINISTRATOR, false, &HandleCreateDruidFeralItemSetCommand, "", NULL },
+			{ "restoration", SEC_ADMINISTRATOR, false, &HandleCreateDruidRestorationItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createShamanItemSetTable[] =
 		{
-			{ "elemental",         SEC_ADMINISTRATOR,         false,          &HandleCreateShamanElementalItemSetCommand,        "", NULL },
-			{ "enhancement",       SEC_ADMINISTRATOR,         false,          &HandleCreateShamanEnhancementItemSetCommand,      "", NULL },
-			{ "restoration",       SEC_ADMINISTRATOR,         false,          &HandleCreateShamanRestorationItemSetCommand,      "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "elemental", SEC_ADMINISTRATOR, false, &HandleCreateShamanElementalItemSetCommand, "", NULL },
+			{ "enhancement", SEC_ADMINISTRATOR, false, &HandleCreateShamanEnhancementItemSetCommand, "", NULL },
+			{ "restoration", SEC_ADMINISTRATOR, false, &HandleCreateShamanRestorationItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createWarlockItemSetTable[] =
 		{
-			{ "affliction",        SEC_ADMINISTRATOR,         false,          &HandleCreateWarlockAfflictionItemSetCommand,      "", NULL },
-			{ "demonology",        SEC_ADMINISTRATOR,         false,          &HandleCreateWarlockDemonologyItemSetCommand,      "", NULL },
-			{ "destruction",       SEC_ADMINISTRATOR,         false,          &HandleCreateWarlockDestructionItemSetCommand,     "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "affliction", SEC_ADMINISTRATOR, false, &HandleCreateWarlockAfflictionItemSetCommand, "", NULL },
+			{ "demonology", SEC_ADMINISTRATOR, false, &HandleCreateWarlockDemonologyItemSetCommand, "", NULL },
+			{ "destruction", SEC_ADMINISTRATOR, false, &HandleCreateWarlockDestructionItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createMageItemSetTable[] =
 		{
-			{ "frost",             SEC_ADMINISTRATOR,         false,          &HandleCreateMageFrostItemSetCommand,              "", NULL },
-			{ "fire",              SEC_ADMINISTRATOR,         false,          &HandleCreateMageFireItemSetCommand,               "", NULL },
-			{ "arcane",            SEC_ADMINISTRATOR,         false,          &HandleCreateMageArcaneItemSetCommand,             "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "frost", SEC_ADMINISTRATOR, false, &HandleCreateMageFrostItemSetCommand, "", NULL },
+			{ "fire", SEC_ADMINISTRATOR, false, &HandleCreateMageFireItemSetCommand, "", NULL },
+			{ "arcane", SEC_ADMINISTRATOR, false, &HandleCreateMageArcaneItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createWarriorItemSetTable[] =
 		{
-			{ "arms",              SEC_ADMINISTRATOR,         false,          &HandleCreateWarriorArmsItemSetCommand,            "", NULL },
-			{ "fury",              SEC_ADMINISTRATOR,         false,          &HandleCreateWarriorFuryItemSetCommand,            "", NULL },
-			{ "protection",        SEC_ADMINISTRATOR,         false,          &HandleCreateWarriorProtectionItemSetCommand,      "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "arms", SEC_ADMINISTRATOR, false, &HandleCreateWarriorArmsItemSetCommand, "", NULL },
+			{ "fury", SEC_ADMINISTRATOR, false, &HandleCreateWarriorFuryItemSetCommand, "", NULL },
+			{ "protection", SEC_ADMINISTRATOR, false, &HandleCreateWarriorProtectionItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createPaladinItemSetTable[] =
 		{
-			{ "holy",              SEC_ADMINISTRATOR,         false,          &HandleCreatePaladinHolyItemSetCommand,            "", NULL },
-			{ "protection",        SEC_ADMINISTRATOR,         false,          &HandleCreatePaladinProtectionItemSetCommand,      "", NULL },
-			{ "retribution",       SEC_ADMINISTRATOR,         false,          &HandleCreatePaladinRetributionItemSetCommand,     "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "holy", SEC_ADMINISTRATOR, false, &HandleCreatePaladinHolyItemSetCommand, "", NULL },
+			{ "protection", SEC_ADMINISTRATOR, false, &HandleCreatePaladinProtectionItemSetCommand, "", NULL },
+			{ "retribution", SEC_ADMINISTRATOR, false, &HandleCreatePaladinRetributionItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 
 		static ChatCommand createPriestItemSetTable[] =
 		{
-			{ "discipline",        SEC_ADMINISTRATOR,         false,          &HandleCreatePriestDisciplineItemSetCommand,       "", NULL },
-			{ "shadow",            SEC_ADMINISTRATOR,         false,          &HandleCreatePriestShadowItemSetCommand,           "", NULL },
-			{ "holy",              SEC_ADMINISTRATOR,         false,          &HandleCreatePriestHolyItemSetCommand,             "", NULL },
-			{ NULL,                0,                         false,          NULL,                                              "", NULL }
+			{ "discipline", SEC_ADMINISTRATOR, false, &HandleCreatePriestDisciplineItemSetCommand, "", NULL },
+			{ "shadow", SEC_ADMINISTRATOR, false, &HandleCreatePriestShadowItemSetCommand, "", NULL },
+			{ "holy", SEC_ADMINISTRATOR, false, &HandleCreatePriestHolyItemSetCommand, "", NULL },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand createItemSetCommandTable[] =
 		{
-			{ "priest",            SEC_ADMINISTRATOR,          true,            NULL,         "", createPriestItemSetTable },
-			{ "paladin",           SEC_ADMINISTRATOR,          true,            NULL,         "", createPaladinItemSetTable },
-			{ "warrior",           SEC_ADMINISTRATOR,          true,            NULL,         "", createWarriorItemSetTable },
-			{ "mage",              SEC_ADMINISTRATOR,          true,            NULL,         "", createMageItemSetTable },
-			{ "warlock",           SEC_ADMINISTRATOR,          true,            NULL,         "", createWarlockItemSetTable },
-			{ "shaman",            SEC_ADMINISTRATOR,          true,            NULL,         "", createShamanItemSetTable },
-			{ "druid",             SEC_ADMINISTRATOR,          true,            NULL,         "", createDruidItemSetTable },
-			{ "hunter",            SEC_ADMINISTRATOR,          true,            NULL,         "", createHunterItemSetTable },
-			{ "rogue",             SEC_ADMINISTRATOR,          true,            NULL,         "", createRogueItemSetTable },
-			{ "deathknight",       SEC_ADMINISTRATOR,          true,            NULL,         "", createDeathKnightItemSetTable },
-			{ NULL,                0,                          false,           NULL,         "", NULL }
+			{ "priest", SEC_ADMINISTRATOR, true, NULL, "", createPriestItemSetTable },
+			{ "paladin", SEC_ADMINISTRATOR, true, NULL, "", createPaladinItemSetTable },
+			{ "warrior", SEC_ADMINISTRATOR, true, NULL, "", createWarriorItemSetTable },
+			{ "mage", SEC_ADMINISTRATOR, true, NULL, "", createMageItemSetTable },
+			{ "warlock", SEC_ADMINISTRATOR, true, NULL, "", createWarlockItemSetTable },
+			{ "shaman", SEC_ADMINISTRATOR, true, NULL, "", createShamanItemSetTable },
+			{ "druid", SEC_ADMINISTRATOR, true, NULL, "", createDruidItemSetTable },
+			{ "hunter", SEC_ADMINISTRATOR, true, NULL, "", createHunterItemSetTable },
+			{ "rogue", SEC_ADMINISTRATOR, true, NULL, "", createRogueItemSetTable },
+			{ "deathknight", SEC_ADMINISTRATOR, true, NULL, "", createDeathKnightItemSetTable },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		static ChatCommand commandTable[] =
 		{
-			{ "create",            SEC_ADMINISTRATOR,         true, NULL,                 "", createItemSetCommandTable },
-			{ NULL,                0,                         false, NULL,                "", NULL }
+			{ "create", SEC_ADMINISTRATOR, true, NULL, "", createItemSetCommandTable },
+			{ NULL, 0, false, NULL, "", NULL }
 		};
 		return commandTable;
 	}
@@ -1178,75 +1154,75 @@ public:
 		switch (player->getClass())
 		{
 		case CLASS_PRIEST:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_penance:30|t|r Use Discipline Spec", GOSSIP_SENDER_MAIN, 0);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_surgeoflight:30|t|r Use Holy Spec", GOSSIP_SENDER_MAIN, 1);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_shadow_psychichorrors:30|t|r Use Shadow Spec", GOSSIP_SENDER_MAIN, 2);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_wordfortitude:30|t|r Use Discipline Spec", GOSSIP_SENDER_MAIN, 0);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_holybolt:30|t|r Use Holy Spec", GOSSIP_SENDER_MAIN, 1);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_shadow_shadowwordpain:30|t|r Use Shadow Spec", GOSSIP_SENDER_MAIN, 2);
+		}
+		break;
 		case CLASS_PALADIN:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_searinglight:30|t|r Use Holy Spec", GOSSIP_SENDER_MAIN, 3);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_blessingofprotection:30|t|r Use Protection Spec", GOSSIP_SENDER_MAIN, 4);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_paladin_divinestorm:30|t|r Use Retribution Spec", GOSSIP_SENDER_MAIN, 5);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_holybolt:30|t|r Use Holy Spec", GOSSIP_SENDER_MAIN, 3);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_devotionaura:30|t|r Use Protection Spec", GOSSIP_SENDER_MAIN, 4);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_auraoflight:30|t|r Use Retribution Spec", GOSSIP_SENDER_MAIN, 5);
+		}
+		break;
 		case CLASS_WARRIOR:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_warrior_titansgrip:30|t|r Use Fury Spec", GOSSIP_SENDER_MAIN, 6);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_warrior_bladestorm:30|t|r Use Arms Spec", GOSSIP_SENDER_MAIN, 7);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_warrior_shieldreflection:30|t|r Use Protection Spec", GOSSIP_SENDER_MAIN, 8);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_warrior_innerrage:30|t|r Use Fury Spec", GOSSIP_SENDER_MAIN, 6);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_eviscerate:30|t|r Use Arms Spec", GOSSIP_SENDER_MAIN, 7);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_warrior_defensivestance:30|t|r Use Protection Spec", GOSSIP_SENDER_MAIN, 8);
+		}
+		break;
 		case CLASS_MAGE:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_mage_arcanebarrage:30|t|r Use Arcane Spec", GOSSIP_SENDER_MAIN, 9);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_mage_livingbomb:30|t|r Use Fire Spec", GOSSIP_SENDER_MAIN, 10);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_mage_deepfreeze:30|t|r Use Frost Spec", GOSSIP_SENDER_MAIN, 11);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_holy_magicalsentry:30|t|r Use Arcane Spec", GOSSIP_SENDER_MAIN, 9);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_fire_flamebolt:30|t|r Use Fire Spec", GOSSIP_SENDER_MAIN, 10);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_frost_frostbolt02:30|t|r Use Frost Spec", GOSSIP_SENDER_MAIN, 11);
+		}
+		break;
 		case CLASS_WARLOCK:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_warlock_haunt:30|t|r Use Affliction Spec", GOSSIP_SENDER_MAIN, 12);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_shadow_demonform:30|t|r Use Demonology Spec", GOSSIP_SENDER_MAIN, 13);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_warlock_chaosbolt:30|t|r Use Destruction Spec", GOSSIP_SENDER_MAIN, 14);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_shadow_deathcoil:30|t|r Use Affliction Spec", GOSSIP_SENDER_MAIN, 12);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_shadow_metamorphosis:30|t|r Use Demonology Spec", GOSSIP_SENDER_MAIN, 13);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_shadow_rainoffire:30|t|r Use Destruction Spec", GOSSIP_SENDER_MAIN, 14);
+		}
+		break;
 		case CLASS_SHAMAN:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_shaman_thunderstorm:30|t|r Use Elemental Spec", GOSSIP_SENDER_MAIN, 15);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_shaman_feralspirit:30|t|r Use Enhancement Spec", GOSSIP_SENDER_MAIN, 16);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_nature_healingwavelesser:30|t|r Use Restoration Spec", GOSSIP_SENDER_MAIN, 17);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_nature_lightning:30|t|r Use Elemental Spec", GOSSIP_SENDER_MAIN, 15);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_nature_lightningshield:30|t|r Use Enhancement Spec", GOSSIP_SENDER_MAIN, 16);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_nature_magicimmunity:30|t|r Use Restoration Spec", GOSSIP_SENDER_MAIN, 17);
+		}
+		break;
 		case CLASS_DRUID:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_arcane_starfire:30|t|r Use Ballance Spec", GOSSIP_SENDER_MAIN, 18);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_druid_berserk:30|t|r Use Feral Spec", GOSSIP_SENDER_MAIN, 19);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_druid_flourish:30|t|r Use Restoration Spec", GOSSIP_SENDER_MAIN, 20);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_nature_starfall:30|t|r Use Ballance Spec", GOSSIP_SENDER_MAIN, 18);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_racial_bearform:30|t|r Use Feral Spec", GOSSIP_SENDER_MAIN, 19);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_nature_healingtouch:30|t|r Use Restoration Spec", GOSSIP_SENDER_MAIN, 20);
+		}
+		break;
 		case CLASS_HUNTER:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_hunter_chimerashot2:30|t|r Use Markmanship Spec", GOSSIP_SENDER_MAIN, 21);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_hunter_animalhandler:30|t|r Use Beastmastery Spec", GOSSIP_SENDER_MAIN, 22);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_golemstormbolt:30|t|r Use Survival Spec", GOSSIP_SENDER_MAIN, 23);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_marksmanship:30|t|r Use Markmanship Spec", GOSSIP_SENDER_MAIN, 21);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_hunter_beasttaming:30|t|r Use Beastmastery Spec", GOSSIP_SENDER_MAIN, 22);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_Hunter_swiftstrike:30|t|r Use Survival Spec", GOSSIP_SENDER_MAIN, 23);
+		}
+		break;
 		case CLASS_ROGUE:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_disembowel:30|t|r Use Assasination Spec", GOSSIP_SENDER_MAIN, 24);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_murderspree:30|t|r Use Combat Spec", GOSSIP_SENDER_MAIN, 25);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_shadowdance:30|t|r Use Subtlety Spec", GOSSIP_SENDER_MAIN, 26);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_eviscerate:30|t|r Use Assasination Spec", GOSSIP_SENDER_MAIN, 24);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_backstab:30|t|r Use Combat Spec", GOSSIP_SENDER_MAIN, 25);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_stealth:30|t|r Use Subtlety Spec", GOSSIP_SENDER_MAIN, 26);
+		}
+		break;
 		case CLASS_DEATH_KNIGHT:
-			{
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_deathknight_butcher2:30|t|r Use Blood Spec", GOSSIP_SENDER_MAIN, 27);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_deathknight_empowerruneblade2:30|t|r Use Frost Spec", GOSSIP_SENDER_MAIN, 28);
-				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_hunter_pet_bat:30|t|r Use Unholy Spec", GOSSIP_SENDER_MAIN, 29);
-			}
-			break;
+		{
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_deathknight_bloodpresence:30|t|r Use Blood Spec", GOSSIP_SENDER_MAIN, 27);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_deathknight_frostpresence:30|t|r Use Frost Spec", GOSSIP_SENDER_MAIN, 28);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\spell_deathknight_unholypresence:30|t|r Use Unholy Spec", GOSSIP_SENDER_MAIN, 29);
+		}
+		break;
 		}
 		player->SEND_GOSSIP_MENU(60025, creature->GetGUID());
 		return true;

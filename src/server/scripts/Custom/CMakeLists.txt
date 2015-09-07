@@ -20,7 +20,7 @@ Custom/Transmog/Transmogrifier.cpp
 Custom/npc_arena1v1.cpp
 Custom/npc_arena1v1.h
 Custom/arena_crystal.cpp
-Custom/ArenaSpectator/arena_spectator.cpp
+Custom/Arenaspectator/arena_spectator.cpp
 Custom/teleporter_npc.cpp
 Custom/custom_rates.cpp
 Custom/TransmogDisplayVendor/TransmogDisplayVendorConf.h
@@ -37,6 +37,8 @@ Custom/Killstreak/script_killstreak_handling.cpp
 Custom/CustomFunStuff/cooldowns_crystal.cpp
 Custom/TemplateNPC/TemplateNPC.cpp
 Custom/TemplateNPC/TemplateNPC.h
+Custom/GuildHouses/guildmaster.cpp
+Custom/reset_onduel_end.cpp
 )
 
 message("  -> Prepared: Custom")

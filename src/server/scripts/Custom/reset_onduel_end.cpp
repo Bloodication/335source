@@ -1,7 +1,5 @@
 // quadral
 
-#include "ScriptPCH.h"
-
 class Reset_OnDuelEnd : public PlayerScript
 {
 public:
@@ -43,46 +41,6 @@ public:
 		plTarget->SetPower(POWER_RUNIC_POWER, 0);
 		//player->CastSpell(player, 46705, true);     // Honorless Target
 		//plTarget->CastSpell(plTarget, 46705, true); // Honorless Target
-	}
-
-	void OnDuelEnd(Player * pWinner, Player * pLooser, DuelCompleteType type)
-	{   
-		// Scrubs are not allowed to spam the announcer
-		if (type != DUEL_WON)
-			return;
-
-		pWinner->SetHealth(pWinner->GetMaxHealth());
-		pWinner->SetPower(POWER_MANA, pWinner->GetMaxPower(POWER_MANA));
-		pLooser->SetHealth(pLooser->GetMaxHealth());
-		pLooser->SetPower(POWER_MANA, pLooser->GetMaxPower(POWER_MANA));
-		sWorld->SendWorldText(12006, pWinner->GetName(), pLooser->GetName());
-		//
-		//// Scrubs are not allowed to farm players with low hp
-		//if (pLooser->GetHealth() <= 22500) // Low HP
-		//{
-		//	sLog->outError("Player %s is trying to wintrade duels against %s who is naked! CHECK!", pWinner->GetName(), pLooser->GetName());
-		//	ChatHandler(pWinner).PSendSysMessage("You have been reported to the staff for this farm attempt!");
-		//	return;
-		//}
-		//
-		//if (pWinner->GetSession()->GetRemoteAddress() == pLooser->GetSession()->GetRemoteAddress())
-		//{
-		//	if (pWinner->GetSession()->GetSecurity() >= 2 || pLooser->GetSession()->GetSecurity() >= 2)
-		//	{
-		//		ChatHandler(pLooser).PSendSysMessage("You just lose against your alternative player. This is farm attempt but you won't be kicked because you're a GM.");
-		//		ChatHandler(pWinner).PSendSysMessage("You just won against your alternative player. This is farm attempt but you won't be kicked because you're a GM.");
-		//		return;
-		//	}
-		//	sWorld->SendWorldText(12007, pWinner->GetName(), pLooser->GetName());
-		//	sLog->outError("Player %s is trying to wintrade duels against his alternative player %s.", pWinner->GetName(), pLooser->GetName());
-		//	pWinner->GetSession()->KickPlayer();
-		//	return;
-		//}
-		//
-		// Custom Duel System
-		//ChatHandler(pLooser).PSendSysMessage("%s received Badge of Justice from this duel.", pWinner->GetName());
-		//ChatHandler(pWinner).PSendSysMessage("You received Badge of Justice from this duel.");
-		//pWinner->AddItem(29434, 1); // Add Badge of Justice
 	}
 };
 

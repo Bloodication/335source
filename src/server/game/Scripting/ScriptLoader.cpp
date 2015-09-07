@@ -1438,6 +1438,8 @@ void AddSC_script_killstreak_handling();
 void AddSC_script_killstreak_example();
 void AddSC_CooldownsCrystal();
 void AddSC_TemplateNPC();
+void AddSC_guildmaster();
+void AddSC_Reset();
 #endif
 
 void AddCustomScripts()
@@ -1463,5 +1465,7 @@ void AddCustomScripts()
 	AddSC_script_killstreak_example();
 	AddSC_CooldownsCrystal();
 	AddSC_TemplateNPC();
+	AddSC_guildmaster();
+	AddSC_Reset();
 #endif
 }
