@@ -10,7 +10,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- Dumping structure for table characters_dev.template_npc_alliance
 CREATE TABLE IF NOT EXISTS `template_npc_alliance` (
   `playerClass` varchar(50) NOT NULL,
   `playerSpec` varchar(50) NOT NULL,
@@ -24,7 +23,6 @@ CREATE TABLE IF NOT EXISTS `template_npc_alliance` (
   `prismaticEnchant` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Templates';
 
--- Dumping data for table characters_dev.template_npc_alliance: ~502 rows (approximately)
 /*!40000 ALTER TABLE `template_npc_alliance` DISABLE KEYS */;
 INSERT INTO `template_npc_alliance` (`playerClass`, `playerSpec`, `pos`, `itemEntry`, `enchant`, `socket1`, `socket2`, `socket3`, `bonusEnchant`, `prismaticEnchant`) VALUES
 	('Rogue', 'Assassination', 0, 41672, 3795, 3628, 3521, 0, 3314, 0),

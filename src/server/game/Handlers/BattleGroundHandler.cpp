@@ -34,7 +34,7 @@
 #include "Opcodes.h"
 #include "DisableMgr.h"
 #include "Group.h"
-#include "../../scripts/Custom/npc_arena1v1.h"
+#include "../../scripts/Custom/1V1/npc_arena1v1.h"
 
 void WorldSession::HandleBattlemasterHelloOpcode(WorldPacket& recvData)
 {

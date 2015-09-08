@@ -13,23 +13,22 @@
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
 #  ${sources_Custom}
-Custom/reset_onduel_end.cpp
 Custom/Transmog/Transmogrification.h
 Custom/Transmog/Transmogrification.cpp
 Custom/Transmog/Transmogrifier.cpp
-Custom/npc_arena1v1.cpp
-Custom/npc_arena1v1.h
-Custom/arena_crystal.cpp
+Custom/1v1/npc_arena1v1.cpp
+Custom/1v1/npc_arena1v1.h
+Custom/PVP/arena_crystal.cpp
 Custom/Arenaspectator/arena_spectator.cpp
-Custom/teleporter_npc.cpp
-Custom/custom_rates.cpp
+Custom/CustomFunStuff/teleporter_npc.cpp
+Custom//CustomRate/custom_rates.cpp
 Custom/TransmogDisplayVendor/TransmogDisplayVendorConf.h
 Custom/TransmogDisplayVendor/TransmogDisplayVendor.cpp
-Custom/arenaladder.cpp
-Custom/worldchat.cpp
-Custom/titles.cpp
-Custom/beastmaster.cpp
-Custom/enchanter.cpp
+Custom/PVP/arenaladder.cpp
+Custom/WorldChat/worldchat.cpp
+Custom/CustomFunStuff/titles.cpp
+Custom/CustomFunStuff/beastmaster.cpp
+Custom//CustomFunStuff/enchanter.cpp
 Custom/Killstreak/KillstreakManager.cpp
 Custom/Killstreak/KillstreakManager.h
 Custom/Killstreak/script_killstreak_example.cpp
@@ -38,7 +37,16 @@ Custom/CustomFunStuff/cooldowns_crystal.cpp
 Custom/TemplateNPC/TemplateNPC.cpp
 Custom/TemplateNPC/TemplateNPC.h
 Custom/GuildHouses/guildmaster.cpp
-Custom/reset_onduel_end.cpp
+Custom/CustomFunStuff/reset_onduel_end.cpp
+Custom/CustomFunStuff/announce_login.cpp
+Custom/CustomFunStuff/Bloodmoneyduels.cpp
+Custom/CustomFunStuff/Boss_Announcer.cpp
+Custom/CustomFunStuff/npc_morph.cpp
+Custom/CustomFunStuff/playertools.cpp
+Custom/CustomFunStuff/professions.cpp
+Custom/CustomFunStuff/Phased_duel.cpp
+Custom/CustomFunStuff/druidformhackfix.cpp
+
 )
 
 message("  -> Prepared: Custom")

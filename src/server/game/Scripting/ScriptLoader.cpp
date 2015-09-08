@@ -1420,56 +1420,85 @@ void AddBattlegroundScripts()
 #ifdef SCRIPTS
 /* This is where custom scripts' loading functions should be declared. */
 
-void AddSC_PWS_Transmogrification();
-void AddSC_CS_Transmogrification();
-void AddSC_npc_1v1arena();
-void AddSC_fast_arena_start();
-void AddSC_arena_spectator_script();
-void AddSC_Teleporter_NPC();
-void Add_SC_Custom_Rates();
-void AddSC_NPC_TransmogDisplayVendor();
-void AddSC_arenateamranks();
-void AddSC_cs_world_chat();
-void AddSC_TitleNpc();
-void AddSC_Beastmaster_NPC();
-void AddSC_npc_enchantment();
-void AddSC_Reset();
-void AddSC_script_killstreak_handling();
-void AddSC_script_killstreak_example();
-void AddSC_CooldownsCrystal();
-void AddSC_TemplateNPC();
-void AddSC_guildmaster();
-void AddSC_Reset();
-void AddSC_Security_Scripts();
-void AddSC_Beastmaster_NPC();
+// transmog
+void AddSC_PWS_Transmogrification(); // transmog
+void AddSC_CS_Transmogrification(); // transmog
+void AddSC_NPC_TransmogDisplayVendor(); // transmog
+
+
+// killstreak
+void AddSC_script_killstreak_handling(); // kill steak yep!
+void AddSC_script_killstreak_example();  // kill steak yep!
+
+
+// these are the pvp scripts
+void AddSC_TemplateNPC(); // template npc
+void AddSC_CooldownsCrystal(); // resets your cooldowns on click what!?!
+void AddSC_fast_arena_start(); // makes arena start faster
+void AddSC_arenateamranks(); // shows team rating
+void AddSC_npc_1v1arena(); // 1v1 
+void AddSC_arena_spectator_script(); // arena
+
+
+// These are the fun stuff scripts
+void AddSC_Beastmaster_NPC();  // this is a beastmaster script
+//void AddSC_announce_login(); // announce onlogin
+void AddSC_guildmaster(); // guildmaster
+void AddSC_TitleNpc(); // pvp titles
+void AddSC_Teleporter_NPC(); // world teleporter
+void AddSC_cs_world_chat(); // worldchat
+void Add_SC_Custom_Rates(); // custom rate 
+void AddSC_npc_enchantment(); // enchantments npc
+void AddSC_Reset();// duel reset
+void AddSC_morpher_npc(); // this will morph you
+void AddSC_PhasedDueling(); // this will phase you, so you cannot see objects or any other players nor can they see you
+void AddSC_Professions_NPC(); // instant proffesions hype!
+void AddSC_multi_changer(); // can change name, race and customize your looks!
+//void AddSC_DruidHax(); // fix c issue
+//void AddSC_npc_blood_money(); // win gold!
+//void AddSC_Boss_Announcer(); // announces world boss kill
 #endif
 
 void AddCustomScripts()
 {
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
+	// transmog
+	AddSC_PWS_Transmogrification(); // transmog
+	AddSC_CS_Transmogrification(); // transmog
+	AddSC_NPC_TransmogDisplayVendor(); // transmog
 
-    AddSC_PWS_Transmogrification();
-    AddSC_CS_Transmogrification();
-	AddSC_npc_1v1arena();
-	AddSC_fast_arena_start();
-	AddSC_arena_spectator_script();
-	AddSC_Teleporter_NPC();
-	Add_SC_Custom_Rates();
-	AddSC_NPC_TransmogDisplayVendor();
-	AddSC_arenateamranks();
-	AddSC_cs_world_chat();
-	AddSC_TitleNpc();
-	AddSC_Beastmaster_NPC();
-	AddSC_npc_enchantment();
-	AddSC_Reset();
-	AddSC_script_killstreak_handling();
-	AddSC_script_killstreak_example();
-	AddSC_CooldownsCrystal();
-	AddSC_TemplateNPC();
-	AddSC_guildmaster();
-	AddSC_Reset();
-	AddSC_Security_Scripts();
-	AddSC_Beastmaster_NPC();
+
+	// killstreak
+	AddSC_script_killstreak_handling(); // kill steak yep!
+	AddSC_script_killstreak_example(); // kill steak yep!
+
+
+	// these are the pvp scripts
+	AddSC_TemplateNPC(); // template npc
+	AddSC_CooldownsCrystal(); // resets your cooldowns on click what!?!
+	AddSC_fast_arena_start(); // makes arena start faster
+	AddSC_arenateamranks(); // shows team rating
+	AddSC_npc_1v1arena(); // 1v1
+	AddSC_arena_spectator_script(); // arenaspecatator
+
+
+	// These are the fun stuff scripts
+    AddSC_Beastmaster_NPC();  // this is a beastmaster script
+	//AddSC_announce_login(); // announce onlogin
+	AddSC_guildmaster(); // guildmaster
+	AddSC_TitleNpc(); // pvp titles
+    AddSC_Teleporter_NPC(); // world teleporter
+	AddSC_cs_world_chat(); // worldchat
+	Add_SC_Custom_Rates(); // custom rate 
+	AddSC_npc_enchantment(); // enchantments npc
+	AddSC_Reset();// duel reset
+	AddSC_morpher_npc(); // this will morph you
+	AddSC_PhasedDueling(); // this will phase you, so you cannot see objects or any other players nor can they see you
+	AddSC_Professions_NPC(); // instant proffesions hype!
+	AddSC_multi_changer(); // can change name, race and customize your looks!
+	//AddSC_DruidHax(); // fix c issue
+	//AddSC_npc_blood_money(); // win gold!
+	//AddSC_Boss_Announcer(); // announces world boss kill
 #endif
 }

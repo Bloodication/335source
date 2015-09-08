@@ -991,14 +991,14 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 
     m_playerLoading = false;
 
-    // Handle Login-Achievements (should be handled after loading)
-    _player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_ON_LOGIN, 1);
+	// Handle Login-Achievements (should be handled after loading)
+	_player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_ON_LOGIN, 1);
 
-    sScriptMgr->OnPlayerLogin(pCurrChar, firstLogin);
+	sScriptMgr->OnPlayerLogin(pCurrChar, firstLogin);
 
-    delete holder;
+	delete holder;
 	
-	if (pCurrChar->GetTeam() != pCurrChar->GetCFSTeam());		
+	//if (pCurrChar->GetTeam() != pCurrChar->GetCFSTeam());
 }
 
 void WorldSession::HandleSetFactionAtWar(WorldPacket& recvData)
