@@ -82,6 +82,7 @@ enum ArenaTeamTypes
 {
     ARENA_TEAM_2v2      = 2,
     ARENA_TEAM_3v3      = 3,
+	ARENA_TEAM_SOLO_3v3 = 4, // 3v3 soloqueue
 	ARENA_TEAM_5v5 = 1 // 1v1 Arena - 5v5 doesn't exist anymore
 };
 
@@ -123,6 +124,11 @@ class ArenaTeam
         void Disband(WorldSession* session);
         void Disband();
 
+		// arena solo 3v3 queue
+		void CreateTempForSolo3v3(Player* plr[], uint8 team);
+		uint32 GetAverageMMR();
+		void SaveToDBHelper();
+
         typedef std::list<ArenaTeamMember> MemberList;
 
         uint32 GetId() const              { return TeamId; }
@@ -134,7 +140,7 @@ class ArenaTeam
         const ArenaTeamStats& GetStats() const { return Stats; }
 
         uint32 GetRating() const          { return Stats.Rating; }
-        uint32 GetAverageMMR(Group* group) const;
+		uint32 GetAverageMMR(Group* group) const;
 
         void SetCaptain(ObjectGuid guid);
         bool SetName(std::string const& name);

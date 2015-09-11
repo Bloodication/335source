@@ -25,7 +25,9 @@
 #include "ArenaTeamMgr.h"
 #include "WorldSession.h"
 #include "Opcodes.h"
-
+#ifndef UNORDERED_MAP
+#define UNORDERED_MAP std::unordered_map
+#endif
 ArenaTeam::ArenaTeam()
     : TeamId(0), Type(0), TeamName(), CaptainGuid(), BackgroundColor(0), EmblemStyle(0), EmblemColor(0),
     BorderStyle(0), BorderColor(0)
@@ -85,7 +87,59 @@ bool ArenaTeam::Create(ObjectGuid captainGuid, uint8 type, std::string const& te
     TC_LOG_DEBUG("bg.arena", "New ArenaTeam created [Id: %u, Name: %s] [Type: %u] [Captain low GUID: %u]", GetId(), GetName().c_str(), GetType(), captainLowGuid);
     return true;
 }
+void ArenaTeam::CreateTempForSolo3v3(Player* plr[], uint8 team)
+{
+	// Generate new arena team id
+	TeamId = sArenaTeamMgr->GenerateTempArenaTeamId();
 
+	// Assign member variables
+	CaptainGuid = plr[0]->GetGUID();
+	Type = ARENA_TEAM_5v5;
+
+	std::stringstream ssTeamName;
+	ssTeamName << "Solo Team " << (team + 1);
+	TeamName = ssTeamName.str();
+
+	BackgroundColor = 0;
+	EmblemStyle = 0;
+	EmblemColor = 0;
+	BorderStyle = 0;
+	BorderColor = 0;
+
+	Stats.WeekGames = 0;
+	Stats.SeasonGames = 0;
+	Stats.Rating = 0;
+	Stats.WeekWins = 0;
+	Stats.SeasonWins = 0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById(plr[i]->GetArenaTeamId(GetSlotByType(ARENA_TEAM_5v5)));
+
+		if (!team)
+			continue;
+
+		ArenaTeamMember newMember;
+		for (MemberList::const_iterator itr = team->Members.begin(); itr != team->Members.end(); ++itr)
+		{
+			newMember = *itr;
+		}
+
+		Stats.WeekGames += team->Stats.WeekGames;
+		Stats.SeasonGames += team->Stats.SeasonGames;
+		Stats.Rating += team->GetRating();
+		Stats.WeekWins += team->Stats.WeekWins;
+		Stats.SeasonWins += team->Stats.SeasonWins;
+
+		Members.push_back(newMember);
+	}
+
+	Stats.WeekGames /= 3;
+	Stats.SeasonGames /= 3;
+	Stats.Rating /= 3;
+	Stats.WeekWins /= 3;
+	Stats.SeasonWins /= 3;
+}
 bool ArenaTeam::AddMember(ObjectGuid playerGuid)
 {
     std::string playerName;
@@ -268,7 +322,24 @@ bool ArenaTeam::LoadMembersFromDB(QueryResult result)
 
     return true;
 }
+uint32 ArenaTeam::GetAverageMMR()
+{
+	uint32 matchMakerRating = 0;
+	uint32 playerDivider = 0;
+	for (MemberList::const_iterator itr = Members.begin(); itr != Members.end(); ++itr)
+	{
+		matchMakerRating += itr->MatchMakerRating;
+		++playerDivider;
+	}
 
+	// x/0 = crash
+	if (playerDivider == 0)
+		playerDivider = 1;
+
+	matchMakerRating /= playerDivider;
+
+	return matchMakerRating;
+}
 bool ArenaTeam::SetName(std::string const& name)
 {
     if (TeamName == name || name.empty() || name.length() > 24 || sObjectMgr->IsReservedName(name) || !ObjectMgr::IsValidCharterName(name))
@@ -572,6 +643,7 @@ uint8 ArenaTeam::GetSlotByType(uint32 type)
     {
         case ARENA_TEAM_2v2: return 0;
         case ARENA_TEAM_3v3: return 1;
+		case ARENA_TEAM_SOLO_3v3:
         case ARENA_TEAM_5v5: return 2;
         default:
             break;
@@ -612,39 +684,38 @@ uint32 ArenaTeam::GetPoints(uint32 memberRating)
     else if (Type == ARENA_TEAM_3v3)
         points *= 0.88f;
 	else if (Type == ARENA_TEAM_5v5) // 1v1 Arena
-	 points *= sWorld->getFloatConfig(CONFIG_ARENA_1V1_ARENAPOINTS_MULTI);
+	 points *= sWorld->getFloatConfig(CONFIG_SOLO_3V3_ARENAPOINTS_MULTI);
 
     return (uint32) points;
 }
-
 uint32 ArenaTeam::GetAverageMMR(Group* group) const
 {
-    if (!group)
-        return 0;
+	if (!group)
+		return 0;
 
-    uint32 matchMakerRating = 0;
-    uint32 playerDivider = 0;
-    for (MemberList::const_iterator itr = Members.begin(); itr != Members.end(); ++itr)
-    {
-        // Skip if player is not online
-        if (!ObjectAccessor::FindConnectedPlayer(itr->Guid))
-            continue;
+	uint32 matchMakerRating = 0;
+	uint32 playerDivider = 0;
+	for (MemberList::const_iterator itr = Members.begin(); itr != Members.end(); ++itr)
+	{
+		// Skip if player is not online
+		if (!ObjectAccessor::FindConnectedPlayer(itr->Guid))
+			continue;
 
-        // Skip if player is not member of group
-        if (!group->IsMember(itr->Guid))
-            continue;
+		// Skip if player is not member of group
+		if (!group->IsMember(itr->Guid))
+			continue;
 
-        matchMakerRating += itr->MatchMakerRating;
-        ++playerDivider;
-    }
+		matchMakerRating += itr->MatchMakerRating;
+		++playerDivider;
+	}
 
-    // x/0 = crash
-    if (playerDivider == 0)
-        playerDivider = 1;
+	// x/0 = crash
+	if (playerDivider == 0)
+		playerDivider = 1;
 
-    matchMakerRating /= playerDivider;
+	matchMakerRating /= playerDivider;
 
-    return matchMakerRating;
+	return matchMakerRating;
 }
 
 float ArenaTeam::GetChanceAgainst(uint32 ownRating, uint32 opponentRating)
@@ -873,9 +944,94 @@ void ArenaTeam::UpdateArenaPointsHelper(std::map<uint32, uint32>& playerPoints)
             playerPoints[itr->Guid.GetCounter()] = pointsToAdd;
     }
 }
-
 void ArenaTeam::SaveToDB()
 {
+	// If not a temp arena team, just save this one (normal 2v2 and 3v3)
+	if (TeamId < 0xFFF00000)
+	{
+		SaveToDBHelper();
+		return;
+	}
+	// else it's a temp team, so we have to save the real one for each player
+
+	// Init some variables for speedup the programm
+	ArenaTeam* realTeams[3];
+	uint32 itrRealTeam = 0;
+	for (; itrRealTeam < 3; itrRealTeam++)
+		realTeams[itrRealTeam] = NULL;
+	itrRealTeam = 0;
+
+	uint32 oldRating = 0;
+
+	// First get the old average rating by looping through all members in temp team and add up the rating
+	for (MemberList::const_iterator itr = Members.begin(); itr != Members.end(); ++itr)
+	{
+		ArenaTeam* plrArenaTeam = NULL;
+
+		// Find real arena team for player
+		for (UNORDERED_MAP<uint32, ArenaTeam*>::iterator itrMgr = sArenaTeamMgr->GetArenaTeamMapBegin(); itrMgr != sArenaTeamMgr->GetArenaTeamMapEnd(); itrMgr++)
+		{
+			if (itrMgr->first < 0xFFF00000 && itrMgr->second->CaptainGuid == itr->Guid && itrMgr->second->Type == ARENA_TEAM_5v5)
+			{
+				plrArenaTeam = itrMgr->second; // found!
+				break;
+			}
+		}
+
+		if (!plrArenaTeam)
+			continue; // Not found? Maybe player has left the game and deleted it before the arena game ends.
+
+		ASSERT(itrRealTeam < 3);
+		realTeams[itrRealTeam++] = plrArenaTeam;
+
+		oldRating += plrArenaTeam->GetRating(); // add up all ratings from each player team
+	}
+
+	if (Members.size() > 0)
+		oldRating /= Members.size(); // Get average
+
+	int32 ratingModifier = GetRating() - oldRating; // GetRating() contains the new rating and oldRating is the old average rating
+
+	itrRealTeam = 0;
+
+	// Let's loop again through temp arena team and add the new rating
+	for (MemberList::const_iterator itr = Members.begin(); itr != Members.end(); ++itr)
+	{
+		ArenaTeam* plrArenaTeam = realTeams[itrRealTeam++];
+
+		if (!plrArenaTeam)
+			continue;
+
+		if (int32(plrArenaTeam->Stats.Rating) + ratingModifier < 0)
+			plrArenaTeam->Stats.Rating = 0;
+		else
+			plrArenaTeam->Stats.Rating += ratingModifier;
+
+		plrArenaTeam->Stats.SeasonGames = itr->SeasonGames;
+		plrArenaTeam->Stats.SeasonWins = itr->SeasonWins;
+		plrArenaTeam->Stats.WeekGames = itr->WeekGames;
+		plrArenaTeam->Stats.WeekWins = itr->WeekWins;
+
+		for (MemberList::iterator realMemberItr = plrArenaTeam->Members.begin(); realMemberItr != plrArenaTeam->Members.end(); ++realMemberItr)
+		{
+			if (realMemberItr->Guid == plrArenaTeam->GetCaptain())
+			{
+				realMemberItr->PersonalRating = itr->PersonalRating;
+				realMemberItr->MatchMakerRating = itr->MatchMakerRating;
+				realMemberItr->SeasonGames = itr->SeasonGames;
+				realMemberItr->SeasonWins = itr->SeasonWins;
+				realMemberItr->WeekGames = itr->WeekGames;
+				realMemberItr->WeekWins = itr->WeekWins;
+			}
+		}
+
+		plrArenaTeam->SaveToDBHelper();
+		plrArenaTeam->NotifyStatsChanged();
+	}
+}
+void ArenaTeam::SaveToDBHelper()
+{
+	// Moved from SaveToDB() to SaveToDBHelper() for solo 3v3
     // Save team and member stats to db
     // Called after a match has ended or when calculating arena_points
 

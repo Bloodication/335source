@@ -36,7 +36,6 @@
 #    TRANSMOGRIFICATION
 #	 CUSTOM RATE XP
 #	 WORLDHCAT
-#	 GUILD HOUSING
 #
 ###################################################################################################
 
@@ -3710,77 +3709,6 @@ WorldChat.enabled = 1
 #		 Description: Defines the player name color
 #		 Usage: Color code must be in Blizzards color system ex. RED = |cffFF0000
 #
-#		 WorldChat.text.color
-#		 Description: Defines the color of the message text.
-#		 Usage: Color code must be in Blizzards color sytem ex. RED = |cffFF0000
-WorldChat.text.color = "|cffFF0000"
-#		 WorldChat.command
-#		 Descript: Defines the command for the chat system
-#		 Usage: Use as string example. "world" NOTICE: WHEN YOU CHANGE COMMAND NAME INSERT IT INTO commands table which is located in World database
-#		 Default: "world"
-WorldChat.command = "chat"
-#
-#		 WorldChat.Player.color
-#		 WorldChat.Staff.color
-#		 Description: Defines player name tag colors, Staff color is applied when GM tag is on.
-#		 Usage: Color code must be in Blizzard color system ex. RED = |cffFF0000
-#
-WorldChat.Player.color = "|c1f40af20"
-WorldChat.Staff.color = "|cff0404B4"
-#
-#		 WorldChannel.name
-#        Description: Defines the "channels" name ex. "[World]"
-#
-WorldChannel.name = "Global"
-#
-#        WorldChannel.name.color
-#        Description: Defines the color of Channels name
-#        Usage: Color code must be in Blizzards color system ex. RED = |cffFF0000
-#
-WorldChannel.name.color = "|cffFF0000"
-#
-#        WorldChannel.ShowMapNames
-#        Description: Defines if the world chat add extra field for player area location ex. [Tyr's Hand]
-#        Usage: 1 = Enabled, 0 = Disabled, 3 = Show Area name instead of Map name, Default = 0(Disabled)
-#
-WorldChannel.ShowMapNames = 3
-#
-#        Description: If ShowMapNames is enabled use these settings to define the color
-#        Usage: Color code must be in Blizzards color system ex. RED = |cffFF0000
-#
-#
-WorldChannel.Map.Color = ""
-#
-#
 ###################################################################################################
 ###################################################################################################
  
-###################################################################################################
-# GuildHouse
-#
-# Settings for the GuildHouse Keeper.
-#
-#    Guildhouse.TokenOrGold
-#        Description: Use tokens or money to buy guild houses.
-#        Default:     0 - Use Money
-#                     1 - Use Token
-#
-
-Guildhouse.TokenOrGold = 0
-
-#    GuildHouse.BuyCost
-#        Description: Amount of gold or quantity of tokens to buy guildhouse.
-#        Default:     1000 - 1000 gold
-#
-
-Guildhouse.BuyCost = 1000
-
-#    GuildHouse.BuyCost
-#        Description: Amount of gold or quantity of tokens gained when selling guildhouse.
-#        Default:     5000000 - 500 gold
-#
-
-Guildhouse.SellCost = 500
-
-#
-###################################################################################################

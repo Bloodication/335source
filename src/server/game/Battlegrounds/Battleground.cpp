@@ -34,6 +34,8 @@
 #include "Util.h"
 #include "WorldPacket.h"
 #include "Transport.h"
+#include "ArenaTeamMgr.h"
+#include "../../../src/server/scripts/custom/3v3/npc_solo3v3.h"
 
 namespace Trinity
 {
@@ -204,6 +206,25 @@ Battleground::~Battleground()
 
     for (BattlegroundScoreMap::const_iterator itr = PlayerScores.begin(); itr != PlayerScores.end(); ++itr)
         delete itr->second;
+	// Cleanup temp arena teams for solo 3v3
+	if (isArena() && isRated() && GetArenaType() == ARENA_TYPE_3v3_SOLO)
+	{
+		ArenaTeam *tempAlliArenaTeam = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
+		ArenaTeam *tempHordeArenaTeam = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
+
+		if (tempAlliArenaTeam && tempAlliArenaTeam->GetId() >= 0xFFF00000)
+		{
+			sArenaTeamMgr->RemoveArenaTeam(tempAlliArenaTeam->GetId());
+			delete tempAlliArenaTeam;
+		}
+
+		if (tempHordeArenaTeam && tempHordeArenaTeam->GetId() >= 0xFFF00000)
+		{
+			sArenaTeamMgr->RemoveArenaTeam(tempHordeArenaTeam->GetId());
+			delete tempHordeArenaTeam;
+		}
+
+	}
 }
 
 void Battleground::Update(uint32 diff)
@@ -460,10 +481,6 @@ inline void Battleground::_ProcessJoin(uint32 diff)
         SendMessageToAll(StartMessageIds[BG_STARTING_EVENT_FIRST], CHAT_MSG_BG_SYSTEM_NEUTRAL);
     }
 	
-		    // 1v1 Arena - Start arena after 15s, when all players are in arena
-		if (GetArenaType() == ARENA_TYPE_5v5 && GetStartDelayTime() > StartDelayTimes[BG_STARTING_EVENT_THIRD] && (m_PlayersCount[0] + m_PlayersCount[1]) == 2)
-		 SetStartDelayTime(StartDelayTimes[BG_STARTING_EVENT_THIRD]);
-	
     // After 1 minute or 30 seconds, warning is signaled
     else if (GetStartDelayTime() <= StartDelayTimes[BG_STARTING_EVENT_SECOND] && !(m_Events & BG_STARTING_EVENT_2))
     {
@@ -526,6 +543,7 @@ inline void Battleground::_ProcessJoin(uint32 diff)
                 }
 
             CheckWinConditions();
+			CheckStartSolo3v3Arena();
         }
         else
         {
@@ -685,8 +703,8 @@ void Battleground::RewardReputationToTeam(uint32 a_faction_id, uint32 h_faction_
 			Player* player = ObjectAccessor::FindPlayer(itr->first);
 		
 			if (!player)
+				TC_LOG_ERROR("bg.battleground", "BattleGround:RewardReputationToTeam: %u not found!", itr->first);
 			 {
-			TC_LOG_ERROR("bg.battleground", "BattleGround:RewardReputationToTeam: %u not found!", itr->first);
 			continue;
 			}
 	uint32 team = player->GetTeam();
@@ -777,7 +795,36 @@ void Battleground::EndBattleground(uint32 winner)
         Player* player = _GetPlayer(itr, "EndBattleground");
         if (!player)
             continue;
+		// Reward winners "BattleArenas Reward Box" in 2v2 and 3v3 rated battles
+		// And Badge of Justice as reward from Solo Queue
+		/*
+		if (team == winner && isArena())
+		{
+			if (isRated())
+			{
+				// Dont reward players in arena preparation
+				if (!player->HasAura(SPELL_ARENA_PREPARATION))
+				{
+					if (GetArenaType() == ARENA_TYPE_3v3)
+					{
+						//player->AddItem(54218, 1); // Add two BattleArenas Reward Box
 
+						// Bonus rewards for Healers
+						if (Arena1v1CheckTalents(player) == false);
+							//player->AddItem(54218, 1); // Add two BattleArenas Reward Box
+					}
+
+					if (GetArenaType() == ARENA_TYPE_5v5) // 1v1 rated
+						//player->AddItem(29434, 5); // Add 5 Badge of Justice
+
+					if (GetArenaType() == ARENA_TYPE_3v3_SOLO)
+					{
+						//player->AddItem(54218, 1); // Add one BattleArenas Reward Box
+					}
+				}
+			}
+		}
+*/
         // should remove spirit of redemption
         if (player->HasAuraType(SPELL_AURA_SPIRIT_OF_REDEMPTION))
             player->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
@@ -1812,7 +1859,48 @@ int32 Battleground::GetObjectType(ObjectGuid guid)
         guid.ToString().c_str(), m_MapId, m_InstanceID);
     return -1;
 }
+void Battleground::CheckStartSolo3v3Arena()
+{
+	if (GetArenaType() != ARENA_TYPE_3v3_SOLO)
+		return;
 
+	if (GetStatus() != STATUS_IN_PROGRESS)
+		return;  // if CheckArenaWinConditions ends the game
+
+	bool someoneNotInArena = false;
+
+	ArenaTeam* team[2];
+	team[0] = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(ALLIANCE));
+	team[1] = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(HORDE));
+
+	ASSERT(team[0] && team[1]);
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (ArenaTeam::MemberList::iterator itr = team[i]->m_membersBegin(); itr != team[i]->m_membersEnd(); itr++)
+		{
+			Player* plr = sObjectAccessor->FindPlayer(itr->Guid);
+			if (!plr)
+			{
+				someoneNotInArena = true;
+				continue;
+			}
+
+			if (plr->GetInstanceId() != GetInstanceID())
+			{
+				if (sWorld->getBoolConfig(CONFIG_SOLO_3V3_CAST_DESERTER_ON_AFK))
+					plr->CastSpell(plr, 26013, true); // Deserter
+				someoneNotInArena = true;
+			}
+		}
+	}
+
+	if (someoneNotInArena && sWorld->getBoolConfig(CONFIG_SOLO_3V3_STOP_GAME_INCOMPLETE))
+	{
+		SetRated(false);
+		EndBattleground(LANG_BG_A_WINS);
+	}
+}
 void Battleground::SetBgRaid(uint32 TeamID, Group* bg_raid)
 {
     Group*& old_raid = TeamID == ALLIANCE ? m_BgRaids[TEAM_ALLIANCE] : m_BgRaids[TEAM_HORDE];
@@ -1874,7 +1962,10 @@ uint8 Battleground::GetUniqueBracketId() const
 uint8 Battleground::ClickFastStart(Player *player, GameObject *go)
 {
 	if (!isArena())
+	{
+		player->GetSession()->SendAreaTriggerMessage("You can't do this while not in arena.");
 		return 0;
+	}
 
 	std::set<uint64>::iterator pIt = m_playersWantsFastStart.find(player->GetGUID());
 	if (pIt != m_playersWantsFastStart.end() || GetStartDelayTime() < BG_START_DELAY_15S)
@@ -1887,6 +1978,7 @@ uint8 Battleground::ClickFastStart(Player *player, GameObject *go)
 		m_crystals.insert(go);
 
 	uint8 playersNeeded = 0;
+
 	switch (GetArenaType())
 	{
 	case ARENA_TYPE_2v2:
@@ -1898,8 +1990,13 @@ uint8 Battleground::ClickFastStart(Player *player, GameObject *go)
 	case ARENA_TYPE_5v5:
 		playersNeeded = 2;
 		break;
+	case ARENA_TYPE_3v3_SOLO:
+		playersNeeded = 6;
+		break;
 	}
 
+	if (IsChallenge())
+		playersNeeded = 2;
 
 	if (m_playersWantsFastStart.size() == playersNeeded)
 	{
@@ -1914,9 +2011,11 @@ void Battleground::DespawnCrystals()
 {
 	if (m_crystals.empty())
 		return;
-	/*
-	for (std::set<GameObject*>::iterator itr = m_crystals.begin(); itr != m_crystals.end(); itr)
-	{
 
+	/*for (std::set<GameObject*>::iterator itr = m_crystals.begin(); itr != m_crystals.end(); ++itr)
+	{
+	GameObject *go = *itr;
+	go->Delete();
+	m_crystals.erase(itr);
 	}*/
 }

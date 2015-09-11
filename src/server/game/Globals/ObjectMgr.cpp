@@ -2755,7 +2755,8 @@ void ObjectMgr::LoadItemTemplates()
                         itemTemplate.Spells[j].SpellId = 0;
                     }
 
-                    if (spellInfo && itemTemplate.Spells[j].SpellCategory)
+                     if (spellInfo && itemTemplate.Spells[j].SpellCategory
+                        && itemTemplate.Spells[j].SpellCategory != SPELL_CATEGORY_FOOD)
                     {
                         bool added = sSpellsByCategoryStore[itemTemplate.Spells[j].SpellCategory].insert(itemTemplate.Spells[j].SpellId).second;
                         if (added)
@@ -3965,8 +3966,8 @@ void ObjectMgr::LoadQuests()
     mExclusiveQuestGroups.clear();
 
     QueryResult result = WorldDatabase.Query("SELECT "
-        //0     1         2         3           4           5             6               7             8
-        "ID, Method, QuestLevel, MinLevel, QuestSortID, QuestType, SuggestedGroupNum, LimitTime, RequiredRaces,"
+		        //0      1           2         3           4            5                6              7             8
+				"ID, Method, QuestLevel, MinLevel, QuestSortID, QuestType, SuggestedGroupNum, LimitTime, RequiredRaces,"
         //      9                     10                   11                    12
         "RequiredFactionId1, RequiredFactionId2, RequiredFactionValue1, RequiredFactionValue2, "
         //      13             14               15                    16               17             18             19               20
@@ -3987,8 +3988,8 @@ void ObjectMgr::LoadQuests()
         "LogTitle, LogDescription, QuestDescription, EndText, OfferRewardText, RequestItemsText, QuestCompletionLog, "
         //      73                74                75                76                   77                     78                    79                      80
         "RequiredNpcOrGo1, RequiredNpcOrGo2, RequiredNpcOrGo3, RequiredNpcOrGo4, RequiredNpcOrGoCount1, RequiredNpcOrGoCount2, RequiredNpcOrGoCount3, RequiredNpcOrGoCount4, "
-        //         81                     82                    83                     84                        85                       86                        87                        88
-        "RequiredSourceItemId1, RequiredSourceItemId2, RequiredSourceItemId3, RequiredSourceItemId4, RequiredSourceItemCount1, RequiredSourceItemCount2, RequiredSourceItemCount3, RequiredSourceItemCount4, "
+        //   79         80         81         82            83                 84                  85                86
+		"RequiredSourceItemId1, RequiredSourceItemId2, RequiredSourceItemId3, RequiredSourceItemId4, RequiredSourceItemCount1, RequiredSourceItemCount2, RequiredSourceItemCount3, RequiredSourceItemCount4, "
         //      89               90               91               92               93               94                95                  96                  97                  98                  99                  100
         "RequiredItemId1, RequiredItemId2, RequiredItemId3, RequiredItemId4, RequiredItemId5, RequiredItemId6, RequiredItemCount1, RequiredItemCount2, RequiredItemCount3, RequiredItemCount4, RequiredItemCount5, RequiredItemCount6, "
         //  101          102             103             104             105             106           107            108            109               110                 111                 112                 113

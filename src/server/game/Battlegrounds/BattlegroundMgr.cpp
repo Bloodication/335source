@@ -22,6 +22,7 @@
 #include "World.h"
 #include "WorldPacket.h"
 
+#include "ArenaTeam.h"
 #include "BattlegroundMgr.h"
 #include "BattlegroundAV.h"
 #include "BattlegroundAB.h"
@@ -36,6 +37,7 @@
 #include "BattlegroundIC.h"
 #include "Chat.h"
 #include "Map.h"
+#include "MapInstanced.h"
 #include "MapManager.h"
 #include "Player.h"
 #include "GameEventMgr.h"
@@ -423,6 +425,9 @@ Battleground* BattlegroundMgr::CreateNewBattleground(BattlegroundTypeId original
             case ARENA_TYPE_5v5:
 				maxPlayersPerTeam = 1; // 1v1 Arena
                 break;
+			case ARENA_TYPE_3v3_SOLO:
+				maxPlayersPerTeam = 3; // 3v3 soloqeueue
+				break;
         }
 
         bg->SetMaxPlayersPerTeam(maxPlayersPerTeam);
@@ -751,12 +756,14 @@ BattlegroundQueueTypeId BattlegroundMgr::BGQueueTypeId(BattlegroundTypeId bgType
         case BATTLEGROUND_RV:
             switch (arenaType)
             {
-                case ARENA_TYPE_2v2:
-                    return BATTLEGROUND_QUEUE_2v2;
-                case ARENA_TYPE_3v3:
-                    return BATTLEGROUND_QUEUE_3v3;
-                case ARENA_TYPE_5v5:
-                    return BATTLEGROUND_QUEUE_5v5;
+			case ARENA_TYPE_2v2:
+				return BATTLEGROUND_QUEUE_2v2;
+			case ARENA_TYPE_3v3:
+				return BATTLEGROUND_QUEUE_3v3;
+			case ARENA_TYPE_5v5:
+				return BATTLEGROUND_QUEUE_5v5;
+			case ARENA_TYPE_3v3_SOLO:
+				return BATTLEGROUND_QUEUE_3v3_SOLO;
                 default:
                     return BATTLEGROUND_QUEUE_NONE;
             }
@@ -786,6 +793,7 @@ BattlegroundTypeId BattlegroundMgr::BGTemplateId(BattlegroundQueueTypeId bgQueue
         case BATTLEGROUND_QUEUE_2v2:
         case BATTLEGROUND_QUEUE_3v3:
         case BATTLEGROUND_QUEUE_5v5:
+		case BATTLEGROUND_QUEUE_3v3_SOLO:
             return BATTLEGROUND_AA;
         default:
             return BattlegroundTypeId(0);                   // used for unknown template (it existed and do nothing)
@@ -800,6 +808,8 @@ uint8 BattlegroundMgr::BGArenaType(BattlegroundQueueTypeId bgQueueTypeId)
             return ARENA_TYPE_2v2;
         case BATTLEGROUND_QUEUE_3v3:
             return ARENA_TYPE_3v3;
+		case BATTLEGROUND_QUEUE_3v3_SOLO:
+			return ARENA_TYPE_3v3_SOLO;
         case BATTLEGROUND_QUEUE_5v5:
             return ARENA_TYPE_5v5;
         default:
@@ -821,7 +831,8 @@ void BattlegroundMgr::ToggleArenaTesting()
 
 void BattlegroundMgr::SetHolidayWeekends(uint32 mask)
 {
-    for (uint32 bgtype = 1; bgtype < MAX_BATTLEGROUND_TYPE_ID; ++bgtype)
+   // The current code supports battlegrounds up to BattlegroundTypeId(31)
+   for (uint32 bgtype = 1; bgtype < MAX_BATTLEGROUND_TYPE_ID && bgtype < 32; ++bgtype)
         if (Battleground* bg = GetBattlegroundTemplate(BattlegroundTypeId(bgtype)))
             bg->SetHoliday((mask & (1 << bgtype)) != 0);
 }

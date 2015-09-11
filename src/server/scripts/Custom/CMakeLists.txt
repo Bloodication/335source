@@ -41,12 +41,13 @@ Custom/CustomFunStuff/reset_onduel_end.cpp
 Custom/CustomFunStuff/announce_login.cpp
 Custom/CustomFunStuff/Bloodmoneyduels.cpp
 Custom/CustomFunStuff/Boss_Announcer.cpp
-Custom/CustomFunStuff/npc_morph.cpp
 Custom/CustomFunStuff/playertools.cpp
 Custom/CustomFunStuff/professions.cpp
 Custom/CustomFunStuff/Phased_duel.cpp
 Custom/CustomFunStuff/druidformhackfix.cpp
-
+Custom/3v3/npc_solo3v3.cpp
+Custom/3v3/npc_solo3v3.h
+Custom/GoMove/GOMove.cpp
 )
 
 message("  -> Prepared: Custom")

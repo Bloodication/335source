@@ -173,7 +173,7 @@ Wrong.Password.Login.Logging = 0
 Updates.EnableDatabases = 0
 
 #
-#    Updates.SourcePath
+#    Updates.MySqlCLIPath
 #        Description: The path to your TrinityCore source directory.
 #                     If the path is left empty, built-in CMAKE_SOURCE_DIR is used.
 #        Example:     "../TrinityCore"

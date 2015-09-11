@@ -36,8 +36,8 @@
 #define ICON_GOSSIP_TABARD 8
 #define ICON_GOSSIP_XSWORDS 9
 
-#define COST_GH_BUY 10000000 //1000 g.
-#define COST_GH_SELL 5000000 //500 g.
+#define COST_GH_BUY 1000 //1000 g.
+#define COST_GH_SELL 500 //500 g.
 
 #define GOSSIP_COUNT_MAX 10
 

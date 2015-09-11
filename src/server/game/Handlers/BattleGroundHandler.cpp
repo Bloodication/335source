@@ -446,7 +446,7 @@ void WorldSession::HandleBattleFieldPortOpcode(WorldPacket &recvData)
         if (!_player->IsInvitedForBattlegroundQueueType(bgQueueTypeId))
             return;                                 // cheating?
 		      // 1v1 Arena. Player can't join arena when forbidden talents are used.
-			if (bgQueueTypeId == BATTLEGROUND_QUEUE_5v5 && Arena1v1CheckTalents(_player) == false)
+		if (bgQueueTypeId == BATTLEGROUND_QUEUE_5v5 && Arena1v1CheckTalents(_player) == false)
 			 return;
         if (!_player->InBattleground())
             _player->SetBattlegroundEntryPoint();
@@ -632,6 +632,9 @@ void WorldSession::HandleBattlemasterJoinArena(WorldPacket& recvData)
         case 2:
             arenatype = ARENA_TYPE_5v5;
             break;
+		case 3:
+			arenatype = ARENA_TYPE_3v3_SOLO;
+			break;
         default:
             TC_LOG_ERROR("network", "Unknown arena slot %u at HandleBattlemasterJoinArena()", arenaslot);
             return;

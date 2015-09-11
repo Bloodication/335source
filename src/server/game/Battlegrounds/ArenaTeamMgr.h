@@ -47,12 +47,13 @@ public:
     ArenaTeamContainer::iterator GetArenaTeamMapEnd()   { return ArenaTeamStore.end(); }
 
     void DistributeArenaPoints();
-
+	uint32 GenerateTempArenaTeamId();
     uint32 GenerateArenaTeamId();
     void SetNextArenaTeamId(uint32 Id) { NextArenaTeamId = Id; }
 
 protected:
     uint32 NextArenaTeamId;
+	uint32 NextTempArenaTeamId;
     ArenaTeamContainer ArenaTeamStore;
 };
 

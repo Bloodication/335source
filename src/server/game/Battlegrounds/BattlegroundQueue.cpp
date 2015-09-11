@@ -26,6 +26,7 @@
 #include "Language.h"
 #include "Player.h"
 #include "ObjectAccessor.h"
+#include "../../scripts/Custom/3v3/npc_solo3v3.h"
 
 /*********************************************************/
 /***            BATTLEGROUND QUEUE SYSTEM              ***/
@@ -165,8 +166,16 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
 	{
 		ArenaTeam* Team = sArenaTeamMgr->GetArenaTeamById(arenateamid);
 		if (Team)
-			if ((Team->GetType() == ARENA_TYPE_5v5 && sWorld->getBoolConfig(CONFIG_ARENA_1V1_ANNOUNCER)) || Team->GetType() != ARENA_TYPE_5v5)
+		{
+			if (ginfo->ArenaType == ARENA_TYPE_3v3_SOLO)
+				// TrinityString 7180 = LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN for 3v3 Solo
+				sWorld->SendWorldText(7180, Team->GetName().c_str(), ginfo->ArenaTeamRating);
+			else
 				sWorld->SendWorldText(LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN, Team->GetName().c_str(), ginfo->ArenaType, ginfo->ArenaType, ginfo->ArenaTeamRating);
+		}
+		/*ArenaTeam* Team = sArenaTeamMgr->GetArenaTeamById(arenateamid);
+		if (Team)
+		sWorld->SendWorldText(LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN, Team->GetName().c_str(), ginfo->ArenaType, ginfo->ArenaType, ginfo->ArenaTeamRating);*/
 	}
 
 	//add players from group to ginfo
@@ -386,8 +395,12 @@ void BattlegroundQueue::RemovePlayer(ObjectGuid guid, bool decreaseInvitedCount)
 	// announce to world if arena team left queue for rated match, show only once
 	if (group->ArenaType && group->IsRated && group->Players.empty() && sWorld->getBoolConfig(CONFIG_ARENA_QUEUE_ANNOUNCER_ENABLE))
 		if (ArenaTeam* Team = sArenaTeamMgr->GetArenaTeamById(group->ArenaTeamId))
-			if (Team && ((Team->GetType() == ARENA_TYPE_5v5 && sWorld->getBoolConfig(CONFIG_ARENA_1V1_ANNOUNCER)) || Team->GetType() != ARENA_TYPE_5v5))
+		{
+			if (group->ArenaType == 4)
+				sWorld->SendWorldText(7190, Team->GetName().c_str(), group->ArenaTeamRating);
+			else
 				sWorld->SendWorldText(LANG_ARENA_QUEUE_ANNOUNCE_WORLD_EXIT, Team->GetName().c_str(), group->ArenaType, group->ArenaType, group->ArenaTeamRating);
+		}
 
 	// if player leaves queue and he is invited to rated arena match, then he have to lose
 	if (group->IsInvitedToBGInstanceGUID && group->IsRated && decreaseInvitedCount)
@@ -763,7 +776,110 @@ bool BattlegroundQueue::CheckSkirmishForSameFaction(BattlegroundBracketId bracke
 	}
 	return true;
 }
+bool BattlegroundQueue::CheckSolo3v3Arena(BattlegroundBracketId bracket_id)
+{
+	bool soloTeam[BG_TEAMS_COUNT][MAX_TALENT_CAT]; // 2 teams and each team 3 players - set to true when slot is taken
+	for (int i = 0; i < BG_TEAMS_COUNT; i++)
+		for (int j = 0; j < MAX_TALENT_CAT; j++)
+			soloTeam[i][j] = false; // default false = slot not taken
 
+	m_SelectionPools[TEAM_ALLIANCE].Init();
+	m_SelectionPools[TEAM_HORDE].Init();
+
+	bool filterTalents = sWorld->getBoolConfig(CONFIG_SOLO_3V3_FILTER_TALENTS);
+
+	for (int teamId = 0; teamId < 2; teamId++) // BG_QUEUE_PREMADE_ALLIANCE and BG_QUEUE_PREMADE_HORDE
+	{
+		for (GroupsQueueType::iterator itr = m_QueuedGroups[bracket_id][teamId].begin(); itr != m_QueuedGroups[bracket_id][teamId].end(); ++itr)
+		{
+			if ((*itr)->IsInvitedToBGInstanceGUID) // Skip when invited
+				continue;
+
+			std::map<ObjectGuid, PlayerQueueInfo*> *grpPlr = &(*itr)->Players;
+			for (std::map<ObjectGuid, PlayerQueueInfo*>::iterator grpPlrItr = grpPlr->begin(); grpPlrItr != grpPlr->end(); grpPlrItr++)
+			{
+				Player* plr = sObjectAccessor->FindPlayer(grpPlrItr->first);
+				if (!plr)
+					continue;
+
+				if (!filterTalents && m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() + m_SelectionPools[TEAM_HORDE].GetPlayerCount() == 6)
+					return true;
+
+				Solo3v3TalentCat plrCat = GetTalentCatForSolo3v3(plr); // get talent cat
+
+				if (filterTalents && soloTeam[TEAM_ALLIANCE][plrCat] == false // is slot free in alliance team?
+					|| (!filterTalents && m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() != 3))
+				{
+					if (m_SelectionPools[TEAM_ALLIANCE].AddGroup((*itr), 3)) // added successfully?
+					{
+						soloTeam[TEAM_ALLIANCE][plrCat] = true; // okay take this slot
+
+						if ((*itr)->Team != ALLIANCE) // move to other team
+						{
+							(*itr)->Team = ALLIANCE;
+							m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_ALLIANCE].push_front((*itr));
+							itr = m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_HORDE].erase(itr);
+							return CheckSolo3v3Arena(bracket_id);
+						}
+					}
+				}
+				else if (filterTalents && soloTeam[TEAM_HORDE][plrCat] == false || !filterTalents) // nope? and in horde team?
+				{
+					if (m_SelectionPools[TEAM_HORDE].AddGroup((*itr), 3))
+					{
+						soloTeam[TEAM_HORDE][plrCat] = true;
+
+						if ((*itr)->Team != HORDE) // move to other team
+						{
+							(*itr)->Team = HORDE;
+							m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_HORDE].push_front((*itr));
+							itr = m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_ALLIANCE].erase(itr);
+							return CheckSolo3v3Arena(bracket_id);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	int countAll = 0;
+	for (int i = 0; i < BG_TEAMS_COUNT; i++)
+	{
+		for (int j = 0; j < MAX_TALENT_CAT; j++)
+			if (soloTeam[i][j])
+				countAll++;
+	}
+
+	return countAll == 6 ||
+		(!filterTalents && m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() + m_SelectionPools[TEAM_HORDE].GetPlayerCount() == 6);
+}
+void BattlegroundQueue::CreateTempArenaTeamForQueue(ArenaTeam *arenaTeams[])
+{
+	// Create temp arena team
+	for (uint32 i = 0; i < BG_TEAMS_COUNT; i++)
+	{
+		ArenaTeam* tempArenaTeam = new ArenaTeam();  // delete it when all players have left the arena match. Stored in sArenaTeamMgr
+		Player* atPlr[3];
+		uint32 atPlrItr = 0;
+
+		for (GroupsQueueType::const_iterator citr = m_SelectionPools[TEAM_ALLIANCE + i].SelectedGroups.begin(); citr != m_SelectionPools[TEAM_ALLIANCE + i].SelectedGroups.end(); ++citr)
+		{
+			if (atPlrItr >= 3)
+				break; // Should never happen
+
+			for (std::map<ObjectGuid, PlayerQueueInfo*>::iterator itr = (*citr)->Players.begin(); itr != (*citr)->Players.end(); ++itr)
+			{
+				if (Player* pPlr = sObjectAccessor->FindPlayer(itr->first))
+					atPlr[atPlrItr++] = pPlr;
+				break;
+			}
+		}
+
+		tempArenaTeam->CreateTempForSolo3v3(atPlr, i);
+		sArenaTeamMgr->AddArenaTeam(tempArenaTeam);
+		arenaTeams[i] = tempArenaTeam;
+	}
+}
 void BattlegroundQueue::UpdateEvents(uint32 diff)
 {
 	m_events.Update(diff);
@@ -859,7 +975,7 @@ void BattlegroundQueue::BattlegroundQueueUpdate(uint32 /*diff*/, BattlegroundTyp
 			for (uint32 i = 0; i < BG_TEAMS_COUNT; i++)
 				for (GroupsQueueType::const_iterator citr = m_SelectionPools[TEAM_ALLIANCE + i].SelectedGroups.begin(); citr != m_SelectionPools[TEAM_ALLIANCE + i].SelectedGroups.end(); ++citr)
 					InviteGroupToBG((*citr), bg2, (*citr)->Team);
-
+			// start bg
 			bg2->StartBattleground();
 			//clear structures
 			m_SelectionPools[TEAM_ALLIANCE].Init();
@@ -889,6 +1005,40 @@ void BattlegroundQueue::BattlegroundQueueUpdate(uint32 /*diff*/, BattlegroundTyp
 					InviteGroupToBG((*citr), bg2, (*citr)->Team);
 			// start bg
 			bg2->StartBattleground();
+		}
+	}
+	else if (arenaType == ARENA_TYPE_3v3_SOLO)
+	{
+		// Solo 3v3
+		if (CheckSolo3v3Arena(bracket_id))
+		{
+			// we successfully created a pool
+			Battleground* arena = sBattlegroundMgr->CreateNewBattleground(bgTypeId, bracketEntry, arenaType, isRated);
+			if (!arena)
+				return;
+
+			// Create temp arena team and store arenaTeamId
+			ArenaTeam* arenaTeams[BG_TEAMS_COUNT];
+			CreateTempArenaTeamForQueue(arenaTeams);
+
+			// invite those selection pools
+			for (uint32 i = 0; i < BG_TEAMS_COUNT; i++)
+				for (GroupsQueueType::const_iterator citr = m_SelectionPools[TEAM_ALLIANCE + i].SelectedGroups.begin(); citr != m_SelectionPools[TEAM_ALLIANCE + i].SelectedGroups.end(); ++citr)
+				{
+					(*citr)->ArenaTeamId = arenaTeams[i]->GetId();
+					InviteGroupToBG((*citr), arena, (*citr)->Team);
+				}
+
+			// Override ArenaTeamId to temp arena team (was first set in InviteGroupToBG)
+			arena->SetArenaTeamIdForTeam(ALLIANCE, arenaTeams[TEAM_ALLIANCE]->GetId());
+			arena->SetArenaTeamIdForTeam(HORDE, arenaTeams[TEAM_HORDE]->GetId());
+
+			// Set matchmaker rating for calculating rating-modifier on EndBattleground (when a team has won/lost)
+			arena->SetArenaMatchmakerRating(ALLIANCE, arenaTeams[TEAM_ALLIANCE]->GetAverageMMR());
+			arena->SetArenaMatchmakerRating(HORDE, arenaTeams[TEAM_HORDE]->GetAverageMMR());
+
+			// start bg
+			arena->StartBattleground();
 		}
 	}
 	else if (bg_template->isArena())

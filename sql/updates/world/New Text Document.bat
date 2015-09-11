@@ -1,1 +1,0 @@
-copy *.sql MERGED.sql
