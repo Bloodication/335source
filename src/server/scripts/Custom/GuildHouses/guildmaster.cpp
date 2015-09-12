@@ -277,7 +277,7 @@ void sellGuildhouse(Player *player, Creature *_creature)
 
  bool OnGossipHello(Player *player, Creature *_creature)
  {
-	 if (!player->GetGuildId() >= 1)
+	 if (player->GetGuildId() == 0)
 	 {
 		 //if player has no guild
 		 _creature->Whisper(MSG_NOTINGUILD, LANG_UNIVERSAL, player);
