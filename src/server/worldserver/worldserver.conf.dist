@@ -3741,7 +3741,7 @@ Solo.3v3.Enable = 1
 #  3v3 Soloqueue Cost
 #        Solo.3v3.Costs
 #	     Description: Gives value cost; 400000 is 40g
-#		 Usage: 0 = Disabled, 1 = Enabled
+#		 Usage: 0-400000 // 400k is 40g
 #
 Solo.3v3.Costs = 400000
 #
@@ -3762,7 +3762,7 @@ Arena.1v1.Enable = 1
 #  1v1
 #        Arena.1v1.Enable
 #	     Description: Gives value cost; 400000 is 40g
-#		 Usage: 0 = Disabled, 1 = Enabled
+#		 Usage: 0-400000 // 400k is 40g
 #
 Arena.1v1.Costs = 400000
 #
