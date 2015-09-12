@@ -3693,6 +3693,24 @@ Player.MaximumLootRate = 10
 #        Default    : 1
 #
 
+#	CustomXpRate.enabled
+#	CustomLootRate.enabled
+#        Description: Toggles disable/enable for Custom Rate Loot/Xp
+#        Values     : 1 - Enable
+#		 Values 	: 0 - Disable
+#        Default    : 1
+
+CustomXpRate.enabled = 1
+CustomLootRate.enabled = 1
+
+#    Player.ShowXpRateOnLogin
+#    Player.ShowLootRateOnLogin
+#        Description: Shows current XP / loot rate to player on login
+#        Values     : 0 - don't show
+#                   : 1 - show
+#        Default    : 1
+#
+
 Player.ShowXpRateOnLogin = 1
 Player.ShowLootRateOnLogin = 1
 
