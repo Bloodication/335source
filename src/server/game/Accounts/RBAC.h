@@ -701,6 +701,8 @@ enum RBACPermissions
 	RBAC_PERM_COMMAND_SPECTATE_LEAVE						 = 1007,
 	RBAC_PERM_COMMAND_XP_RATE                                = 1008,
 	RBAC_PERM_COMMAND_CUSTOM_CHAT							 = 1009,
+	RBAC_PERM_COMMAND_LOOT_RATE								 = 1010,
+	RBAC_PERM_COMMAND_RATE									 = 1011,
 
     // custom permissions 1000+
     RBAC_PERM_MAX
