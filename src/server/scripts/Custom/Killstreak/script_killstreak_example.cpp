@@ -19,24 +19,17 @@ public:
 			//We say to the killed that its killstreak has been reset
 			killed->GetSession()->SendAreaTriggerMessage("Killstreak reset :(");
 
-			killed->SetObjectScale(1.f);
-
 			//We do several actions depending on the killer's killstreak
 			uint64 killerKS = Maelstrom::sKillstreakMgr->GetPlayerKS(killer);
 			if (killerKS == 1) {
 				killer->GetSession()->SendAreaTriggerMessage("First Kill, Keep going !");
-				killer->SetObjectScale(1.5f);
 			}
 			else if (killerKS == 2) {
 				killer->GetSession()->SendAreaTriggerMessage("Two in a row !");
-				killer->SetObjectScale(2.f);
 				//Add an aura
 				killer->AddAura(1126, killer);
 				//Add a horde flag
 				killer->AddAura(23333, killer);
-			}
-			else if (killerKS >= 3) {
-				killer->SetObjectScale(killerKS);
 			}
 		}
 		catch (const std::exception& e){
