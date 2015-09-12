@@ -994,6 +994,10 @@ void World::LoadConfigSettings(bool reload)
 	// WorldChat
 	m_int_configs[CONFIG_WORLD_CHAT_ENABLED] = sConfigMgr->GetIntDefault("WorldChat.enabled", 1);
 
+	//custom rate
+	m_int_configs[CONFIG_CUSTOM_RATE_XP_ENABLED] = sConfigMgr->GetIntDefault("CustomXpRate.enabled", 1);
+	m_int_configs[CONFIG_CUSTOM_RATE_LOOT_ENABLED] = sConfigMgr->GetIntDefault("CustomLootRate.enabled", 1);
+
 	m_int_configs[CONFIG_RANDOM_BG_RESET_HOUR] = sConfigMgr->GetIntDefault("Battleground.Random.ResetHour", 6);
 	if (m_int_configs[CONFIG_RANDOM_BG_RESET_HOUR] > 23)
 	{
