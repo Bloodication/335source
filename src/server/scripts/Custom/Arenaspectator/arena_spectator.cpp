@@ -371,7 +371,7 @@ public:
 	{
 		pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "|TInterface\\icons\\Achievement_Arena_2v2_7:35:35:-30:0|tGames: 2v2", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_2V2_GAMES);
 		pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "|TInterface\\icons\\Achievement_Arena_3v3_7:35:35:-30:0|tGames: 3v3", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_3V3_GAMES);
-		pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "|TInterface\\icons\\Achievement_Arena_5v5_7:35:35:-30:0|tGames: 5v5", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_5V5_GAMES);
+		pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "|TInterface\\icons\\Achievement_Arena_5v5_7:35:35:-30:0|tGames: 1v1/soloqueue", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_5V5_GAMES);
 		pPlayer->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_CHAT, "|TInterface\\icons\\Spell_Holy_DevineAegis:35:35:-30:0|tSpectate Specific Player.", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_SPECIFIC, "", 0, true);
 		pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, pCreature->GetGUID());
 		return true;
@@ -389,19 +389,19 @@ public:
 		if (action >= NPC_SPECTATOR_ACTION_2V2_GAMES && action < NPC_SPECTATOR_ACTION_3V3_GAMES)
 		{
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_DOT, " Refresh", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_2V2_GAMES);
-			ShowPage(player, action - NPC_SPECTATOR_ACTION_2V2_GAMES, true);
+			ShowPage(player, action - NPC_SPECTATOR_ACTION_2V2_GAMES, ARENA_TYPE_2v2);
 			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
 		}
 		else if (action >= NPC_SPECTATOR_ACTION_3V3_GAMES && action < NPC_SPECTATOR_ACTION_5V5_GAMES)
 		{
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_DOT, "Refresh", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_3V3_GAMES);
-			ShowPage(player, action - NPC_SPECTATOR_ACTION_3V3_GAMES, false);
+			ShowPage(player, action - NPC_SPECTATOR_ACTION_3V3_GAMES, ARENA_TYPE_3v3);
 			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
 		}
 		else if (action >= NPC_SPECTATOR_ACTION_5V5_GAMES && action < NPC_SPECTATOR_ACTION_SELECTED_PLAYER)
 		{
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_DOT, "Refresh", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_5V5_GAMES);
-			ShowPage(player, action - NPC_SPECTATOR_ACTION_5V5_GAMES, true);
+			ShowPage(player, action - NPC_SPECTATOR_ACTION_5V5_GAMES, ARENA_TYPE_5v5);
 			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
 		}
 		else
@@ -527,7 +527,7 @@ public:
 							if (plrs->GetArenaTeamId(1) != firstTeamId)
 								mmrTwo = arena->GetArenaMatchmakerRating(citr->second.Team);
 				}
-				else if (arena->GetArenaType() == ARENA_TYPE_5v5)
+				else if (arena->GetArenaType() == ARENA_TYPE_5v5 && arena->GetArenaType() == ARENA_TYPE_3v3_SOLO)
 				{
 					mmr = arena->GetArenaMatchmakerRating(2);
 					firstTeamId = target->GetArenaTeamId(2);
@@ -563,8 +563,8 @@ public:
 						player->ADD_GOSSIP_ITEM(GOSSIP_ICON_BATTLE, GetGamesStringData(arena, mmr, mmrTwo), GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_SELECTED_PLAYER + GetFirstPlayerGuid(arena));
 				}
 
-				else if (IsTop == 3 && arena->GetArenaType() == ARENA_TYPE_5v5)
-				{
+				else if (IsTop == 3 && arena->GetArenaType() == ARENA_TYPE_5v5 && arena->GetArenaType() == ARENA_TYPE_3v3_SOLO)
+				{ 
 					TypeThree++;
 					if (TypeThree > (page + 1) * GamesOnPage)
 					{
