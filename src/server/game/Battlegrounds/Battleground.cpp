@@ -299,7 +299,7 @@ void Battleground::Update(uint32 diff)
 			Aura* demAura = player->GetAura(41406);
 			float startTimer = 10 * MINUTE * IN_MILLISECONDS;
 
-			if (!player->IsSpectator())
+			if (!player->IsSpectator() && !player->IsGameMaster())
 			{
 				if ((GetStartTime() >= 10 * MINUTE * IN_MILLISECONDS) &&
 					(GetStartTime() <= 10.1 * MINUTE * IN_MILLISECONDS))
