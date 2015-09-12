@@ -47,9 +47,9 @@ public:
         if (sWorld->getBoolConfig(CONFIG_SOLO_3V3_FILTER_TALENTS))
         {
             infoQueue << "\n\n";
-            infoQueue << "Queued Melees: " << cache3v3Queue[MELEE] << " (Longer Queues!)" << "\n";
-            infoQueue << "Queued Casters: " << cache3v3Queue[RANGE] << " (Longer Queues!)" << "\n";
-            infoQueue << "Queued Healers: " << cache3v3Queue[HEALER] << " (Bonus Rewards!)" << "\n";
+			infoQueue << "Queued Melees: " << cache3v3Queue[MELEE] << "\n";
+            infoQueue << "Queued Casters: " << cache3v3Queue[RANGE] << "\n";
+            infoQueue << "Queued Healers: " << cache3v3Queue[HEALER] << "\n";
         }
 
         if (player->InBattlegroundQueueForBattlegroundQueueType(BATTLEGROUND_QUEUE_5v5) 
@@ -63,7 +63,7 @@ public:
             if (player->InBattlegroundQueueForBattlegroundQueueType(BATTLEGROUND_QUEUE_5v5) == false && 
                 player->InBattlegroundQueueForBattlegroundQueueType(BATTLEGROUND_QUEUE_3v3_SOLO) == false)
             {
-                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Queue up for 1vs1 Wargame\n", GOSSIP_SENDER_MAIN, 20);
+                //player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Queue up for 1vs1 Wargame\n", GOSSIP_SENDER_MAIN, 20);
                 player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Queue up for 3vs3 Arena Solo\n", GOSSIP_SENDER_MAIN, 2);
             }
         }

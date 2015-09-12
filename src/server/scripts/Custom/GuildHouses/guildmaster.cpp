@@ -76,12 +76,6 @@ bool getGuildHouseCoords(uint32 guildId, float &x, float &y, float &z, uint32 &m
 
 void teleportPlayerToGuildHouse(Player *player, Creature *_creature)
 {
- if (player->GetGuildId() == 0)
- {
- //if player has no guild
- _creature->Whisper(MSG_NOTINGUILD, LANG_UNIVERSAL, player);
- return;
- }
 
  if (!player->getAttackers().empty())
  {
@@ -283,6 +277,15 @@ void sellGuildhouse(Player *player, Creature *_creature)
 
  bool OnGossipHello(Player *player, Creature *_creature)
  {
+	 if (!player->GetGuildId() >= 1)
+	 {
+		 //if player has no guild
+		 _creature->Whisper(MSG_NOTINGUILD, LANG_UNIVERSAL, player);
+			player->CLOSE_GOSSIP_MENU();
+			return true;
+	 }
+
+// If player is in guild, now show this option
  player->ADD_GOSSIP_ITEM(ICON_GOSSIP_BALOON, MSG_GOSSIP_TELE, GOSSIP_SENDER_MAIN, ACTION_TELE);
 
  if (isPlayerGuildLeader(player))
