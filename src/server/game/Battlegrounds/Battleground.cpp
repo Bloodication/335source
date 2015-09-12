@@ -290,6 +290,71 @@ void Battleground::Update(uint32 diff)
     m_ResetStatTimer += diff;
 
     PostUpdateImpl(diff);
+
+	// dementia
+	for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
+	{
+		if (Player* player = ObjectAccessor::FindPlayer(itr->first))
+		{
+			Aura* demAura = player->GetAura(41406);
+			float startTimer = 10 * MINUTE * IN_MILLISECONDS;
+
+			if (!player->IsSpectator())
+			{
+				if ((GetStartTime() >= 10 * MINUTE * IN_MILLISECONDS) &&
+					(GetStartTime() <= 10.1 * MINUTE * IN_MILLISECONDS))
+				{
+					if (!player->HasAura(41406))
+					{
+						player->AddAura(41406, player);
+						player->GetSession()->SendAreaTriggerMessage("Damage and healing is going to progressively increase every minute from now! "
+							"This is made in case of draw for this arena.");
+					}
+				}
+
+				if ((GetStartTime() >= 11 * MINUTE * IN_MILLISECONDS) &&
+					(GetStartTime() <= 11.1 * MINUTE * IN_MILLISECONDS))
+				{
+					if (demAura->GetStackAmount() == 1)
+					{
+						player->AddAura(41406, player);
+						player->GetSession()->SendAreaTriggerMessage("Damage and healing is slightly increased!");
+					}
+				}
+
+				if ((GetStartTime() >= 12 * MINUTE * IN_MILLISECONDS) &&
+					(GetStartTime() <= 12.1 * MINUTE * IN_MILLISECONDS))
+				{
+					if (demAura->GetStackAmount() == 2)
+					{
+						player->AddAura(41406, player);
+						player->GetSession()->SendAreaTriggerMessage("Damage and healing is slightly increased!");
+					}
+				}
+
+				if ((GetStartTime() >= 13 * MINUTE * IN_MILLISECONDS) &&
+					(GetStartTime() <= 13.1 * MINUTE * IN_MILLISECONDS))
+				{
+					if (demAura->GetStackAmount() == 3)
+					{
+						player->AddAura(41406, player);
+						player->GetSession()->SendAreaTriggerMessage("Damage and healing is slightly increased!");
+					}
+				}
+
+				if ((GetStartTime() >= 14 * MINUTE * IN_MILLISECONDS) &&
+					(GetStartTime() <= 14.1 * MINUTE * IN_MILLISECONDS))
+				{
+					if (demAura->GetStackAmount() == 4)
+					{
+						player->AddAura(41406, player);
+						player->GetSession()->SendAreaTriggerMessage("Damage and healing is increased! This is the last tick of anti-draw system, "
+							"which means damage and healing won't be increased anymore!");
+					}
+				}
+			}
+		}
+	}
 }
 
 inline void Battleground::_CheckSafePositions(uint32 diff)

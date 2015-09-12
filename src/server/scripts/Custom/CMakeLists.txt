@@ -48,6 +48,7 @@ Custom/CustomFunStuff/druidformhackfix.cpp
 Custom/3v3/npc_solo3v3.cpp
 Custom/3v3/npc_solo3v3.h
 Custom/GoMove/GOMove.cpp
+Custom/Dementia/Arena_Anti-Draw.cpp
 )
 
 message("  -> Prepared: Custom")

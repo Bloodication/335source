@@ -1432,7 +1432,6 @@ void AddSC_GOMove_commandscript(); // use an addon to move the objects!
 void AddSC_script_killstreak_handling(); // kill steak yep!
 void AddSC_script_killstreak_example();  // kill steak yep!
 
-
 // these are the pvp scripts
 void AddSC_TemplateNPC(); // template npc
 void AddSC_CooldownsCrystal(); // resets your cooldowns on click what!?!
@@ -1441,6 +1440,7 @@ void AddSC_arenateamranks(); // shows team rating
 void AddSC_npc_1v1arena(); // 1v1 
 void AddSC_arena_spectator_script(); // arena
 void AddSC_npc_solo3v3(); // soloqueue 3v3
+void AddSC_Arena_AntiDraw(); // decreases damage after 6 min mark in arena not in bgs
 
 
 // These are the fun stuff scripts
@@ -1487,6 +1487,7 @@ void AddCustomScripts()
 	AddSC_npc_1v1arena(); // 1v1
 	AddSC_arena_spectator_script(); // arenaspecatator
 	AddSC_npc_solo3v3(); // soloqueue 3v3
+	AddSC_Arena_AntiDraw(); // decreases damage after 6 min mark in arena not in bgs
 
 
 	// These are the fun stuff scripts
