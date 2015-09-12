@@ -1045,7 +1045,7 @@ void World::LoadConfigSettings(bool reload)
 	m_float_configs[CONFIG_LISTEN_RANGE_YELL] = sConfigMgr->GetFloatDefault("ListenRange.Yell", 300.0f);
 
 	// soloqueue 3v3
-	m_bool_configs[CONFIG_SOLO_3V3_ENABLE] = sConfigMgr->GetBoolDefault("Solo.3v3.Enable", true);
+	m_bool_configs[CONFIG_SOLO_3V3_ENABLE] = sConfigMgr->GetBoolDefault("Solo.3v3.Enable", 1);
 	m_int_configs[CONFIG_SOLO_3V3_MIN_LEVEL] = sConfigMgr->GetIntDefault("Solo.3v3.MinLevel", 80);
 	m_int_configs[CONFIG_SOLO_3V3_COSTS] = sConfigMgr->GetIntDefault("Solo.3v3.Costs", 400000);
 	m_float_configs[CONFIG_SOLO_3V3_ARENAPOINTS_MULTI] = sConfigMgr->GetFloatDefault("Solo.3v3.ArenaPointsMulti", 0.64f);
