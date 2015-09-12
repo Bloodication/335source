@@ -127,13 +127,13 @@ public:
 		static ChatCommand rateCommandTable[] =
 		{
 			{ "xp", rbac::RBAC_PERM_COMMAND_XP_RATE, false, &HandleRateXpCommand, "", NULL },
-			{ "loot", rbac::RBAC_PERM_COMMAND_XP_RATE, false, &HandleRateLootCommand, "", NULL },
+			{ "loot", rbac::RBAC_PERM_COMMAND_LOOT_RATE, false, &HandleRateLootCommand, "", NULL },
 			{ NULL, rbac::RBAC_PERM_COMMAND_XP_RATE, false, NULL, "", NULL }
 		};
 
 		static ChatCommand commandTable[] =
 		{
-			{ "rate", rbac::RBAC_PERM_COMMAND_XP_RATE, false, NULL, "", rateCommandTable },
+			{ "rate", rbac::RBAC_PERM_COMMAND_RATE, false, NULL, "", rateCommandTable },
 			{ NULL, rbac::RBAC_PERM_COMMAND_XP_RATE, false, NULL, "", NULL }
 		};
 
@@ -146,6 +146,14 @@ public:
 		Player *me = handler->GetSession() ? handler->GetSession()->GetPlayer() : NULL;
 		if (!me)
 			return false;
+
+		if (sWorld->getIntConfig(CONFIG_CUSTOM_RATE_LOOT_ENABLED) == 0)
+		{
+			handler->PSendSysMessage("Custom Rate xp is disabled");
+			handler->SetSentErrorMessage(true);
+			me->SetCustomXpRate(1);
+			return false;
+		}
 
 		// already at max level, no point in using the command at all
 		if (me->getLevel() == sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
@@ -233,6 +241,14 @@ public:
 		Player *me = handler->GetSession() ? handler->GetSession()->GetPlayer() : NULL;
 		if (!me)
 			return false;
+
+		if (sWorld->getIntConfig(CONFIG_CUSTOM_RATE_XP_ENABLED) == 0)
+		{
+			handler->PSendSysMessage("Custom Rate loot is disabled");
+			handler->SetSentErrorMessage(true);
+			me->SetCustomLootRate(1);
+			return false;
+		}
 
 		// no arguments, show current loot rate
 		if (!*args)
