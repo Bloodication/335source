@@ -166,16 +166,11 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
 	{
 		ArenaTeam* Team = sArenaTeamMgr->GetArenaTeamById(arenateamid);
 		if (Team)
-		{
 			if (ginfo->ArenaType == ARENA_TYPE_3v3_SOLO)
 				// TrinityString 7180 = LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN for 3v3 Solo
 				sWorld->SendWorldText(7180, Team->GetName().c_str(), ginfo->ArenaTeamRating);
 			else
-				sWorld->SendWorldText(LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN, Team->GetName().c_str(), ginfo->ArenaType, ginfo->ArenaType, ginfo->ArenaTeamRating);
-		}
-		/*ArenaTeam* Team = sArenaTeamMgr->GetArenaTeamById(arenateamid);
-		if (Team)
-		sWorld->SendWorldText(LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN, Team->GetName().c_str(), ginfo->ArenaType, ginfo->ArenaType, ginfo->ArenaTeamRating);*/
+			sWorld->SendWorldText(LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN, Team->GetName().c_str(), ginfo->ArenaType, ginfo->ArenaType, ginfo->ArenaTeamRating);
 	}
 
 	//add players from group to ginfo
