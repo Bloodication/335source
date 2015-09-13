@@ -457,6 +457,7 @@ class instance_ulduar : public InstanceMapScript
                     default:
                         break;
                 }
+				InstanceScript::OnCreatureRemove(creature);
             }
 
             void OnGameObjectCreate(GameObject* gameObject) override
