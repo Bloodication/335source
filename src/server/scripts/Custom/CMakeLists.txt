@@ -45,10 +45,13 @@ Custom/CustomFunStuff/playertools.cpp
 Custom/CustomFunStuff/professions.cpp
 Custom/CustomFunStuff/Phased_duel.cpp
 Custom/CustomFunStuff/druidformhackfix.cpp
+Custom/CustomFunStuff/morpher_npc.cpp
 Custom/3v3/npc_solo3v3.cpp
 Custom/3v3/npc_solo3v3.h
 Custom/GoMove/GOMove.cpp
 Custom/Dementia/Arena_Anti-Draw.cpp
+Custom/Reforging/Reforging.cpp
+Custom/AntiFarming/farm.cpp
 )
 
 message("  -> Prepared: Custom")

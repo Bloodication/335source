@@ -27,18 +27,18 @@ public:
     {
         static ChatCommand anticheatCommandTable[] =
         {
-            { "global",         SEC_GAMEMASTER,     true,  &HandleAntiCheatGlobalCommand,         "", NULL },
-            { "player",         SEC_GAMEMASTER,     true,  &HandleAntiCheatPlayerCommand,         "", NULL },
-            { "delete",         SEC_ADMINISTRATOR,  true,  &HandleAntiCheatDeleteCommand,         "", NULL },
-            { "handle",         SEC_ADMINISTRATOR,  true,  &HandleAntiCheatHandleCommand,         "", NULL },
-            { "jail",           SEC_GAMEMASTER,     true,  &HandleAnticheatJailCommand,         "", NULL },
-            { "warn",           SEC_GAMEMASTER,     true,  &HandleAnticheatWarnCommand,         "", NULL },
+			{ "global", rbac::RBAC_ANTI_CHEAT_GLOBAL, true, &HandleAntiCheatGlobalCommand, "", NULL },
+			{ "player", rbac::RBAC_ANTI_CHEAT_PLAYER, true, &HandleAntiCheatPlayerCommand, "", NULL },
+			{ "delete", rbac::RBAC_ANTI_CHEAT_DELETE, true, &HandleAntiCheatDeleteCommand, "", NULL },
+			{ "handle", rbac::RBAC_ANTI_CHEAT_HANDLE, true, &HandleAntiCheatHandleCommand, "", NULL },
+			{ "jail", rbac::RBAC_ANTI_CHEAT_JAIL, true, &HandleAnticheatJailCommand, "", NULL },
+			{ "warn", rbac::RBAC_ANTI_CHEAT_WARN, true, &HandleAnticheatWarnCommand, "", NULL },
             { NULL,             0,                     false, NULL,                                           "", NULL }
         };
 
         static ChatCommand commandTable[] =
         {
-            { "anticheat",      SEC_GAMEMASTER,     true, NULL,                     "",  anticheatCommandTable},
+			{ "anticheat", rbac::RBAC_ANTI_CHEAT_ANTICHEAT, true, NULL, "", anticheatCommandTable },
             { NULL,             0,                  false, NULL,                               "", NULL }
         };
 

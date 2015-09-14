@@ -696,6 +696,8 @@ enum RBACPermissions
     RBAC_PERM_COMMAND_MODIFY_XP                              = 798,
 	// 799 - 834 6.x only
     RBAC_PERM_COMMAND_DEBUG_LOADCELLS                        = 835,
+
+	// Custom commands
 	RBAC_PERM_COMMAND_SPECTATE						         = 1003,
 	RBAC_PERM_COMMAND_SPECTATE_PLAYER						 = 1004,
 	RBAC_PERM_COMMAND_SPECTATE_VIEW							 = 1005,
@@ -705,6 +707,13 @@ enum RBACPermissions
 	RBAC_PERM_COMMAND_CUSTOM_CHAT							 = 1009,
 	RBAC_PERM_COMMAND_LOOT_RATE								 = 1010,
 	RBAC_PERM_COMMAND_RATE									 = 1011,
+	RBAC_ANTI_CHEAT_GLOBAL									 = 1012,
+	RBAC_ANTI_CHEAT_PLAYER									 = 1013,
+	RBAC_ANTI_CHEAT_DELETE									 = 1014,
+	RBAC_ANTI_CHEAT_HANDLE									 = 1015,
+	RBAC_ANTI_CHEAT_JAIL									 = 1016,
+	RBAC_ANTI_CHEAT_WARN									 = 1017,
+	RBAC_ANTI_CHEAT_ANTICHEAT								 = 1018,
 
     // custom permissions 1000+
     RBAC_PERM_MAX

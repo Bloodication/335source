@@ -108,9 +108,9 @@ class ArenaTeamRanks : public CreatureScript
                 
     public:
         bool OnGossipHello(Player *player, Creature *creature) {
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Top teams in 2vs2 bracket", GOSSIP_SENDER_MAIN, ARENA_2V2_LADDER);
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Top teams in 3vs3 bracket", GOSSIP_SENDER_MAIN, ARENA_3V3_LADDER);
-			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "Top teams in Solo 3vs3 / 1vs1 bracket", GOSSIP_SENDER_MAIN, ARENA_5V5_LADDER);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|TInterface\\icons\\Achievement_Arena_2v2_7:35:35:-30:0|tTop teams in 2vs2 bracket", GOSSIP_SENDER_MAIN, ARENA_2V2_LADDER);
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|TInterface\\icons\\Achievement_Arena_3v3_7:35:35:-30:0|tTop teams in 3vs3 bracket", GOSSIP_SENDER_MAIN, ARENA_3V3_LADDER);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_INTERACT_1, "|TInterface\\icons\\Achievement_Arena_5v5_7:35:35:-30:0|tTop teams in Solo 3vs3 / 1vs1 bracket", GOSSIP_SENDER_MAIN, ARENA_5V5_LADDER);
             
             player->SEND_GOSSIP_MENU(ARENA_GOSSIP_HELLO, creature->GetGUID());
             

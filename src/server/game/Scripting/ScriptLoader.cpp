@@ -1428,6 +1428,9 @@ void AddSC_NPC_TransmogDisplayVendor(); // transmog
 //Go Move
 void AddSC_GOMove_commandscript(); // use an addon to move the objects!
 
+// reforge
+void AddSC_REFORGER_NPC(); // retail blizzlike reforger
+
 // killstreak
 void AddSC_script_killstreak_handling(); // kill steak yep!
 void AddSC_script_killstreak_example();  // kill steak yep!
@@ -1456,6 +1459,8 @@ void AddSC_Reset();// duel reset
 void AddSC_PhasedDueling(); // this will phase you, so you cannot see objects or any other players nor can they see you
 void AddSC_Professions_NPC(); // instant proffesions hype!
 void AddSC_multi_changer(); // can change name, race and customize your looks!
+void AddSC_Morpher_Npc();  // will morph player base on they choose
+//void AddSC_NoFarming(); // Anti Farming, so if player farms on same account to get honor, player will be warned
 //void AddSC_DruidHax(); // fix c issue
 //void AddSC_npc_blood_money(); // win gold!
 //void AddSC_Boss_Announcer(); // announces world boss kill
@@ -1472,6 +1477,9 @@ void AddCustomScripts()
 
 	//Go Move
 	AddSC_GOMove_commandscript(); // use an addon to move the objects!
+
+	// reforge
+	AddSC_REFORGER_NPC(); //retail blizzlike reforger
 
 
 	// killstreak
@@ -1503,6 +1511,8 @@ void AddCustomScripts()
 	AddSC_PhasedDueling(); // this will phase you, so you cannot see objects or any other players nor can they see you
 	AddSC_Professions_NPC(); // instant proffesions hype!
 	AddSC_multi_changer(); // can change name, race and customize your looks!
+	AddSC_Morpher_Npc();  // will morph player base on they choose
+	//AddSC_NoFarming(); // Anti Farming, so if player farms on same account to get honor, player will be warned
 	//AddSC_DruidHax(); // fix c issue
 	//AddSC_npc_blood_money(); // win gold!
 	//AddSC_Boss_Announcer(); // announces world boss kill

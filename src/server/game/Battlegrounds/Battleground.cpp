@@ -2077,10 +2077,10 @@ void Battleground::DespawnCrystals()
 	if (m_crystals.empty())
 		return;
 
-	/*for (std::set<GameObject*>::iterator itr = m_crystals.begin(); itr != m_crystals.end(); ++itr)
+	for (std::set<GameObject*>::iterator itr = m_crystals.begin(); itr != m_crystals.end(); ++itr)
 	{
 	GameObject *go = *itr;
 	go->Delete();
 	m_crystals.erase(itr);
-	}*/
+	}
 }

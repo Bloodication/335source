@@ -150,6 +150,16 @@ typedef std::list<SpellModifier*> SpellModList;
 
 typedef std::unordered_map<uint32 /*instanceId*/, time_t/*releaseTime*/> InstanceTimeMap;
 
+
+struct ReforgeData
+{
+    uint32 increase, decrease;
+    int32 stat_value;
+};
+typedef std::unordered_map<uint32, ReforgeData> ReforgeMapType;
+
+
+
 enum TrainerSpellState
 {
     TRAINER_SPELL_GREEN = 0,
@@ -2371,6 +2381,9 @@ class Player : public Unit, public GridObject<Player>
 
         std::string GetMapAreaAndZoneString();
         std::string GetCoordsMapAreaAndZoneString();
+
+		ReforgeMapType reforgeMap; // reforgeMap[iGUID] = ReforgeData
+
 
         TransmogMapType transmogMap; // transmogMap[iGUID] = entry
 #ifdef PRESETS
