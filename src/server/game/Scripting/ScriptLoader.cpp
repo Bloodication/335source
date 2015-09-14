@@ -1459,9 +1459,6 @@ void AddSC_multi_changer(); // can change name, race and customize your looks!
 //void AddSC_DruidHax(); // fix c issue
 //void AddSC_npc_blood_money(); // win gold!
 //void AddSC_Boss_Announcer(); // announces world boss kill
-
-
-void AddSC_Arena_test();
 #endif
 
 void AddCustomScripts()
@@ -1509,8 +1506,5 @@ void AddCustomScripts()
 	//AddSC_DruidHax(); // fix c issue
 	//AddSC_npc_blood_money(); // win gold!
 	//AddSC_Boss_Announcer(); // announces world boss kill
-
-
-	AddSC_Arena_test();
 #endif
 }
