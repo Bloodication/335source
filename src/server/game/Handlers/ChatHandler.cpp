@@ -255,8 +255,9 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
                 return;
             }
 			if (!GetPlayer()->IsGameMaster())
-				 if (GetPlayer()->SendBattleGroundChat(type, msg))
-				 return;
+				if (GetPlayer()->SendBattleGroundChat(type, msg))
+				return;
+
             if (type == CHAT_MSG_SAY)
             {
 #ifdef ELUNA
