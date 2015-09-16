@@ -1,5 +1,5 @@
 SET
-@Entry = 190004,
+@Entry = 190001,
 @Name = "1v1",
 @Subname = "",
 @IconName = "Speak";
@@ -9,7 +9,7 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'npc_1v1arena');
 
 SET
-@Entry = 190011,
+@Entry = 190002,
 @Name = "3v3";
 
 INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `scale`, `rank`, `dmgschool`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`) VALUES
@@ -22,11 +22,11 @@ SET
 
 DELETE FROM `creature_template` WHERE `entry`=@Entry;
 INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `scale`, `rank`, `dmgschool`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`) VALUES
-(190000, 29348, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'npc_arena_spectator');
+(190003, 29348, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'npc_arena_spectator');
 creature_template
 
 SET
-@Entry = 190005,
+@Entry = 190004,
 @Name = "Arena Ladder",
 @Subname = "Ladder",
 @IconName = "Speak";
@@ -36,7 +36,7 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'ArenaTeamRanks');
 
 SET
-@Entry = 190006,
+@Entry = 190005,
 @Name = "Beastmaster",
 @Subname = "Beast",
 @IconName = "Speak";
@@ -46,7 +46,7 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'Beastmaster_NPC');
 
 SET
-@Entry = 190007,
+@Entry = 190006,
 @Name = "Enchanter",
 @Subname = "Easy Enchanting",
 @IconName = "Speak";
@@ -56,7 +56,7 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'npc_enchantment');
 
 SET
-@Entry = 190008,
+@Entry = 190007,
 @Name = "Guildhousing",
 @Subname = "",
 @IconName = "Speak";
@@ -66,7 +66,14 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'guildmaster');
 
 SET
-@Entry = 190012,
+@Entry = 190008,
+@Name = "Morpher";
+
+INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `scale`, `rank`, `dmgschool`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`) VALUES
+(@Entry, 20988, 0, @Name, "Morpher", NULL, 0, 80, 80, 2, 35, 1, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'Morpher_Npc');
+
+SET
+@Entry = 190009,
 @Name = "Player Tools",
 @Subname = "",
 @IconName = "Speak";
@@ -76,7 +83,7 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'multi_changer');
 
 SET
-@Entry = 190013,
+@Entry = 190010,
 @Name = "Professions",
 @Subname = "",
 @IconName = "Speak";
@@ -86,7 +93,14 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'Professions_NPC');
 
 SET
-@Entry = 190009,
+@Entry = 190011,
+@Name = "Reforger";
+
+INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `scale`, `rank`, `dmgschool`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`) VALUES
+(@Entry, 20988, 0, @Name, "Arcane Reforger", NULL, 0, 80, 80, 2, 35, 1, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'REFORGER_NPC');
+
+SET
+@Entry = 190012,
 @Name = "Teleporter",
 @Subname = "",
 @IconName = "Speak";
@@ -96,7 +110,7 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'Teleporter_NPC');
 
 SET
-@Entry = 190001,
+@Entry = 190013,
 @Name = "Template NPC",
 @Subname = "",
 @IconName = "Speak";
@@ -106,7 +120,7 @@ INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subna
 (@Entry, 21249, 0, @Name, @Subname, @IconName, 0, 80, 80, 2, 35, 3, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'TemplateNPC');
 
 SET
-@Entry = 190010,
+@Entry = 190014,
 @Name = "PVP Titles",
 @Subname = "",
 @IconName = "Speak";
@@ -135,18 +149,8 @@ INSERT INTO `trinity_string` (`entry`, `content_default`) VALUES
 (@STRING_ENTRY+10, 'Invalid name inserted');
 
 SET
-@Entry = 190002,
+@Entry = 190015,
 @Name = "Warpweaver";
 
 INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `scale`, `rank`, `dmgschool`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`) VALUES
 (@Entry, 19646, 0, @Name, "Transmogrifier", NULL, 0, 80, 80, 2, 35, 1, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'Creature_Transmogrify');
-
-SET
-@Entry = 190003,
-@Name = "Narpweaver";
-
-INSERT INTO `creature_template` (`entry`, `modelid1`, `modelid2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `scale`, `rank`, `dmgschool`, `baseattacktime`, `rangeattacktime`, `unit_class`, `unit_flags`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`) VALUES
-(@Entry, 19646, 0, @Name, "Transmogrifier", NULL, 0, 80, 80, 2, 35, 129, 1, 0, 0, 2000, 0, 1, 0, 7, 138936390, 0, 0, 0, '', 0, 3, 1, 0, 0, 1, 0, 0, 'NPC_TransmogDisplayVendor');
-
-
-

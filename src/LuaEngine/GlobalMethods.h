@@ -43,8 +43,8 @@ namespace LuaGlobalFunctions
     /**
      * Returns emulator version
      *
-     * - For TrinityCore returns the date of the last revision, e.g. `2014-08-13 17:27:22 +0300`
-     * - For cMaNGOS/MaNGOS returns the revision number, e.g. `12708`
+     * - For TrinityCore returns the date of the last revision, e.g. `2015-08-26 22:53:12 +0300`
+     * - For cMaNGOS/MaNGOS returns the date and time of the last revision, e.g. `2015-09-06 13:18:50`
      *
      * @return string version
      */
@@ -2205,6 +2205,10 @@ namespace LuaGlobalFunctions
             nodeEntry->x = entry.LocX;
             nodeEntry->y = entry.LocY;
             nodeEntry->z = entry.LocZ;
+            nodeEntry->MountCreatureID[0] = mountH;
+            nodeEntry->MountCreatureID[1] = mountA;
+            sTaxiNodesStore.SetEntry(nodeId++, nodeEntry);
+            sTaxiPathNodesByPath[pathId][index++] = new TaxiPathNodeEntry(entry);
 #else
             entry.path = pathId;
             entry.index = nodeId;
@@ -2213,11 +2217,11 @@ namespace LuaGlobalFunctions
             nodeEntry->x = entry.x;
             nodeEntry->y = entry.y;
             nodeEntry->z = entry.z;
-#endif
             nodeEntry->MountCreatureID[0] = mountH;
             nodeEntry->MountCreatureID[1] = mountA;
             sTaxiNodesStore.SetEntry(nodeId++, nodeEntry);
             sTaxiPathNodesByPath[pathId].set(index++, new TaxiPathNodeEntry(entry));
+#endif
         }
         if (startNode >= nodeId)
             return 1;

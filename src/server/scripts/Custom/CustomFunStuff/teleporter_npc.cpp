@@ -10,7 +10,8 @@
 ////////////////////////////////////////////////////////////////////////
 
 #include "ScriptPCH.h"
-#include "Group.h
+#include "Group.h"
+#include "Util.h"
 #include "Chat.h"
 
 enum H
