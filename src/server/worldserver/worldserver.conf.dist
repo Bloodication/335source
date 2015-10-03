@@ -2415,7 +2415,15 @@ Arena.ArenaStartMatchmakerRating = 1500
 
 ArenaLog.ExtendedInfo = 0
 
+#    Dementia.Enable
+#        Description: To Enable/Disable Dementia buff
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Dementia.Enable = 1
+
 #
+
 ###################################################################################################
 
 ###################################################################################################

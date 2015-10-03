@@ -1460,6 +1460,7 @@ void AddSC_PhasedDueling(); // this will phase you, so you cannot see objects or
 void AddSC_Professions_NPC(); // instant proffesions hype!
 void AddSC_multi_changer(); // can change name, race and customize your looks!
 void AddSC_Morpher_Npc();  // will morph player base on they choose
+void AddSC_Dementia_Remove_Scripts(); // remove dementia on new zone and onlogin
 //void AddSC_DruidHax(); // fix c issue
 //void AddSC_npc_blood_money(); // win gold!
 //void AddSC_Boss_Announcer(); // announces world boss kill
@@ -1511,6 +1512,7 @@ void AddCustomScripts()
 	AddSC_Professions_NPC(); // instant proffesions hype!
 	AddSC_multi_changer(); // can change name, race and customize your looks!
 	AddSC_Morpher_Npc();  // will morph player base on they choose
+	AddSC_Dementia_Remove_Scripts(); // remove dementia on new zone and onlogin
 	//AddSC_DruidHax(); // fix c issue
 	//AddSC_npc_blood_money(); // win gold!
 	//AddSC_Boss_Announcer(); // announces world boss kill

@@ -1057,6 +1057,9 @@ void World::LoadConfigSettings(bool reload)
 	m_bool_configs[CONFIG_SOLO_3V3_CAST_DESERTER_ON_LEAVE] = sConfigMgr->GetBoolDefault("Solo.3v3.CastDeserterOnLeave", true);
 	m_bool_configs[CONFIG_SOLO_3V3_STOP_GAME_INCOMPLETE] = sConfigMgr->GetBoolDefault("Solo.3v3.StopGameIncomplete", true);
 
+	// Dementia
+	m_bool_configs[CONFIG_DEMENTIA_ENABLE] = sConfigMgr->GetBoolDefault("Dementia.Enable", 1);
+
 
 
 	m_bool_configs[CONFIG_BATTLEGROUND_CAST_DESERTER] = sConfigMgr->GetBoolDefault("Battleground.CastDeserter", true);
