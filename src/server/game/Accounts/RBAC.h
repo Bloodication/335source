@@ -714,6 +714,7 @@ enum RBACPermissions
 	RBAC_ANTI_CHEAT_JAIL									 = 1016,
 	RBAC_ANTI_CHEAT_WARN									 = 1017,
 	RBAC_ANTI_CHEAT_ANTICHEAT								 = 1018,
+	RBAC_PERM_COMMAND_RELOAD_TEMPLATE_NPC					 = 1019,
 
     // custom permissions 1000+
     RBAC_PERM_MAX
