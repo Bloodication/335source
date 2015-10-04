@@ -919,6 +919,8 @@ Player::Player(WorldSession* session): Unit(true)
     m_achievementMgr = new AchievementMgr(this);
     m_reputationMgr = new ReputationMgr(this);
 
+	// custom
+	m_hasCoolDownBeforeDuel = false;
 	m_CustomXpRate = 1;
 	m_CustomLootRate = 1;
 }
@@ -7688,6 +7690,21 @@ void Player::DuelComplete(DuelCompleteType type)
     SetUInt32Value(PLAYER_DUEL_TEAM, 0);
     duel->opponent->SetGuidValue(PLAYER_DUEL_ARBITER, ObjectGuid::Empty);
     duel->opponent->SetUInt32Value(PLAYER_DUEL_TEAM, 0);
+
+   if (sWorld->getBoolConfig(CONFIG_RESET_COOLDOWN_AFTER_DUEL) &&
+        type != DUEL_INTERRUPTED)
+    {
+        if (!HasCoolDownBeforeDuel())
+            RemoveArenaSpellCooldowns(true);
+        else
+            ChatHandler(GetSession()).PSendSysMessage(LANG_COOLDOWN_NOT_RESET_AFTER_DUEL);
+
+        if (!duel->opponent->HasCoolDownBeforeDuel())
+            duel->opponent->RemoveArenaSpellCooldowns(true);
+        else
+            ChatHandler(duel->opponent->GetSession()).PSendSysMessage(LANG_COOLDOWN_NOT_RESET_AFTER_DUEL);
+    }
+
 
     delete duel->opponent->duel;
     duel->opponent->duel = NULL;

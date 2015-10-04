@@ -28,6 +28,7 @@
 #include "QuestDef.h"
 #include "SpellMgr.h"
 #include "Unit.h"
+#include "SpellHistory.h"
 #include "../../scripts/Custom/Transmog/Transmogrification.h"
 
 #include <limits>
@@ -2008,6 +2009,12 @@ class Player : public Unit, public GridObject<Player>
         uint32 GetMaxPersonalArenaRatingRequirement(uint32 minarenaslot) const;
         void SetHonorPoints(uint32 value);
         void SetArenaPoints(uint32 value);
+
+		bool m_hasCoolDownBeforeDuel;
+		bool HasCoolDownBeforeDuel() const { return m_hasCoolDownBeforeDuel; }
+		void UpdateHasCoolDownBeforeDuel() { m_hasCoolDownBeforeDuel = GetSpellHistory()->GetArenaCooldownsSize() > 0; }
+		
+
 
         //End of PvP System
 
