@@ -35,7 +35,7 @@
 #include "WorldPacket.h"
 #include "Transport.h"
 #include "ArenaTeamMgr.h"
-#include "../../../src/server/scripts/custom/3v3/npc_solo3v3.h"
+#include "../../../src/server/scripts/Custom/3v3/npc_solo3v3.h"
 
 namespace Trinity
 {
