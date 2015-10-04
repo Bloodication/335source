@@ -16,8 +16,8 @@ set(scripts_STAT_SRCS
 Custom/Transmog/Transmogrification.h
 Custom/Transmog/Transmogrification.cpp
 Custom/Transmog/Transmogrifier.cpp
-Custom/1V1/npc_arena1v1.cpp
-Custom/1V1/npc_arena1v1.h
+Custom/1v1/npc_arena1v1.cpp
+Custom/1v1/npc_arena1v1.h
 Custom/PVP/arena_crystal.cpp
 Custom/Arenaspectator/arena_spectator.cpp
 Custom/CustomFunStuff/teleporter_npc.cpp
