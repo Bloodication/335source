@@ -770,18 +770,19 @@ void Battleground::RewardReputationToTeam(uint32 a_faction_id, uint32 h_faction_
 		if (itr->second.OfflineRemoveTime)
 			 continue;
 		
-			Player* player = ObjectAccessor::FindPlayer(itr->first);
-		
+		Player* player = ObjectAccessor::FindPlayer(itr->first);
+		{
 			if (!player)
-				TC_LOG_ERROR("bg.battleground", "BattleGround:RewardReputationToTeam: %u not found!", itr->first);
-			 {
-			continue;
+			{
+				//TC_LOG_ERROR("bg.battleground", "BattleGround:RewardReputationToTeam: %u not found!", itr->first);
+				continue;
 			}
+		}
 	uint32 team = player->GetTeam();
 		if (team == TeamID)
 			
 			if (Player* player = _GetPlayerForTeam(TeamID, itr, "RewardReputationToTeam"))
-			 {
+			{
 			player->GetReputationMgr().ModifyReputation(player->GetCFSTeam() == ALLIANCE ? a_factionEntry : h_factionEntry, Reputation);
 			}
 		}
