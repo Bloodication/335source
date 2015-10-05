@@ -18,10 +18,8 @@ public:
 				return false;
 			}
 
-			if (bg->isArena()) //&& bg->IsChallenge()) // 1v1 challenge
+			if (bg->isArena())
 				player->GetSession()->SendAreaTriggerMessage("Players marked as ready: %u/2", bg->ClickFastStart(player, go));
-
-			if (!bg->IsChallenge())
 			{
 				if (bg->isArena() && bg->GetArenaType() == ARENA_TYPE_3v3_SOLO) // 3v3 solo queue
 					player->GetSession()->SendAreaTriggerMessage("Players marked as ready: %u/6", bg->ClickFastStart(player, go));
