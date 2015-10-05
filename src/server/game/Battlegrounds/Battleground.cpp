@@ -303,7 +303,7 @@ void Battleground::Update(uint32 diff)
 
 			if (Player* player = ObjectAccessor::FindPlayer(itr->first))
 			{
-				if (player->InArena())
+				if (player->InArena() && GetArenaType() == ARENA_TYPE_2v2)
 				{
 					Aura* demAura = player->GetAura(41406);
 					float startTimer = 10 * MINUTE * IN_MILLISECONDS;
