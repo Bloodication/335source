@@ -3734,6 +3734,15 @@ CustomLootRate.enabled = 1
 Player.ShowXpRateOnLogin = 1
 Player.ShowLootRateOnLogin = 1
 #
+#	CustomXp.Level
+#	CustomLoot.Level
+#	 Description: Allows user to get extra loot at level and xp
+#        Usage: 1-255
+#        Default    : 80
+#
+CustomLoot.Level = 80
+CustomXp.Level = 80
+#
 ####################################################################################################
 ###################################################################################################
 #  WorldChat Settings

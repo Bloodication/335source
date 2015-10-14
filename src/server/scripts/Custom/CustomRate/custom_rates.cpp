@@ -128,6 +128,7 @@ public:
 		{
 			{ "xp", rbac::RBAC_PERM_COMMAND_XP_RATE, false, &HandleRateXpCommand, "", NULL },
 			{ "loot", rbac::RBAC_PERM_COMMAND_LOOT_RATE, false, &HandleRateLootCommand, "", NULL },
+
 			{ NULL, rbac::RBAC_PERM_COMMAND_XP_RATE, false, NULL, "", NULL }
 		};
 
@@ -156,7 +157,7 @@ public:
 		}
 
 		// already at max level, no point in using the command at all
-		if (me->getLevel() == sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
+		if (me->getLevel() == sWorld->getIntConfig(CONFIG_CUSTOM_XP_LEVEL))
 		{
 			handler->SendSysMessage("|CFF7BBEF7[Custom Rates]|r: You are already at maximum level.");
 			return true;
@@ -241,6 +242,13 @@ public:
 		Player *me = handler->GetSession() ? handler->GetSession()->GetPlayer() : NULL;
 		if (!me)
 			return false;
+
+		// already at max level, no point in using the command at all
+		if (me->getLevel() == sWorld->getIntConfig(CONFIG_CUSTOM_LOOT_LEVEL))
+		{
+			handler->SendSysMessage("|CFF7BBEF7[Custom Rates]|r: You are already at maximum level.");
+			return true;
+		}
 
 		if (sWorld->getIntConfig(CONFIG_CUSTOM_RATE_XP_ENABLED) == 0)
 		{
