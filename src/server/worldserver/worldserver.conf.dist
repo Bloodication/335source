@@ -3764,6 +3764,14 @@ Solo.3v3.Enable = 1
 Solo.3v3.Costs = 400000
 #
 #
+#  3v3 soloqueue
+#        Solo.3v3.MinLevel
+#	     Description: Change player level requirement to join 3v3 soloqueue arena
+#		 Usage: 1-255
+#
+Solo.3v3.MinLevel = 80
+#
+#
 ###################################################################################################
 ###################################################################################################
 #
@@ -3783,6 +3791,14 @@ Arena.1v1.Enable = 1
 #		 Usage: 0-400000 // 400k is 40g
 #
 Arena.1v1.Costs = 400000
+#
+#
+#  1v1
+#        Arena.1v1.MinLevel
+#	     Description: Change player level requirement to join 1v1 arena
+#		 Usage: 1-255
+#
+Arena.1v1.MinLevel = 80
 #
 #
 ###################################################################################################
