@@ -17,6 +17,12 @@ public:
 				player->GetSession()->SendAreaTriggerMessage("You're not be able to do this while spectating.");
 				return false;
 			}
+			
+			if (player->IsGameMaster()) // Can cause bug if GM clicks the crystal. Lets avoid that.
+			{
+				player->GetSession()->SendAreaTriggerMessage("You're not allowed to do this while in GameMaster mode.");
+				return false;
+			}
 
 			if (bg->isArena())
 				player->GetSession()->SendAreaTriggerMessage("Players marked as ready: %u/2", bg->ClickFastStart(player, go));
