@@ -21,9 +21,7 @@
 class GOMove_commandscript : public CommandScript
 {
 public:
-    GOMove_commandscript() : CommandScript("GOMove_commandscript")
-    {
-    }
+    GOMove_commandscript() : CommandScript("GOMove_commandscript") { }
 
     enum commandIDs
     {
