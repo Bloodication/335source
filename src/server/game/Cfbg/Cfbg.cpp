@@ -129,13 +129,13 @@ bool Player::SendBattleGroundChat(uint32 msgtype, std::string message)
                                        if (GetTeam() == pPlayer->GetTeam())
                                        {
                                                WorldPacket data;
-                                               ChatHandler::BuildChatPacket(data, ChatMsg(msgtype), LANG_UNIVERSAL, pPlayer, NULL, message);
+                                               BuildPlayerChat(&data, msgtype, message, LANG_UNIVERSAL);
                                                pPlayer->GetSession()->SendPacket(&data);
                                        }
                                        else if (msgtype != CHAT_MSG_EMOTE)
                                        {
                                                WorldPacket data;
-                                               ChatHandler::BuildChatPacket(data, ChatMsg(msgtype), pPlayer->GetTeam() == ALLIANCE ? LANG_ORCISH : LANG_COMMON, pPlayer, NULL, message);
+                                               BuildPlayerChat(&data, msgtype, message, pPlayer->GetTeam() == ALLIANCE ? LANG_ORCISH : LANG_COMMON);
                                                pPlayer->GetSession()->SendPacket(&data);
                                        }
                                        pPlayer->GetSession()->SendPacket(&data);
