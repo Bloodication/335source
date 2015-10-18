@@ -94,7 +94,7 @@ void Arena::HandleKillPlayer(Player* player, Player* killer)
 
 void Arena::RemovePlayerAtLeave(ObjectGuid guid, bool transport, bool sendPacket)
 {
-	if (isRated() || GetArenaType() == ARENA_TYPE_3v3_SOLO && GetStatus() == STATUS_IN_PROGRESS)
+	if (isArena() && isRated() && GetStatus() == STATUS_IN_PROGRESS)
     {
         BattlegroundPlayerMap::const_iterator itr = m_Players.find(guid);
         if (itr != m_Players.end()) // check if the player was a participant of the match, or only entered through gm command (appear)
@@ -132,7 +132,7 @@ void Arena::EndBattleground(uint32 winner)
 {
 
     // arena rating calculation
-	if (isRated() || GetArenaType() == ARENA_TYPE_3v3_SOLO)
+	if (isArena() && isRated())
     {
         uint32 loserTeamRating        = 0;
         uint32 loserMatchmakerRating  = 0;

@@ -206,6 +206,7 @@ Battleground::~Battleground()
 
     for (BattlegroundScoreMap::const_iterator itr = PlayerScores.begin(); itr != PlayerScores.end(); ++itr)
         delete itr->second;
+
 	// Cleanup temp arena teams for solo 3v3
 	if (isArena() && isRated() && GetArenaType() == ARENA_TYPE_3v3_SOLO)
 	{
