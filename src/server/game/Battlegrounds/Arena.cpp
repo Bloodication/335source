@@ -130,8 +130,9 @@ void Arena::CheckWinConditions()
 
 void Arena::EndBattleground(uint32 winner)
 {
+
     // arena rating calculation
-    if (isRated())
+	if (isRated() || GetArenaType() == ARENA_TYPE_3v3_SOLO)
     {
         uint32 loserTeamRating        = 0;
         uint32 loserMatchmakerRating  = 0;

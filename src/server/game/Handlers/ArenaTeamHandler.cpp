@@ -140,7 +140,7 @@ void WorldSession::HandleArenaTeamInviteOpcode(WorldPacket& recvData)
         return;
     }
 
-    if (player->GetArenaTeamIdInvited())
+	if (player->GetArenaTeamIdInvited() || arenaTeam->GetType() == ARENA_TEAM_5v5 /*Don't allow invite for 3v3 solo team*/)
     {
         SendArenaTeamCommandResult(ERR_ARENA_TEAM_INVITE_SS, "", player->GetName(), ERR_ALREADY_INVITED_TO_ARENA_TEAM_S);
         return;
