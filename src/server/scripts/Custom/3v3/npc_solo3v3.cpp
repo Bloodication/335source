@@ -194,8 +194,9 @@ private:
         if (sWorld->getIntConfig(CONFIG_SOLO_3V3_MIN_LEVEL) > player->getLevel())
             return false;
 
-		ObjectGuid guid = player->GetGUID();
+        ObjectGuid guid = player->GetGUID();
         uint8 arenaslot = ArenaTeam::GetSlotByType(ARENA_TEAM_5v5);
+		uint8 arenatype = ARENA_TYPE_5v5;
         uint32 arenaRating = 0;
         uint32 matchmakerRating = 0;
 
@@ -211,19 +212,17 @@ private:
 			return false;
 		}
 
-		if (DisableMgr::IsDisabledFor(DISABLE_TYPE_BATTLEGROUND, BATTLEGROUND_AA, NULL))
-		{
-			ChatHandler(player->GetSession()).PSendSysMessage(LANG_ARENA_DISABLED);
-			return false;
-		}
+        if (DisableMgr::IsDisabledFor(DISABLE_TYPE_BATTLEGROUND, BATTLEGROUND_AA, NULL))
+        {
+            ChatHandler(player->GetSession()).PSendSysMessage(LANG_ARENA_DISABLED);
+            return false;
+        }
 
-		BattlegroundTypeId bgTypeId = bg->GetTypeID();
-		BattlegroundQueueTypeId bgQueueTypeId = BattlegroundMgr::BGQueueTypeId(bgTypeId, arenatype);
-		PvPDifficultyEntry const* bracketEntry = GetBattlegroundBracketByLevel(bg->GetMapId(), player->getLevel());
-		if (!bracketEntry)
-			return false;
-
-		GroupJoinBattlegroundResult err = ERR_GROUP_JOIN_BATTLEGROUND_FAIL;
+        BattlegroundTypeId bgTypeId = bg->GetTypeID();
+        BattlegroundQueueTypeId bgQueueTypeId = BattlegroundMgr::BGQueueTypeId(bgTypeId, arenatype);
+        PvPDifficultyEntry const* bracketEntry = GetBattlegroundBracketByLevel(bg->GetMapId(), player->getLevel());
+        if (!bracketEntry)
+            return false;
 
         // check if already in queue
         if (player->GetBattlegroundQueueIndex(bgQueueTypeId) < PLAYER_MAX_BATTLEGROUND_QUEUES)
@@ -233,42 +232,43 @@ private:
         if (!player->HasFreeBattlegroundQueueId())
             return false;
 
-		uint32 ateamId = 0;
+        uint32 ateamId = 0;
 
-		if (isRated)
-		{
-			ateamId = player->GetArenaTeamId(arenaslot);
-			ArenaTeam* at = sArenaTeamMgr->GetArenaTeamById(ateamId);
-			if (!at)
-			{
-				player->GetSession()->SendNotInArenaTeamPacket(arenatype);
-				return false;
-			}
+        if (isRated)
+        {
+            ateamId = player->GetArenaTeamId(arenaslot);
+            ArenaTeam* at = sArenaTeamMgr->GetArenaTeamById(ateamId);
+            if (!at)
+            {
+                player->GetSession()->SendNotInArenaTeamPacket(arenatype);
+                return false;
+            }
 
-			// get the team rating for queueing
-			arenaRating = at->GetRating();
-			matchmakerRating = arenaRating;
-			// the arenateam id must match for everyone in the group
+            // get the team rating for queueing
+            arenaRating = at->GetRating();
+            matchmakerRating = at->GetAverageMMR();
+            // the arenateam id must match for everyone in the group
 
-			if (arenaRating <= 0)
-				arenaRating = 1;
-		}
+            if (arenaRating <= 0)
+                arenaRating = 1;
+        }
 
-		BattlegroundQueue &bgQueue = sBattlegroundMgr->GetBattlegroundQueue(bgQueueTypeId);
-		bg->SetRated(isRated);
+        BattlegroundQueue &bgQueue = sBattlegroundMgr->GetBattlegroundQueue(bgQueueTypeId);
+		//BattlegroundQueue &bgQueue = sBattlegroundMgr->m_BattlegroundQueues[bgQueueTypeId];
+        bg->SetRated(isRated);
 
-		GroupQueueInfo* ginfo = bgQueue.AddGroup(player, NULL, bgTypeId, bracketEntry, arenatype, isRated, false, arenaRating, matchmakerRating, ateamId);
-		uint32 avgTime = bgQueue.GetAverageQueueWaitTime(ginfo, bracketEntry->GetBracketId());
-		uint32 queueSlot = player->AddBattlegroundQueueId(bgQueueTypeId);
+        GroupQueueInfo* ginfo = bgQueue.AddGroup(player, NULL, bgTypeId, bracketEntry, arenatype, isRated, false, arenaRating, matchmakerRating, ateamId);
+        uint32 avgTime = bgQueue.GetAverageQueueWaitTime(ginfo, bracketEntry->GetBracketId());
+        uint32 queueSlot = player->AddBattlegroundQueueId(bgQueueTypeId);
 
-		WorldPacket data;
-		// send status packet (in queue)
-		sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, queueSlot, STATUS_WAIT_QUEUE, avgTime, 0, arenatype, 0);
-		player->GetSession()->SendPacket(&data);
+        WorldPacket data;
+        // send status packet (in queue)
+        sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, queueSlot, STATUS_WAIT_QUEUE, avgTime, 0, arenatype, 0);
+        player->GetSession()->SendPacket(&data);
 
-		sBattlegroundMgr->ScheduleQueueUpdate(matchmakerRating, arenatype, bgQueueTypeId, bgTypeId, bracketEntry->GetBracketId());
+        sBattlegroundMgr->ScheduleQueueUpdate(matchmakerRating, arenatype, bgQueueTypeId, bgTypeId, bracketEntry->GetBracketId());
 
-		return true;
+        return true;
     }
 
     bool CreateArenateam(Player* player, Creature* me)
