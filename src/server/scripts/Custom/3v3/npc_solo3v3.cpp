@@ -1,11 +1,4 @@
-/*
-*
-* Copyright (C) 2014 Ladrek
-* Written by Ladrek <Kargath-WoW>
-*
-*/
 
-#include "ScriptMgr.h"
 #include "ArenaTeamMgr.h"
 #include "Common.h"
 #include "DisableMgr.h"
@@ -14,6 +7,7 @@
 #include "ArenaTeam.h"
 #include "Language.h"
 #include "npc_solo3v3.h"
+#include "../../../src/server/scripts/Custom/1V1/npc_arena1v1.h"
 #include "BattlegroundQueue.h"
 
 
@@ -206,7 +200,10 @@ private:
 		//check existance
 		Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(BATTLEGROUND_AA);
 		if (!bg)
+		{
+			TC_LOG_ERROR("Arena", "Battleground: template bg (all arenas) not found");
 			return false;
+		};
 
 		if (DisableMgr::IsDisabledFor(DISABLE_TYPE_BATTLEGROUND, BATTLEGROUND_AA, NULL))
 		{
@@ -219,6 +216,8 @@ private:
 		PvPDifficultyEntry const* bracketEntry = GetBattlegroundBracketByLevel(bg->GetMapId(), player->getLevel());
 		if (!bracketEntry)
 			return false;
+
+		GroupJoinBattlegroundResult err = ERR_GROUP_JOIN_BATTLEGROUND_FAIL;
 
 		// check if already in queue
 		if (player->GetBattlegroundQueueIndex(bgQueueTypeId) < PLAYER_MAX_BATTLEGROUND_QUEUES)
