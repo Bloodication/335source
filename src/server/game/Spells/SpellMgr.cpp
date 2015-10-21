@@ -3147,8 +3147,8 @@ void SpellMgr::LoadSpellInfoCorrections()
 			case 41406: // Positive Dementia
 			case 41409: // Negative Dementia (UNUSED)
 				spellInfo->DurationEntry = sSpellDurationStore.LookupEntry(21); // Infinite
-				spellInfo->ProcCharges = 5; // Stack up to 5 times
-                spellInfo->StackAmount = 5; // Stack up to 5 times
+				spellInfo->ProcCharges = 10; // Stack up to 5 times
+                spellInfo->StackAmount = 10; // Stack up to 5 times
 				break;
             case 28200: // Ascendance (Talisman of Ascendance trinket)
                 spellInfo->ProcCharges = 6;
