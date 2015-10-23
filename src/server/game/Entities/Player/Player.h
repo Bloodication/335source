@@ -2013,8 +2013,6 @@ class Player : public Unit, public GridObject<Player>
         void SetArenaPoints(uint32 value);
 
 		bool m_hasCoolDownBeforeDuel;
-		bool HasCoolDownBeforeDuel() const { return m_hasCoolDownBeforeDuel; }
-		void UpdateHasCoolDownBeforeDuel() { m_hasCoolDownBeforeDuel = GetSpellHistory()->GetArenaCooldownsSize() > 0; }
 		
 
 
