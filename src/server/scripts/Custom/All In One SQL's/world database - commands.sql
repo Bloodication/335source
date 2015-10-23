@@ -27,3 +27,10 @@ insert  into `command`(`name`,`permission`,`help`) values ('spectate reset',1006
 
 insert  into `command`(`name`,`permission`,`help`) values ('spectate leave',1007,'Syntax: Leave spectator mode.');
 
+
+ 
+
+INSERT INTO `trinity_string` (`entry`, `content_default`, `content_loc1`, `content_loc2`, `content_loc3`, `content_loc4`, `content_loc5`, `content_loc6`, `content_loc7`, `content_loc8`) VALUES (7190, '|cffff0000[Arena Queue Announcer]:|r %s -- Exited : 3vs3 Solo : %u|r', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `trinity_string` (`entry`, `content_default`, `content_loc1`, `content_loc2`, `content_loc3`, `content_loc4`, `content_loc5`, `content_loc6`, `content_loc7`, `content_loc8`) VALUES (7180, '|cffff0000[Arena Queue Announcer]:|r %s -- Joined : 3vs3 Solo : %u|r', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+
