@@ -1432,8 +1432,7 @@ void AddSC_GOMove_commandscript(); // use an addon to move the objects!
 void AddSC_REFORGER_NPC(); // retail blizzlike reforger
 
 // killstreak
-void AddSC_script_killstreak_handling(); // kill steak yep!
-void AddSC_script_killstreak_example();  // kill steak yep!
+void AddSC_PvP_System(); // sends message every 10 kills
 
 // these are the pvp scripts
 void AddSC_TemplateNPC(); // template npc
@@ -1482,8 +1481,7 @@ void AddCustomScripts()
 
 
 	// killstreak
-	AddSC_script_killstreak_handling(); // kill steak yep!
-	AddSC_script_killstreak_example(); // kill steak yep!
+	AddSC_PvP_System(); // sends message every 10 kills
 
 
 	// these are the pvp scripts
