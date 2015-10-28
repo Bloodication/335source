@@ -29,7 +29,7 @@ Custom/WorldChat/worldchat.cpp
 Custom/CustomFunStuff/titles.cpp
 Custom/CustomFunStuff/beastmaster.cpp
 Custom/CustomFunStuff/enchanter.cpp
-Custom/KillStreak/killstreak.cpp
+Custom/Killstreak/killstreak.cpp
 Custom/CustomFunStuff/cooldowns_crystal.cpp
 Custom/TemplateNPC/TemplateNPC.cpp
 Custom/TemplateNPC/TemplateNPC.h
