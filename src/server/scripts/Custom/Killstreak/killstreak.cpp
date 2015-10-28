@@ -1,4 +1,4 @@
-+/*
+/*
 Originally by Kjanko
 Edited by Tommy
 Edited by Rochet2 ~ Made dynamic
