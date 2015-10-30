@@ -3781,8 +3781,6 @@ Solo.3v3.MinLevel = 80
 #
 ###################################################################################################
 ###################################################################################################
-#
-###################################################################################################
 #  1v1
 #        Arena.1v1.Enable
 #	     Description: Defines is the world chat enabled or disabled, default : Enabled
@@ -3815,9 +3813,20 @@ Arena.1v1.MinLevel = 80
 #
 #    CrossfactionBG.enable = 1 - Mixed battleground enabled.
 #    CrossfactionBG.enable = 0 - Mixed battleground disabled.
-
-CrossFactionSystem.Battlegrounds = 1
-
 #
+CrossFactionSystem.Battlegrounds = 1
+#
+#
+###################################################################################################
+###################################################################################################
+#
+# CUSTOM PVP ZONE
+#
+#    Custom.Gurubashi.Arena.enabled = 1 - Custom Graveyard spawn at Gurubashi Arena enabled.
+#    Custom.Gurubashi.Arena.enabled = 0 - Custom Graveyard spawn at Gurubashi Arena disabled.
+#
+Custom.Gurubashi.Arena.enabled = 0
+#
+###################################################################################################
 ###################################################################################################
 

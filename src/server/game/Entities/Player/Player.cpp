@@ -5445,6 +5445,92 @@ void Player::RepopAtGraveyard()
     // stop countdown until repop
     m_deathTimer = 0;
 
+	// Custom graveyard coordinates for Stranglethorn Vale (Gurubashi Arena)
+	if (GetZoneId() == 33)
+	{
+		if (sWorld->getIntConfig(CONFIG_WORLD_CHAT_ENABLED) == 0)
+		{
+			return;
+		}
+
+		int spawnLocations = urand(0, 6); // randomize spawn locations
+
+		uint32 cMap;
+		float cx;
+		float cy;
+		float cz;
+		float co;
+
+		switch (spawnLocations)
+		{
+			if (GetTeam() == ALLIANCE || GetTeam() == HORDE)
+			{
+		case 0: // 1
+			cMap = 0;
+			cx = -13269.199219f;
+			cy = 213.064621f;
+			cz = 51.64799f;
+			co = 3.850091f;
+			break;
+		case 1: // 2
+			cMap = 0;
+			cx = -13217.757813f;
+			cy = 187.847717f;
+			cz = 50.606487f;
+			co = 4.679010f;
+			break;
+		case 2: // 3
+			cMap = 0;
+			cx = -13324.721680f;
+			cy = 153.279694f;
+			cz = 17.664396f;
+			co = 0.296491f;
+			break;
+		case 3: // 4
+			cMap = 0;
+			cx = -13230.436523f;
+			cy = 141.635956f;
+			cz = 16.834221f;
+			co = 1.482434f;
+			break;
+		case 4: // 5
+			cMap = 0;
+			cx = -13430.801758f;
+			cy = 212.527847f;
+			cz = 22.778484f;
+			co = 3.363461f;
+			break;
+		case 5: // 6
+			cMap = 0;
+			cx = -13454.504883f;
+			cy = 120.977814f;
+			cz = 22.822309f;
+			co = 2.962906f;
+			break;
+		case 6: // 7
+			cMap = 0;
+			cx = -13342.867188f;
+			cy = -25.816917f;
+			cz = 22.379440f;
+			co = 4.791781f;
+			break;
+			}
+			break;
+		}
+
+		TeleportTo(cMap, cx, cy, cz, co);
+		if (isDead())
+		{
+			WorldPacket data(SMSG_DEATH_RELEASE_LOC, 4 * 4);
+			data << cMap;
+			data << cx;
+			data << cy;
+			data << cz;
+			GetSession()->SendPacket(&data);
+		}
+		return;
+	}
+
     // if no grave found, stay at the current location
     // and don't show spirit healer location
     if (ClosestGrave)

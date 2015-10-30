@@ -998,6 +998,10 @@ void World::LoadConfigSettings(bool reload)
 	m_int_configs[CONFIG_CUSTOM_RATE_XP_ENABLED] = sConfigMgr->GetIntDefault("CustomXpRate.enabled", 1);
 	m_int_configs[CONFIG_CUSTOM_RATE_LOOT_ENABLED] = sConfigMgr->GetIntDefault("CustomLootRate.enabled", 1);
 
+	// Custom PVP Spawns
+	m_int_configs[CONFIG_CUSTOM_PVP_SPAWN_ENABLED] = sConfigMgr->GetIntDefault("Custom.Gurubashi.Arena.enabled", 1); // Gurubashi Arena
+
+
 	m_int_configs[CONFIG_RANDOM_BG_RESET_HOUR] = sConfigMgr->GetIntDefault("Battleground.Random.ResetHour", 6);
 	if (m_int_configs[CONFIG_RANDOM_BG_RESET_HOUR] > 23)
 	{
