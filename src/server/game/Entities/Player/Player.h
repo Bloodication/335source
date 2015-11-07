@@ -2397,6 +2397,74 @@ class Player : public Unit, public GridObject<Player>
 #ifdef PRESETS
         PresetMapType presetMap; // presetMap[presetId] = presetData
 #endif
+
+        //Custom: Glory System
+        //Source from which the player received his/her glory
+        enum RewardSource 
+        {
+            PVP_HK    = 0,
+            PVP_BG    = 1,
+            PVP_ARENA = 2
+        };
+        
+        //Amount of points required to get a specific glory rank
+        enum GloryRank
+        {
+            GLORY_RANK_1  = 250,
+            GLORY_RANK_2  = 500,
+            GLORY_RANK_3  = 1000,
+            GLORY_RANK_4  = 2500,
+            GLORY_RANK_5  = 5000,
+            GLORY_RANK_6  = 10000,
+            GLORY_RANK_7  = 25000,
+            GLORY_RANK_8  = 50000,
+            GLORY_RANK_9  = 75000,
+            GLORY_RANK_10 = 100000,
+            GLORY_RANK_11 = 250000,
+            GLORY_RANK_12 = 500000,
+            GLORY_RANK_13 = 750000,
+            GLORY_RANK_14 = 1000000
+        };
+        
+        // Title IDs
+        enum Title
+        {
+            TITLE_PRIVATE               = 1,
+            TITLE_CORPORAL              = 2,
+            TITLE_SERGEANT_A            = 3,
+            TITLE_MASTER_SERGEANT       = 4,
+            TITLE_SERGEANT_MAJOR        = 5,
+            TITLE_KNIGHT                = 6,
+            TITLE_KNIGHT_CAPTAIN        = 7,
+            TITLE_KNIGHT_LIEUTENANT     = 8,
+            TITLE_KNIGHT_CHAMPION       = 9,
+            TITLE_LIEUTENANT_COMMANDER  = 10,
+            TITLE_COMMANDER             = 11,
+            TITLE_MARSHAL               = 12,
+            TITLE_FIELD_MARSHAL         = 13,
+            TITLE_GRAND_MARSHAL         = 14,
+            
+            TITLE_SCOUT                 = 15,
+            TITLE_GRUNT                 = 16,
+            TITLE_SERGEANT_H            = 17,
+            TITLE_SENIOR_SERGEANT       = 18,
+            TITLE_FIRST_SERGEANT        = 19,
+            TITLE_STONE_GUARD           = 20,
+            TITLE_BLOOD_GUARD           = 21,
+            TITLE_LEGIONNAIRE           = 22,
+            TITLE_CENTURION             = 23,
+            TITLE_CHAMPION              = 24,
+            TITLE_LIEUTENANT_GENERAL    = 25,
+            TITLE_GENERAL               = 26,
+            TITLE_WARLORD               = 27,
+            TITLE_HIGH_WARLORD          = 28
+        };
+        void RewardGlory(int amount, int source);
+        uint32 PointsUntilNextRank();
+        void CheckGloryRewards();
+        bool CanRankUp();
+        void RewardGloryRank(int rank);
+        uint32 GetGlory() {return _gloryPoints;}
 		//ChallengeData *challengeData;
     protected:
         // Gamemaster whisper whitelist
@@ -2728,6 +2796,9 @@ class Player : public Unit, public GridObject<Player>
 
 		uint32 m_CustomXpRate;
 		uint32 m_CustomLootRate;
+		
+		void _LoadGlory(int amount);
+        uint32 _gloryPoints;
 };
 
 void AddItemsSetItem(Player* player, Item* item);

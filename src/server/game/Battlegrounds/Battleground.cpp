@@ -1128,6 +1128,13 @@ void Battleground::EndBattleground(uint32 winner)
         // Reward winner team
         if (team == winner)
         {
+			if (isArena())
+			    if (isRated())
+				    player->RewardGlory(35, Player::PVP_ARENA);
+			
+			if (isBattleground())
+				player->RewardGlory(50, Player::PVP_BG);
+			
             if (IsRandom() || BattlegroundMgr::IsBGWeekend(GetTypeID()))
             {
                 UpdatePlayerScore(player, SCORE_BONUS_HONOR, GetBonusHonorFromKill(winner_kills));
