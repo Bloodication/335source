@@ -48,6 +48,7 @@ Custom/3v3/npc_solo3v3.h
 Custom/GoMove/GOMove.cpp
 Custom/Dementia/Arena_Anti-Draw.cpp
 Custom/Reforging/Reforging.cpp
+Custom/PVP/Glory.cpp
 )
 
 message("  -> Prepared: Custom")
