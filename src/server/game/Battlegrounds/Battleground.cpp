@@ -38,6 +38,9 @@
 #include "Pet.h"
 #include "../../../src/server/scripts/Custom/3v3/npc_solo3v3.h"
 
+#define GLORY_ARENA  35
+#define GLORY_BG     50
+
 namespace Trinity
 {
     class BattlegroundChatBuilder
@@ -1128,13 +1131,16 @@ void Battleground::EndBattleground(uint32 winner)
         // Reward winner team
         if (team == winner)
         {
+<<<<<<< HEAD
 			if (isArena())
 			    if (isRated())
-				    player->RewardGlory(35, Player::PVP_ARENA);
+				    player->RewardGlory(GLORY_ARENA, Player::PVP_ARENA);
 			
 			if (isBattleground())
-				player->RewardGlory(50, Player::PVP_BG);
+				player->RewardGlory(GLORY_BG, Player::PVP_BG);
 			
+=======
+>>>>>>> parent of 34bb8ad... [Core/Custom] Added glory system.
             if (IsRandom() || BattlegroundMgr::IsBGWeekend(GetTypeID()))
             {
                 UpdatePlayerScore(player, SCORE_BONUS_HONOR, GetBonusHonorFromKill(winner_kills));
