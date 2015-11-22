@@ -703,6 +703,7 @@ public:
 	typedef std::unordered_map<uint32, PointOfInterest> PointOfInterestContainer;
 
 	typedef std::vector<std::string> ScriptNameContainer;
+	typedef std::vector<std::pair<std::string, uint32> > ChatFilterContainer;
 
 	typedef std::map<uint32, uint32> CharacterConversionMap;
 
@@ -1034,6 +1035,9 @@ public:
 	void LoadQuestPOI();
 
 	void LoadNPCSpellClickSpells();
+
+	void LoadChatFilter();
+	ChatFilterContainer& GetCensoredWords() { return _chatFilterStore; }
 
 	void LoadGameTele();
 
@@ -1380,6 +1384,8 @@ private:
 	ScriptNameContainer _scriptNamesStore;
 
 	SpellClickInfoContainer _spellClickInfoStore;
+
+	ChatFilterContainer _chatFilterStore;
 
 	SpellScriptsContainer _spellScriptsStore;
 
