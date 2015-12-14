@@ -41,6 +41,98 @@
 #ifdef ELUNA
 #include "LuaEngine.h"
 #endif
+// ChatHandler.cpp
+
+enum ChatFilterPunishments
+{
+	CHAT_FILTER_PUNISHMENT_MUTE_10_SEC = 1,
+	CHAT_FILTER_PUNISHMENT_MUTE_30_SEC = 2,
+	CHAT_FILTER_PUNISHMENT_MUTE_1_MIN = 4,
+	CHAT_FILTER_PUNISHMENT_MUTE_2_MIN = 8,
+	CHAT_FILTER_PUNISHMENT_MUTE_5_MIN = 16,
+	CHAT_FILTER_PUNISHMENT_MUTE_10_MIN = 32,
+	CHAT_FILTER_PUNISHMENT_MUTE_20_MIN = 64,
+	CHAT_FILTER_PUNISHMENT_MUTE_30_MIN = 128,
+	CHAT_FILTER_PUNISHMENT_MUTE_1_HOUR = 256,
+	CHAT_FILTER_PUNISHMENT_FREEZE_5_MIN = 512,
+	CHAT_FILTER_PUNISHMENT_FREEZE_10_MIN = 1024,
+	CHAT_FILTER_PUNISHMENT_KICK_PLAYER = 2048,
+	CHAT_FILTER_PUNISHMENT_BAN_PLAYER_1_DAYS = 4096,
+	CHAT_FILTER_PUNISHMENT_BAN_PLAYER_2_DAYS = 8192,
+	CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5_DAYS = 16384,
+	CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5479_DAYS = 32768,
+	CHAT_FILTER_PUNISHMENT_STUN_5_MIN = 65536,
+	CHAT_FILTER_PUNISHMENT_STUN_10_MIN = 131072,
+
+
+	SPELL_FREEZE = 9454,
+	SPELL_STUN = 31539,
+	SPELL_STUN_SELF_ONE_SEC = 65256,
+	SPELL_STUN_SELF_VISUAL = 18970,
+
+	MAX_ALLOWED_STORED_MESSAGES_IN_CHANNELS = 10,
+};
+
+std::vector<std::pair<uint64 /*guid*/, std::string /*message*/> > messagesInChannel;
+
+class kick_player_delay_event : public BasicEvent
+{
+public:
+	kick_player_delay_event(Player* player) : _player(player) { }
+
+	bool Execute(uint64 /*time*/, uint32 /*diff*/)
+	{
+		if (_player && _player->GetSession())
+			_player->GetSession()->KickPlayer();
+		return true;
+	}
+
+private:
+	Player* _player;
+};
+
+void PunishPlayerForBadWord(Player* _sender, uint32 _muteTime = 0, uint32 _freezeTime = 0, uint16 _banTimeDays = 0, uint32 _stunTime = 0, bool _kickPlayer = false)
+{
+	if (!_sender)
+		return;
+
+	if (_muteTime != 0)
+	{
+		_sender->CastSpell(_sender, SPELL_STUN_SELF_VISUAL, false);
+		_sender->CastSpell(_sender, SPELL_STUN_SELF_ONE_SEC, false);
+		_sender->GetSession()->m_muteTime = time(NULL) + (_muteTime / 1000);
+		_sender->GetSession()->SendNotification("Your chat has been disabled for %u minutes and %u seconds because you've used bad words.", (_muteTime / 60000), ((_muteTime % 60000) / 1000));
+	}
+
+	if (_freezeTime != 0)
+	{
+		_sender->CastSpell(_sender, SPELL_FREEZE, false);
+		_sender->GetSession()->SendNotification("You have been frozen for %u minutes and %u seconds for using bad words.", (_freezeTime / 60000), ((_freezeTime % 60000) / 1000));
+		_sender->SetFreezeStunTimer(true, _freezeTime);
+	}
+
+	if (_kickPlayer)
+	{
+		_sender->GetSession()->SendNotification("You will be kicked in 3 seconds for using bad words.");
+		_sender->m_Events.AddEvent(new kick_player_delay_event(_sender), _sender->m_Events.CalculateTime(3000));
+	}
+
+	if (_banTimeDays != 0)
+	{
+		std::stringstream _duration, _banReason;
+		uint64 _banTimeSecs = _banTimeDays * DAY;
+		_duration << _banTimeSecs << "s";
+		_banReason << "Chat Filter System ban. Duration: " << _banTimeDays << (_banTimeDays == 1 ? " day." : " days.");
+		sWorld->BanCharacter(_sender->GetName(), _duration.str(), _banReason.str(), "Chat Filter System");
+	}
+
+	if (_stunTime != 0)
+	{
+		_sender->CastSpell(_sender, SPELL_STUN, false);
+		_sender->GetSession()->SendNotification("You have been stunned for %u minutes and %u seconds for using bad words.", (_stunTime / 60000), ((_stunTime % 60000) / 1000));
+		_sender->SetFreezeStunTimer(false, _stunTime);
+	}
+}
 
 void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 {
@@ -238,6 +330,97 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             }
         }
     }
+
+	bool kickPlayer = false, punishPlayer = false, duplicatedMessage = false;
+	uint32 muteTime = 0, freezeTime = 0, banTimeDays = 0, stunTime = 0, punishment = 0;
+	char* message = strdup(msg.c_str());
+	char* words = strtok(message, " ,.-()&^%$#@!{}'<>/?|\\=+-_1234567890");
+	std::string convertedMsg = msg;
+	ObjectMgr::ChatFilterContainer const& censoredWords = sObjectMgr->GetCensoredWords();
+
+	while (words != NULL && !censoredWords.empty())
+	{
+		for (ObjectMgr::ChatFilterContainer::const_iterator itr = censoredWords.begin(); itr != censoredWords.end(); ++itr)
+		{
+			if (!stricmp(itr->first.c_str(), words))
+			{
+				//! Convert everything into lower case
+				for (uint16 i = 0; i < convertedMsg.size(); ++i)
+					convertedMsg[i] = tolower(convertedMsg[i]);
+
+				size_t bannedWord = convertedMsg.find(itr->first);
+
+				while (bannedWord != std::string::npos)
+				{
+					convertedMsg.replace(bannedWord, itr->first.length(), itr->first.length(), '*');
+					bannedWord = convertedMsg.find(itr->first, bannedWord + 1);
+					punishment = itr->second;
+					punishPlayer = true;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_10_SEC)
+						muteTime += 10000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_30_SEC)
+						muteTime += 30000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_1_MIN)
+						muteTime += 60000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_2_MIN)
+						muteTime += 120000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_5_MIN)
+						muteTime += 300000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_10_MIN)
+						muteTime += 600000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_20_MIN)
+						muteTime += 1200000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_30_MIN)
+						muteTime += 1800000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_MUTE_1_HOUR)
+						muteTime += 3600000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_FREEZE_5_MIN)
+						freezeTime += 300000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_FREEZE_10_MIN)
+						freezeTime += 600000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_STUN_5_MIN)
+						stunTime += 300000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_STUN_10_MIN)
+						stunTime += 600000;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_KICK_PLAYER)
+						kickPlayer = true;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_BAN_PLAYER_1_DAYS)
+						banTimeDays += 1;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_BAN_PLAYER_2_DAYS)
+						banTimeDays += 2;
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5_DAYS)
+						banTimeDays += 5;
+
+
+					if (punishment & CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5479_DAYS)
+						banTimeDays += 5479;
+
+				}
+			}
+		}
+
+		words = strtok(NULL, " ,.-()&^%$#@!{}'<>/?|\\=+-_1234567890");
+	}
+
+	msg = convertedMsg;
+
 
     switch (type)
     {
@@ -492,12 +675,37 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             {
                 if (Channel* chn = cMgr->GetChannel(channel, sender))
                 {
-                    sScriptMgr->OnPlayerChat(sender, type, lang, msg, chn);
+                    
 #ifdef ELUNA
                     if(!sEluna->OnChat(sender, type, lang, msg, chn))
                         return;
 #endif
-                    chn->Say(sender->GetGUID(), msg.c_str(), lang);
+                    
+					for (std::vector<std::pair<uint64, std::string> >::const_iterator itr = messagesInChannel.begin(); itr != messagesInChannel.end(); ++itr)
+					{
+						if (itr->first == sender->GetGUID() && itr->second == msg)
+						{
+							sender->GetSession()->SendNotification("Your message won't be displayed because it's not allowed to flood the channels like that.");
+							duplicatedMessage = true;
+							break; //! Stop looping through elements if we found a 'target' in the vector.
+						}
+					}
+
+					if (!duplicatedMessage)
+					{
+						sScriptMgr->OnPlayerChat(_player, type, lang, msg, chn);
+						chn->Say(_player->GetGUID(), msg.c_str(), lang);
+						messagesInChannel.push_back(std::make_pair(sender->GetGUID(), msg));
+
+						//! It's pointless to check for this if the message is never sent to the
+						//! actual channel (so out of the brackets from this if-check), because
+						//! in that case the vector's size wouldn't change anyway.
+						//! Here we nuke out the 'oldest' element from vector messagesInChannel
+						//! if the size of it equals to or is bigger than the max. allowed messages
+						//! to check against.
+						if (messagesInChannel.size() >= MAX_ALLOWED_STORED_MESSAGES_IN_CHANNELS)
+							messagesInChannel.erase(messagesInChannel.begin());
+					}
                 }
             }
         } break;
@@ -560,6 +768,11 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             TC_LOG_ERROR("network", "CHAT: unknown message type %u, lang: %u", type, lang);
             break;
     }
+	//! No need to reset variable punishment because they automatically do that every chatmessage
+	if (punishPlayer && !duplicatedMessage)
+		PunishPlayerForBadWord(sender, muteTime, freezeTime, banTimeDays, stunTime, kickPlayer);
+
+	free(message); //! Prevents memoryleaks
 }
 
 void WorldSession::HandleEmoteOpcode(WorldPacket& recvData)

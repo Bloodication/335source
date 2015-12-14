@@ -159,7 +159,8 @@ public:
             { "vehicle_accessory",             rbac::RBAC_PERM_COMMAND_RELOAD_VEHICLE_ACCESORY,                 true,  &HandleReloadVehicleAccessoryCommand,           "", NULL },
             { "vehicle_template_accessory",    rbac::RBAC_PERM_COMMAND_RELOAD_VEHICLE_TEMPLATE_ACCESSORY,       true,  &HandleReloadVehicleTemplateAccessoryCommand,   "", NULL },
 			{ "template_npc",				   rbac::RBAC_PERM_COMMAND_RELOAD_TEMPLATE_NPC,						true,  &HandleReloadTemplateNPCCommand,				   "", NULL },
-            { NULL,                            0,                                                               false, NULL,                                           "", NULL }
+			{ "chat_filter",                   rbac::RBAC_PERM_COMMAND_RELOAD_CHAT_FILTER,                      true, &HandleReloadLoadChatFilterCommand, "" },
+			{ NULL,                            0,                                                               false, NULL,                                           "", NULL }
         };
         static ChatCommand commandTable[] =
         {
@@ -190,8 +191,10 @@ public:
         HandleReloadAllGossipsCommand(handler, "");
         HandleReloadAllLocalesCommand(handler, "");
 
+		HandleReloadLoadChatFilterCommand(handler, "");
         HandleReloadAccessRequirementCommand(handler, "");
         HandleReloadMailLevelRewardCommand(handler, "");
+		HandleReloadLoadChatFilterCommand(handler, "");
         HandleReloadCommandCommand(handler, "");
         HandleReloadReservedNameCommand(handler, "");
         HandleReloadTrinityStringCommand(handler, "");
@@ -1165,7 +1168,17 @@ public:
 		sTemplateNpcMgr->LoadHordeGearContainer();
 		handler->SendGlobalGMSysMessage("Template NPC templates reloaded.");
 		return true;
+
 	}
+
+	static bool HandleReloadLoadChatFilterCommand(ChatHandler* handler, char const* /*args*/)
+	{
+		TC_LOG_INFO("misc", "Reloading chat_filter table...");
+		sObjectMgr->LoadChatFilter();
+		handler->SendGlobalGMSysMessage("Chat Filter words reloaded.");
+		return true;
+	}
+
 };
 
 void AddSC_reload_commandscript()

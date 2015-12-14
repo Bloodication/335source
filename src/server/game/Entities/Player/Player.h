@@ -2172,6 +2172,15 @@ public:
 	void ChangeSpeakTime(int utime);
 
 	/*********************************************************/
+	/***                 CHAT FILTER SYSTEM                ***/
+	/*********************************************************/
+
+	void SetLoggedOutWhilePunished(bool _true) { loggedOutWhilePunished = _true; }
+	bool LoggedOutWhilePunished() { return loggedOutWhilePunished; }
+	void SetFreezeStunTimer(bool freeze, uint32 _timer) { freeze ? freezeTimer = _timer : stunTimer = _timer; }
+	uint32 GetFreezeStunTimer(bool freeze) { return freeze ? freezeTimer : stunTimer; }
+
+	/*********************************************************/
 	/***                 VARIOUS SYSTEMS                   ***/
 	/*********************************************************/
 	void UpdateFallInformationIfNeed(MovementInfo const& minfo, uint16 opcode);
@@ -2669,6 +2678,11 @@ protected:
 	uint32 m_zoneUpdateId;
 	uint32 m_zoneUpdateTimer;
 	uint32 m_areaUpdateId;
+
+
+	uint32 freezeTimer;
+	uint32 stunTimer;
+	bool loggedOutWhilePunished;
 
 	uint32 m_deathTimer;
 	time_t m_deathExpireTime;
