@@ -26,6 +26,7 @@
 
 ArenaTeamMgr::ArenaTeamMgr()
 {
+    NextTempArenaTeamId = 0xFFF00000;
     NextArenaTeamId = 1;
 }
 
